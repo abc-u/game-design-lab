@@ -1,0 +1,167 @@
+---
+day: 7
+date: 2026-10-23
+title: ルールを変えると、解き方も変わる
+theme: ルールの可変性と発見
+game: Baba Is You
+level: 中級
+minutes: 10
+summary: 動かせるルールが発見を生む流れを、言葉パズルのデモで試す。
+question: プレイヤーがルールそのものを動かせると、なぜ「自分で解き方を発見した」と感じる？
+goals:
+  - ルール変更が、行動・世界の変化・発見の手応えにつながる因果を説明できる
+  - 自作ゲームに「ルールを触れる選択肢」を足す案と、その分かりやすさの条件を考えられる
+video:
+  id: Ca5BYKRVXHM
+  title: Baba Is You Trailer (2017)
+  caption: Hempuli公式トレーラー。言葉ブロックを動かすと、物の性質や勝利条件が変わる点に注目。
+demo:
+  src: /demos/day007.html
+  title: ことばで変わる迷路
+  height: 1300
+sources:
+  - title: Steam公式ストア「Baba Is You」
+    url: https://store.steampowered.com/app/736260/Baba_Is_You/
+    note: 発売日・開発販売元・レビュー件数と比率（2026-10-23確認。レビュー数は変動）
+  - title: Hempuli公式「Baba Is You」
+    url: https://www.hempuli.com/Baba/
+    note: ルールをブロックとして動かすという公式説明（2026-10-23確認）
+  - title: Steam公式告知「Baba Is You will be released March 13th, 2019!」
+    url: https://steamcommunity.com/games/736260/announcements/detail/1765878775354733496
+    note: 2019-02-20。発売日・PC/Switch等の機種・発売価格
+  - title: "Game Developer「Video: Understanding the rules of Baba Is You」"
+    url: https://www.gamedeveloper.com/design/video-understanding-the-rules-of-i-baba-is-you-i-
+    note: 2020-04-14。開発者Arvi Teikari氏によるGDC 2020講演と開発中の反復
+  - title: PC Gamer「Baba is You review」
+    url: https://www.pcgamer.com/baba-is-you-review/
+    note: 2019-03-15。90/100。新鮮な発想と難度・ルール把握への評価
+  - title: Game Informer「Clever Puzzles With Too Many Variables」
+    url: https://gameinformer.com/review/baba-is-you/clever-puzzles-with-too-many-variables
+    note: 2019-03-25。7/10。序盤の発見を評価し、後半の変数増加を批判
+  - title: 日本ゲーム大賞2020「ゲームデザイナーズ大賞 Baba Is You」
+    url: https://awards.cesa.or.jp/2020/prize/year/02.html
+    note: 2020-09-26。選考理由とゲームの説明
+  - title: Hempuli公式「Baba Is You Trailer」
+    url: https://www.youtube.com/watch?v=Ca5BYKRVXHM
+    note: 2017年公開の公式トレーラー
+sources_note: Steamレビュー件数・好評率は2026-10-23確認。個別の肯定・批判例は批評家レビューとSteam掲載レビューの例で、全レビューに占める割合ではありません。販売本数の公式発表は確認できず、推定値は記載していません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：ルールを「説明」から「操作できるもの」にする</h2>
+  <p>多くのゲームでは、ルールはプレイヤーが覚えて従うものです。ルール自体を動かせると、プレイヤーは「何をするか」だけでなく「世界をどう動く状態にするか」も選べます。</p>
+
+  <ol class="flow mt-m">
+    <li><b>ルールを読む</b><span>何が止まり、何がゴール？</span></li>
+    <li><b>言葉を動かす</b><span>一文をつなぐ・切る</span></li>
+    <li><b>世界が変わる</b><span>物の性質が変化</span></li>
+    <li><b>試して確かめる</b><span>予想が当たると発見に</span></li>
+  </ol>
+  <p class="note mt-s">「動かした結果、世界の何が変わったか」がすぐ見えるほど、偶然ではなく自分の発見として受け取りやすくなります。</p>
+
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">文法が読める</p><p class="list__text">使える言葉と並べ方を絞り、「何を変えられるか」を理解できるようにする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">変化が見える</p><p class="list__text">ルールがつながった・切れた瞬間に、対象の見た目や通れる場所を変える。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">試し直せる</p><p class="list__text">一手戻す・リセットする手段を用意し、失敗を次の仮説に変えられるようにする。</p></div></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Baba Is You</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2019年3月13日（PC・Nintendo Switch）</dd></div>
+    <div><dt>開発・販売</dt><dd>Hempuli Oy（Arvi Teikari）</dd></div>
+    <div><dt>発売時価格</dt><dd>15米ドル（公式告知）</dd></div>
+  </dl>
+  <p class="mt-m">ブロックを押す倉庫番型パズルを土台に、文を作る言葉ブロックを盤面に置いた作品です。言葉が横につながると、その文が世界のルールになります。</p>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">1つの言葉で、盤面の意味が変わる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">読む</span><span class="list__body">「WALL IS STOP」がつながっている。壁は通れない。</span></div>
+    <div class="list__row"><span class="list__key">動かす</span><span class="list__body">「STOP」を押して文を切る。壁を止めるルールがなくなる。</span></div>
+    <div class="list__row"><span class="list__key">試す</span><span class="list__body">壁へ進む。通れたら、予想したルール変更が働いたと分かる。</span></div>
+    <div class="list__row"><span class="list__key">発見</span><span class="list__body">出口を探すだけでなく、出口までの世界の性質を変えた。</span></div>
+  </div>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜既存作との違い</p>
+    <p class="panel__title">倉庫番は物の位置を変える。Baba Is Youは、物の位置に加えて「何が何であるか」というルールも動かす。</p>
+    <p class="mt-s muted">同じ一手が、駒の移動にも、世界の再設定にもなる。この二重の意味が、解法を見つけたときの驚きを作ります。</p>
+  </div>
+  <p class="note mt-s">PC Gamerは、壁を止まらないものに変える解法や、壁そのものを勝利条件にする発想を例に挙げています（2019-03-15）。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：発見の自由と、考える負荷</h2>
+  <dl class="facts">
+    <div><dt>Steam英語レビュー</dt><dd>97%が好評（12,699件）</dd></div>
+    <div><dt>発売日</dt><dd>2019-03-13（Steam掲載）</dd></div>
+  </dl>
+  <p class="note mt-s">Steam公式ストア表示、2026-10-23確認。レビュー比率は変動します。</p>
+
+  <div class="list mt-m">
+    <div class="list__row"><span class="list__key">肯定</span><span class="list__body">批評家PC Gamerは90/100。見慣れたブロック押しを新しい方向へ広げ、複数の解法を試せる点を評価（2019-03-15）。日本ゲーム大賞も、常識を変える発想を評価（2020-09-26）。</span></div>
+    <div class="list__row"><span class="list__key">批判</span><span class="list__body">Game Informerは7/10。序盤のひらめきを評価する一方、後半は変数が増えて、ルールを整理する負荷が楽しさを上回ると指摘（2019-03-25）。</span></div>
+    <div class="list__row"><span class="list__key">プレイヤー</span><span class="list__body">Steamの英語レビュー欄には「難しいが楽しい」という声と、ヒントがなく詰まりやすいという声の両方が見られる。個別例であり、件数比の集計ではない。</span></div>
+  </div>
+  <div class="panel panel--dark mt-m">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">自由に組み替えられるほど発見の幅は広がるが、覚える規則が増えると「何ができるか探す負担」も増える。</p>
+  </div>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <ul class="bullets">
+    <li><span><strong>独自性</strong>　「言葉でルールを書き換える」という説明だけで、ほかのパズルとの違いが伝わる。</span></li>
+    <li><span><strong>価格と機種</strong>　PC・Switch同日発売、15米ドル。少人数でも遊びやすい買い切りパズルとして提示された（発売告知、2019-02-20）。</span></li>
+    <li><span><strong>評価の積み重ね</strong>　2017年Nordic Game Jamの試作から発展し、2018年IGFでExcellence in Design等を受賞。日本ゲーム大賞2020でもゲームデザイナーズ大賞を受賞。</span></li>
+    <li><span><strong>独自分析</strong>　賞とレビューが発見性を裏づけ、短い紹介文や動画で遊びの差を見せやすくした可能性がある。</span></li>
+  </ul>
+  <dl class="facts mt-m">
+    <div><dt>販売本数</dt><dd>公式公表を確認できず。推定値は記載しない</dd></div>
+    <div><dt>主な対象</dt><dd>論理パズルや試行錯誤を楽しみ、難度の高い問題に時間をかけられる層</dd></div>
+  </dl>
+  <p class="note mt-s">受賞や好評率は作品の評価を示しますが、販売本数や各要因の売上への寄与を示すデータではありません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：ことばで変わる迷路</h2>
+  <p>壁の前で止まったら、盤面の「STOP」を動かしてみよう。壁を止める文が切れると、壁を通れるようになります。</p>
+  <div class="chips mt-s">
+    <span class="chip">ルール語を押す</span>
+    <span class="chip">壁の状態が変わる</span>
+    <span class="chip">変更回数・手数を比較</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">「STOP」を動かす前に、壁がどう変わるか予想した？<br>やり直し回数が少ないと、試す手は変わる？</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">やり直し回数を変える</p><p class="mt-s">3回から0回にして再プレイ。言葉を動かす前に考える時間、試した回数、クリアまでの手数を比べる。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">新しい性質を足す</p><p class="mt-s">デモのルール判定に「WALL IS WIN」を追加し、壁に触れるとクリアする別解を作る。元のゴールを残した場合と消した場合で、発見の幅と迷いを比べよう。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで、プレイヤーが覚えるだけのルールはどれ？　そのルールを一度だけ変更可能にすると、新しい作戦と混乱のどちらが増える？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">自由な解法を増やす案と、ヒントで迷いを減らす案を比べよう。誰に向くか、どんなプレイヤーが離れそうかも考える。</span></div>
+  </div>
+</section>
+
