@@ -1,0 +1,13 @@
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+vendor/
+.bundle/
+Gemfile.lock
+.DS_Store
+
+# 教材ルールは非公開（リポジトリに入れない）
+AGENTS.md
+CLAUDE.md
+*ルール*.md

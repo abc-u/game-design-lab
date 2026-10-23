@@ -1,0 +1,118 @@
+---
+layout: default
+title: トップ
+---
+{%- assign lessons = site.lessons | sort: "day" | reverse -%}
+{%- assign latest = lessons.first -%}
+{%- capture latest_day %}{% include day.html n=latest.day %}{% endcapture -%}
+
+<section class="hero">
+  <div class="hero__text">
+    <p class="eyebrow">FOR BEGINNER PLANNERS</p>
+    <h1><span>「気持ちいい」には、</span><br><span>理由がある。</span></h1>
+    <p class="lead">名作ゲームの仕組みを、遊べるデモで分解する。<br>1日10分、ゲームプランナーの入門ノート。</p>
+    <div class="hero__actions">
+      <a class="btn" href="{{ latest.url | relative_url }}">▶ 今日の教材を遊ぶ</a>
+      <a class="link-pixel" href="{{ '/lessons/' | relative_url }}">教材一覧</a>
+    </div>
+  </div>
+  <div class="hero__art">
+    <img src="{{ '/assets/img/pixel-art.png' | relative_url }}" alt="アーケード筐体でゲームを分析するキャラクターのドット絵" width="1100" height="620">
+  </div>
+</section>
+
+<section class="section" id="lessons">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">STAGE</p>
+      <h2 class="h-section">今日の教材</h2>
+    </div>
+    <span class="small muted">毎日1本更新</span>
+  </div>
+
+  <a class="stage" href="{{ latest.url | relative_url }}">
+    <span class="stage__num"><small>DAY</small><span>{{ latest_day }}</span></span>
+    <span class="stage__body">
+      <span class="stage__game">{{ latest.game }}</span>
+      <span class="stage__title">{{ latest.title }}</span>
+      <span class="stage__desc">{{ latest.summary }}</span>
+      <span class="stage__play">▶ プレイする</span>
+    </span>
+  </a>
+
+  {%- if lessons.size > 1 %}
+  <h3 class="h-sub" style="margin-top: 64px; margin-bottom: 12px">これまでの教材</h3>
+  <div class="rows">
+    {%- for l in lessons offset: 1 limit: 4 %}
+    {%- capture d %}{% include day.html n=l.day %}{% endcapture %}
+    <a class="row" href="{{ l.url | relative_url }}">
+      <span class="row__day">DAY {{ d }}</span>
+      <span class="row__body">
+        <span class="row__game">{{ l.game }}</span>
+        <span class="row__title">{{ l.title }}</span>
+      </span>
+      <span class="row__arrow" aria-hidden="true">▶</span>
+    </a>
+    {%- endfor %}
+  </div>
+  <p class="more-link"><a href="{{ '/lessons/' | relative_url }}">すべての教材を見る（全{{ lessons.size }}本）→</a></p>
+  {%- endif %}
+</section>
+
+<section class="section split" id="how">
+  <div>
+    <p class="eyebrow">HOW TO</p>
+    <h2 class="h-section">使い方</h2>
+    <div class="list">
+      <div class="list__row list__row--center">
+        <span class="num-box">1</span>
+        <div><p class="list__title">遊ぶ</p><p class="list__text">名作の仕組みを再現したデモを遊ぶ</p></div>
+      </div>
+      <div class="list__row list__row--center">
+        <span class="num-box">2</span>
+        <div><p class="list__title">変える</p><p class="list__text">ルールを1つ変えて、違いを確かめる</p></div>
+      </div>
+      <div class="list__row list__row--center">
+        <span class="num-box">3</span>
+        <div><p class="list__title">持ち帰る</p><p class="list__text">自分のゲームで試すことを1つ決める</p></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="eyebrow">CHECK</p>
+    <h2 class="h-section">見るポイント</h2>
+    <div class="list">
+      <div class="list__row list__row--center">
+        <span class="num-box num-box--fill">A</span>
+        <div><p class="list__title">何が面白い？</p><p class="list__text">面白さを生んでいる仕組みを見つける</p></div>
+      </div>
+      <div class="list__row list__row--center">
+        <span class="num-box num-box--fill">B</span>
+        <div><p class="list__title">なぜそう感じる？</p><p class="list__text">ルールや表現が、どんな選択や感情につながるか</p></div>
+      </div>
+      <div class="list__row list__row--center">
+        <span class="num-box num-box--fill">C</span>
+        <div><p class="list__title">なぜ選ばれた？</p><p class="list__text">評価・価格・口コミなど、遊ばれた理由を分けて見る</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <p class="eyebrow">FAQ</p>
+  <h2 class="h-section">よくある質問</h2>
+  <div class="list">
+    <div class="faq__row">
+      <p class="faq__q">プログラミングは必要？</p>
+      <p class="faq__a">いりません。ブラウザで遊んで、スライダーで数値を変えるだけです。</p>
+    </div>
+    <div class="faq__row">
+      <p class="faq__q">何から始めればいい？</p>
+      <p class="faq__a">DAY 01から順に進むと、初級→中級→上級へ積み上がります。気になるゲームの回から始めても大丈夫です。</p>
+    </div>
+    <div class="faq__row">
+      <p class="faq__q">ゲームデザイナーとプランナーの違いは？</p>
+      <p class="faq__a">会社によって呼び方と担当範囲が違います。求人ごとに仕事内容を確認しつつ、企画・ルール設計・分析など共通する力を学びましょう。</p>
+    </div>
+  </div>
+</section>

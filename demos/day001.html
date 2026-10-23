@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#10131e"><title>DAY 01 Demo｜深層の宝石</title><style>
+:root{color-scheme:light;--ink:#252525;--muted:#626b75;--line:#dfe4e8;--soft:#f4f7f9;--accent:#397da8;--accent-dark:#2d668c;--green:#4b8765;--lav:#e9f0f5;--pink:#f8eef3}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--ink);font:16px/1.85 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;padding-bottom:48px}main{max-width:1040px;margin:auto;padding:14px 24px 48px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 15px;border-bottom:1px solid var(--line)}.brand{font-size:15px;font-weight:750;letter-spacing:.01em;color:var(--ink);text-decoration:none}.tag{font-size:12px;border:1px solid var(--line);border-radius:4px;padding:3px 9px;color:var(--muted);background:#fff}.breadcrumb{font-size:12px;color:var(--muted);margin:15px 0 20px}.breadcrumb a{color:var(--muted)}.article{max-width:790px;margin:0 auto}.article-meta{font-size:12px;color:var(--muted);margin-bottom:8px}.eyebrow{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.03em}h1{font-size:clamp(28px,4vw,38px);font-weight:750;line-height:1.42;letter-spacing:-.025em;margin:4px 0 10px;color:var(--ink)}h2{font-size:22px;line-height:1.5;margin:0 0 14px;color:var(--ink);border-left:4px solid var(--accent);padding-left:12px}h3{font-size:18px;line-height:1.5;margin:20px 0 8px;color:var(--ink)}p{margin:10px 0;color:#333}.lead{font-size:17px;line-height:1.85;color:#4e555b;margin:8px 0 16px}.hero{margin:12px 0 26px;padding:0;background:#fff;border:0;border-radius:0;box-shadow:none;text-align:left}.hero:before,.hero:after{display:none}.hero.landing-hero{display:block}.hero-art-wrap{background:#f4f6f7;border-radius:7px;overflow:hidden;margin:20px 0 18px;display:flex;justify-content:center}.hero-art{display:block;width:100%;max-height:370px;object-fit:contain;filter:saturate(.72);mix-blend-mode:multiply}.hero-caption{font-size:12px;text-align:center;color:var(--muted);margin:0 0 20px}.summary{background:#f1f6f9;border:1px solid #dbe7ed;border-radius:5px;padding:15px 18px;margin:20px 0}.summary strong{color:#305e78}.summary p{margin:4px 0 0;color:#4b555d}.toc{border:1px solid var(--line);border-radius:5px;padding:15px 18px;margin:22px 0 30px;background:#fff}.toc h2{font-size:17px;border:0;padding:0;margin:0 0 7px}.toc ol{margin:0;padding-left:1.4em}.toc li{margin:3px 0;font-size:14px}.toc a{color:#3d6d87;text-decoration:none}.toc a:hover{text-decoration:underline}.article section{margin:30px 0 0}.panel{background:#fff;border:0;border-top:1px solid var(--line);border-radius:0;padding:25px 0 0;margin:30px 0 0;box-shadow:none}.panel.game-card,.panel.lab-card{background:#f8fafb;border:1px solid var(--line);border-radius:7px;padding:18px;margin:20px 0}.panel.featured{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;background:#f4f7f9;border:1px solid var(--line);border-radius:6px;padding:16px;margin:20px 0}.panel.archive{background:#fff}.small{color:var(--muted);font-size:13px}.section-intro{max-width:680px;color:var(--muted);margin:0 0 15px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step,.archive-card,.field,.career-card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:14px}.step{min-height:145px}.step b{display:block;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}.step-visual{font-size:23px;line-height:1;font-weight:700;color:var(--accent);margin:0 0 12px}.step p,.career-card p{color:var(--muted);font-size:13px;margin:5px 0 0}.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.field label{display:block;font-weight:600;margin-bottom:6px}.field input,.field select{width:100%;min-height:44px;padding:8px 10px;border:1px solid #cdd5da;border-radius:4px;background:#fff;color:var(--ink);font:inherit;font-size:16px}.archive-card{display:block;color:var(--ink);text-decoration:none;margin-top:10px;transition:border-color .15s,background .15s}.archive-card:hover{border-color:#97b5c7;background:#f8fafb}.archive-card strong{display:flex;justify-content:space-between;gap:12px;align-items:center}.archive-card small{display:block;color:var(--muted);font-size:13px;margin-top:5px}.pill{font-size:11px;color:#fff;background:var(--accent);border-radius:3px;padding:3px 7px;white-space:nowrap}.cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 15px;margin-top:14px;border:1px solid var(--accent);border-radius:4px;background:var(--accent);color:#fff;text-decoration:none;font:inherit;font-size:14px;font-weight:650;line-height:1.4;box-shadow:none}.cta:hover{background:var(--accent-dark)}.career-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.career-card .number{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:.07em}.career-card strong{display:block;margin:6px 0 2px}.featured-gem{font-size:32px;filter:none}.featured h2{margin:0;font-size:19px;border:0;padding:0}.featured p{margin:3px 0 0;color:var(--muted);font-size:14px}.featured .cta{margin:0;white-space:nowrap}.faq details{border-top:1px solid var(--line);padding:12px 0}.faq summary{cursor:pointer;font-weight:600;color:var(--ink)}.faq details p{margin:8px 0 0;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{text-align:center;background:#fff;border:1px solid var(--line);border-radius:5px;padding:12px 5px}.stat strong{font-size:25px;font-weight:700;display:block;line-height:1.3;font-variant-numeric:tabular-nums}.stat small{color:var(--muted);font-size:11px}.cave{font-size:48px;text-align:center;margin:12px 0 0}.meter{height:10px;background:#e9eef1;overflow:hidden;border:1px solid var(--line);border-radius:99px}.fill{height:100%;background:linear-gradient(90deg,#78a98a,#e1c877,#c7789f);transition:width .25s}.between{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:14px 0 8px}.between strong{font-variant-numeric:tabular-nums;color:var(--accent-dark)}.message{min-height:58px;background:#fff;border-left:3px solid #8fb0c4;padding:11px 13px;margin:14px 0;color:var(--ink)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{font:inherit;font-size:15px;font-weight:650;line-height:1.4;cursor:pointer;touch-action:manipulation;min-height:46px;border-radius:4px;border:1px solid var(--accent);padding:9px 14px;background:var(--accent);color:#fff;box-shadow:none;transition:background .1s}button:active{background:var(--accent-dark)}button:disabled{cursor:default;opacity:.42}.secondary{background:#fff;color:var(--ink);border-color:#cdd5da}.secondary:active{background:#f3f6f7}.download{width:100%;margin-top:14px;background:#fff;border-color:#cdd5da;color:var(--ink)}.download:hover{background:#f5f7f8}.controls{display:grid;gap:12px}.control{padding:12px;background:#fff;border:1px solid var(--line);border-radius:5px}.control label{display:flex;justify-content:space-between;font-weight:600;gap:10px}.control output{color:var(--accent-dark);font-variant-numeric:tabular-nums}input[type=range]{display:block;width:100%;margin:12px 0 2px;accent-color:var(--accent);min-height:30px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{background:#fff;border:1px solid var(--line);border-radius:5px;padding:12px}.tile b{display:block;color:var(--accent-dark);font-size:22px;line-height:1.5}details{border-top:1px solid var(--line);padding:12px 0}summary{cursor:pointer;font-weight:600;color:var(--ink)}code{color:#4c6170;background:#edf2f5;padding:2px 4px;border-radius:3px}ul,ol{padding-left:1.4em;color:var(--ink)}li{margin:7px 0}a{color:#3c718f}.brand{color:var(--ink)}.footer{margin-top:36px;border-top:1px solid var(--line);padding-top:17px;color:var(--muted);font-size:12px;line-height:1.8}#archiveEmpty{margin-top:12px}@media(max-width:650px){main{padding:12px 16px 34px}.article{max-width:none}.hero-art{max-height:250px}.steps,.career-grid{grid-template-columns:1fr}.step{min-height:0}.filters{grid-template-columns:1fr}.panel.featured{grid-template-columns:auto 1fr;gap:10px}.panel.featured .cta{grid-column:1/-1;width:100%}.panel.game-card,.panel.lab-card{padding:14px}.stats{gap:6px}.stat strong{font-size:22px}.actions{gap:8px}button{font-size:14px;padding:9px 7px}.brand{font-size:13px}.tag{font-size:10px}.lead{font-size:16px}.hero h1{font-size:30px}}@media(max-width:360px){main{padding-left:13px;padding-right:13px}.panel.game-card,.panel.lab-card{padding:12px}}
+</style><style id="gdl-blog-theme">
+:root{--ink:#292d2b;--muted:#68716c;--line:#e1e5e2;--soft:#f6f7f6;--accent:#43885f;--accent-dark:#2e7049;color-scheme:light}
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+body{background:#f4f5f5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;line-height:1.9}
+main{display:grid;grid-template-columns:minmax(0,790px) minmax(220px,285px);grid-template-areas:"header header" "crumb crumb" "article sidebar";align-items:start;justify-content:center;column-gap:30px;max-width:1180px;padding:0 18px 54px}
+main>header{grid-area:header;min-height:142px;padding:25px 0 27px;margin:0 0 28px;border:0;border-bottom:1px solid #e5e8e6;display:flex;flex-direction:column;justify-content:center;gap:5px;text-align:center}
+.brand{font-size:30px!important;font-weight:600;letter-spacing:.015em;color:#2d3430!important;text-decoration:none}
+.tag{font-size:12px!important;border:0!important;background:transparent!important;color:#718078!important;padding:0!important;letter-spacing:.04em}
+.breadcrumb,.crumb{grid-area:crumb;margin:0 0 16px!important;font-size:12px!important;color:#818a85!important}
+.breadcrumb a,.crumb a{color:#68766e!important;text-decoration:none}
+.article{grid-area:article;max-width:none!important;width:100%;margin:0 0 36px!important;padding:44px 52px 62px;background:#fff;border:1px solid #e7eae8;border-radius:2px;box-shadow:0 1px 2px rgba(28,42,34,.025)}
+.article h1{color:#282e2b;font-size:clamp(28px,3.5vw,36px);line-height:1.45;letter-spacing:-.02em;font-weight:650;margin:7px 0 15px}
+.article h2{border:0!important;border-bottom:1px solid #dfe4e1!important;padding:0 0 9px!important;margin:0 0 17px!important;font-size:22px;line-height:1.5;color:#303632}
+.article h3{font-size:18px;font-weight:650;color:#343a36;margin-top:24px}
+.article p{color:#3d433f}
+.article a:not(.cta):not(.download){color:#328354;text-decoration:none}
+.article a:not(.cta):not(.download):hover{text-decoration:underline}
+.article .eyebrow,.article .meta,.article .article-meta{color:#698276!important;letter-spacing:.04em}
+.article .lead{color:#505a54;line-height:1.9}
+.article .hero{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;margin:5px 0 28px;text-align:left}
+.article .hero:before,.article .hero:after{display:none}
+.article .toc{background:#f7f8f7;border:0;border-radius:0;padding:17px 20px;margin:20px 0 32px}
+.article .toc h2{font-size:19px;border-bottom:1px solid #e1e5e2!important;padding-bottom:7px!important}
+.article .toc a{color:#348354;text-decoration:none}
+.article .summary,.article .note,.article .transfer-note{background:#f5f8f5;border:0;border-left:3px solid #83a891;border-radius:0;padding:14px 17px}
+.article .panel{background:transparent;border:0;border-top:0;border-radius:0;padding:24px 0 0;margin:32px 0 0;box-shadow:none}
+.article .panel.game-card,.article .panel.lab-card,.article .panel.featured{background:#f7f8f7;border:1px solid #e5e9e6;border-radius:2px;padding:17px;margin:20px 0}
+.article .step,.article .career-card,.article .archive-card,.article .field,.article .card,.article .challenge,.article .tile,.article .stat{background:#fff;border:1px solid #e2e6e3;border-radius:2px;box-shadow:none}
+.article .archive-card{color:var(--ink);text-decoration:none}
+.article .archive-card:hover{background:#f8faf8;border-color:#a9bfaf}
+.article .cta,.article button:not(.secondary){background:#43885f;border-color:#43885f;border-radius:3px;box-shadow:none}
+.article .cta:hover,.article button:not(.secondary):hover{background:#36734f}
+.article .download,.article button.secondary{border-radius:3px;box-shadow:none}
+.article .download{border-color:#d4dcd6}
+.article .video,.article .hero-art-wrap{border-radius:2px}
+.article .footer{border-top:1px solid #e2e6e3}
+.article .game-frame{border-radius:2px;border-color:#dfe5e1}
+.article .pill{border-radius:2px;background:#43885f}
+.article .meter{border-radius:1px}
+.site-sidebar{grid-area:sidebar;align-self:start;padding:17px 0 30px;color:#404842;font-size:13px;line-height:1.7}
+.site-sidebar section{margin:0 0 30px}
+.site-sidebar h2{font-size:19px;font-weight:600;border:0;border-bottom:1px solid #dce2de;padding:0 0 8px;margin:0 0 12px;color:#39423c}
+.site-sidebar p{margin:8px 0;color:#68736c}
+.site-sidebar ul{list-style:none;padding:0;margin:0}
+.site-sidebar li{border-bottom:1px solid #e2e6e3;padding:8px 0;margin:0}
+.site-sidebar a{color:#3a8057;text-decoration:none}
+.site-sidebar a:hover{text-decoration:underline}
+.site-sidebar .side-label{font-size:10px;letter-spacing:.08em;color:#819187;font-weight:700}
+.site-sidebar .side-note{padding:12px;background:#f8f9f8;border-left:2px solid #94b29d}
+@media(max-width:820px){main{grid-template-columns:minmax(0,1fr) 230px;column-gap:20px;padding-left:14px;padding-right:14px}.article{padding:36px 32px 48px}}
+@media(max-width:650px){main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"header" "crumb" "article" "sidebar";gap:0;padding:0 12px 35px}.article{padding:28px 20px 40px;margin-bottom:24px!important}.site-sidebar{padding:6px 10px 25px}.site-sidebar section{margin-bottom:22px}main>header{min-height:108px;margin-bottom:18px;padding:20px 0}.brand{font-size:25px!important}.article h1{font-size:29px}.article h2{font-size:20px}.article .video iframe{min-height:180px}}
+@media(max-width:380px){main{padding-left:8px;padding-right:8px}.article{padding:24px 15px 34px}.brand{font-size:23px!important}.article h1{font-size:27px}}
+</style><style id="gdl-readable-layout">
+/* 全ページ共通：本文を読みやすい一列にし、枠の密度を下げる */
+body{background:#f5f6f5!important;color:#303632!important;font-size:16px!important;line-height:1.85!important}
+main{display:grid!important;grid-template-columns:minmax(0,980px)!important;grid-template-areas:"header" "crumb" "article"!important;justify-content:center!important;column-gap:0!important;max-width:1040px!important;padding:0 24px 64px!important}
+main>header{align-items:flex-start!important;text-align:left!important;min-height:112px!important;padding:23px 0 19px!important;margin:0 0 22px!important;border-bottom:1px solid #d9dfdb!important}
+.brand{font-size:27px!important;letter-spacing:0!important}
+.tag{font-size:12px!important}
+.breadcrumb,.crumb{margin-bottom:18px!important}
+.article{width:100%!important;max-width:none!important;margin:0 0 30px!important;padding:30px 38px 56px!important;background:#fff!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.site-sidebar{display:none!important}
+.article h1{max-width:30em!important;font-size:clamp(27px,3.2vw,35px)!important;line-height:1.45!important;margin:5px 0 14px!important}
+.article h2{font-size:21px!important;margin:0 0 15px!important;padding:0 0 8px!important;border-bottom:1px solid #dfe4e1!important}
+.article h3{font-size:17px!important;margin:20px 0 8px!important}
+.article p{max-width:78ch}
+.article .lead{max-width:75ch!important;font-size:16px!important;line-height:1.9!important}
+.article .hero{margin-bottom:23px!important}
+.article .toc{background:#f7f8f7!important;border:0!important;border-radius:0!important;padding:16px 20px!important;margin:20px 0 30px!important}
+.article .summary,.article .note,.article .transfer-note,.article .lesson-note,.article .quote{background:#f7f8f6!important;border:0!important;border-left:3px solid #8da996!important;border-radius:0!important;padding:13px 17px!important}
+.article .panel{background:transparent!important;border:0!important;border-top:1px solid #e2e6e3!important;border-radius:0!important;padding:24px 0 0!important;margin:30px 0 0!important;box-shadow:none!important}
+.article .panel.game-card,.article .panel.lab-card,.article .panel.featured{background:#f7f8f7!important;border:1px solid #e2e6e3!important;border-radius:3px!important;padding:16px!important;margin:20px 0!important}
+.article .step,.article .career-card,.article .archive-card,.article .card,.article .challenge{background:transparent!important;border:0!important;border-top:1px solid #e2e6e3!important;border-radius:0!important;box-shadow:none!important;padding:13px 0!important}
+.article .career-grid,.article .grid2,.article .grid3{gap:20px!important}
+.article .archive-card{color:inherit!important;text-decoration:none!important}
+.article .archive-card:hover{background:#f8faf8!important}
+.article .field,.article input,.article select,.article textarea{border:1px solid #cfd7d1!important;border-radius:3px!important;background:#fff!important}
+.article button,.article .cta,.article .download{border-radius:3px!important;box-shadow:none!important}
+.article .hero-art-wrap,.article .hero-visual,.article .video{border-radius:2px!important}
+.article .hero-art,.article .hero-visual svg{max-width:100%!important;height:auto!important}
+.lesson-list{border-top:1px solid #dfe4e1!important}
+.lesson-row{padding:19px 6px!important}
+.lesson-row:hover{background:#f7f8f7!important}
+.lesson-copy strong{font-size:17px!important}
+.lesson-summary{font-size:14px!important}
+@media(max-width:760px){
+ body{font-size:15px!important}
+ main{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"header" "crumb" "article"!important;gap:0!important;padding:0 12px 34px!important}
+ main>header{min-height:88px!important;padding:17px 2px 14px!important;margin-bottom:14px!important}
+ .brand{font-size:23px!important}
+ .article{padding:23px 18px 38px!important;margin-bottom:18px!important}
+ .article h1{font-size:26px!important;line-height:1.5!important}
+ .article h2{font-size:19px!important}
+ .article .lead{font-size:15px!important}
+ .article .toc{padding:13px 14px!important}
+ .article .career-grid,.article .grid2,.article .grid3{grid-template-columns:1fr!important;gap:12px!important}
+ .lesson-row{grid-template-columns:48px minmax(0,1fr) 14px!important;gap:8px!important;padding:15px 2px!important}
+ .lesson-copy strong{font-size:15px!important}
+ .lesson-summary{font-size:13px!important}
+ .article .video iframe{min-height:190px!important}
+}
+
+</style>
+<style id="gdl-editorial-flow">
+/* 記事の読み順を優先し、横並びカードを縦の内容ブロックへ */
+.article .career-grid,.article .grid2,.article .grid3,.article .flow,.article .loop{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important;align-items:stretch!important;margin:26px 0 34px!important
+}
+.article .career-grid>.career-card,.article .grid2>.card,.article .grid3>.card{
+ display:block!important;background:transparent!important;border:0!important;border-bottom:1px solid #e5e9e6!important;border-radius:0!important;box-shadow:none!important;padding:18px 0!important;margin:0!important
+}
+.article .career-grid>.career-card:first-child,.article .grid2>.card:first-child,.article .grid3>.card:first-child{border-top:1px solid #e5e9e6!important}
+.article .flow>div,.article .loop>div:not(.arrow),.article .loop-step{
+ display:block!important;position:relative!important;min-height:0!important;text-align:left!important;background:transparent!important;border:0!important;border-left:2px solid #a9c4b0!important;border-radius:0!important;padding:4px 0 5px 18px!important;margin:0 0 18px!important
+}
+.article .flow>div:last-child,.article .loop>div:not(.arrow):last-child,.article .loop-step:last-child{margin-bottom:0!important}
+.article .flow b,.article .flow strong,.article .loop b,.article .loop strong,.article .loop-step strong{display:block!important;color:#3d704e!important;font-size:15px!important;margin-bottom:3px!important}
+.article .flow span,.article .loop span,.article .loop-step span{display:block!important;color:#68716c!important;font-size:14px!important}
+.article .loop .arrow{display:block!important;transform:rotate(90deg)!important;min-height:20px!important;padding:0!important;margin:0 0 12px!important;border:0!important;background:transparent!important;color:#78927e!important}
+.article .panel{padding-top:36px!important;margin-top:48px!important}
+.article h2{margin:0 0 24px!important;padding-bottom:10px!important}
+.article .toc h2{margin:0 0 12px!important}
+.article h3{margin:30px 0 10px!important}
+.article .panel p+ p{margin-top:16px!important}
+.article .summary,.article .note,.article .transfer-note,.article .lesson-note,.article .quote{margin:24px 0 30px!important}
+.article .hero-art-wrap,.article .hero-visual,.article .media-figure,.article .video{margin:25px 0 32px!important}
+.article .hero-caption,.article .caption{margin-top:9px!important}
+.article .steps{gap:28px!important}
+.article .step{padding:18px 0!important}
+.lesson-list{margin-top:22px!important}
+.lesson-row{padding:23px 6px!important}
+@media(max-width:760px){
+ .article .career-grid,.article .grid2,.article .grid3,.article .flow,.article .loop{margin:20px 0 28px!important}
+ .article .career-grid>.career-card,.article .grid2>.card,.article .grid3>.card{padding:16px 0!important}
+ .article .panel{padding-top:27px!important;margin-top:36px!important}
+ .article h2{margin-bottom:19px!important}
+ .article h3{margin-top:25px!important}
+ .lesson-row{padding:19px 2px!important}
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=DotGothic16&amp;family=Zen+Kaku+Gothic+New:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style id="gdl-reference-theme">
+:root{color-scheme:light;--ink:#16161a;--muted:#52525b;--paper:#f4f3ee;--white:#fff;--line:#16161a;--soft:#ece9ff;--accent:#5b3df5;--accent-dark:#4326d2;--shadow:4px 4px 0 #16161a}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0!important;background:var(--paper)!important;color:var(--ink)!important;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",Meiryo,sans-serif!important;font-size:17px!important;line-height:1.82!important}
+main{display:block!important;width:100%!important;max-width:1120px!important;margin:0 auto!important;padding:0 28px 76px!important}
+main>header{display:flex!important;flex-wrap:wrap!important;justify-content:space-between!important;align-items:center!important;gap:14px 22px!important;min-height:76px!important;padding:12px 0!important;margin:0 0 20px!important;background:transparent!important;border:0!important;border-bottom:2px solid var(--ink)!important;text-align:left!important}
+.brand{display:inline-flex!important;align-items:center!important;gap:10px!important;color:var(--ink)!important;font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif!important;font-size:20px!important;font-weight:400!important;letter-spacing:.04em!important;text-decoration:none!important}
+.brand::before{content:"";display:inline-block;width:12px;height:12px;background:var(--accent);flex:none}
+.tag{margin-left:auto!important;padding:0!important;border:0!important;background:transparent!important;color:var(--muted)!important;font-size:12px!important;letter-spacing:.04em!important}
+.site-nav{display:flex;gap:24px;align-items:center}.site-nav a{color:var(--ink);font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif;font-size:14px;text-decoration:none}.site-nav a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.breadcrumb,.crumb{margin:0 0 20px!important;color:var(--muted)!important;font-size:13px!important}.breadcrumb a,.crumb a{color:var(--muted)!important;text-decoration:none}
+.article{width:100%!important;max-width:800px!important;margin:0 auto 40px!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.article h1{max-width:22em!important;margin:8px 0 14px!important;color:var(--ink)!important;font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif!important;font-size:clamp(34px,5vw,54px)!important;font-weight:400!important;line-height:1.42!important;letter-spacing:0!important}
+.article h2{margin:0 0 17px!important;padding:0 0 10px!important;border:0!important;border-bottom:2px solid var(--ink)!important;color:var(--ink)!important;font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif!important;font-size:clamp(21px,3vw,28px)!important;font-weight:400!important;line-height:1.55!important}
+.article h3{margin:26px 0 8px!important;color:var(--ink)!important;font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif!important;font-size:19px!important;font-weight:400!important;line-height:1.6!important}
+.article p{max-width:75ch;color:#303036!important}.article .eyebrow,.article .meta,.article .article-meta{color:var(--accent)!important;font-family:"DotGothic16",sans-serif!important;font-size:13px!important;letter-spacing:.04em!important}
+.article .lead{max-width:72ch!important;margin:14px 0 22px!important;color:#373740!important;font-size:18px!important;line-height:1.9!important}
+.article .hero{margin:20px 0 34px!important;padding:26px!important;background:var(--white)!important;border:2px solid var(--ink)!important;border-radius:0!important;box-shadow:var(--shadow)!important;text-align:left!important}
+.article .hero:before,.article .hero:after{display:none!important}
+.article .hero.landing-hero{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr)!important;align-items:center!important;gap:30px!important}.article .hero-copy{min-width:0}
+.article .hero-art-wrap,.article .hero-visual,.article .visual{overflow:hidden!important;margin:22px 0 18px!important;background:var(--soft)!important;border:2px solid var(--ink)!important;border-radius:0!important}
+.article .hero-art{display:block;width:100%;max-height:350px;object-fit:contain;mix-blend-mode:multiply}.article .hero-visual svg{display:block;width:100%;height:auto}
+.article .hero-caption,.article .caption{margin:8px 0 0!important;color:var(--muted)!important;font-size:13px!important;text-align:center}
+.article .summary,.article .note,.article .transfer-note,.article .lesson-note,.article .quote{margin:22px 0 28px!important;padding:15px 18px!important;background:var(--soft)!important;border:0!important;border-left:4px solid var(--accent)!important;border-radius:0!important;box-shadow:none!important}.article .summary strong,.article .note strong,.article .transfer-note strong{color:var(--accent-dark)!important}
+.article .panel{margin:52px 0 0!important;padding:25px 0 0!important;background:transparent!important;border:0!important;border-top:2px solid var(--ink)!important;border-radius:0!important;box-shadow:none!important}
+.article .panel.game-card,.article .panel.lab-card,.article .panel.featured{margin:30px 0!important;padding:20px!important;background:var(--white)!important;border:2px solid var(--ink)!important;border-radius:0!important;box-shadow:var(--shadow)!important}
+.article .toc{margin:26px 0 36px!important;padding:18px 20px!important;background:var(--white)!important;border:2px solid var(--ink)!important;border-radius:0!important;box-shadow:3px 3px 0 var(--ink)!important}.article .toc h2{font-size:18px!important}
+.article .toc a,.article a:not(.cta):not(.download){color:var(--accent-dark)!important;text-decoration-thickness:1px;text-underline-offset:3px}
+.article .steps,.article .career-grid,.article .grid2,.article .grid3,.article .flow,.article .loop{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important;margin:22px 0 30px!important}
+.article .step,.article .career-card,.article .card,.article .challenge,.article .loop-step{min-height:0!important;margin:0!important;padding:17px 4px!important;background:transparent!important;border:0!important;border-top:1px solid #c8c5bf!important;border-radius:0!important;box-shadow:none!important}
+.article .step:last-child,.article .career-card:last-child,.article .card:last-child,.article .challenge:last-child{border-bottom:1px solid #c8c5bf!important}
+.article .step b,.article .career-card .number{color:var(--accent)!important;font-family:"DotGothic16",sans-serif!important}.article .step-visual{color:var(--accent)!important}
+.article .lesson-row{display:grid!important;grid-template-columns:68px minmax(0,1fr) 24px!important;gap:16px!important;align-items:center!important;margin:0!important;padding:21px 8px!important;border-top:1px solid #aaa79f!important;border-bottom:0!important;color:var(--ink)!important;text-decoration:none!important}
+.article .lesson-row:last-child{border-bottom:1px solid #aaa79f!important}.article .lesson-row:hover{background:var(--soft)!important}.article .lesson-day{color:var(--accent)!important;font-family:"DotGothic16",sans-serif!important}
+.article .lesson-copy strong{color:var(--ink)!important;font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif!important;font-size:20px!important;font-weight:400!important}.article .lesson-meta,.article .lesson-summary{color:var(--muted)!important}
+.article .archive-card,.article .field,.article .stat,.article .tile{background:var(--white)!important;border:2px solid var(--ink)!important;border-radius:0!important;box-shadow:3px 3px 0 var(--ink)!important}
+.article .archive-card{display:block!important;padding:16px!important;margin:16px 0 0!important;color:var(--ink)!important;text-decoration:none!important}.article .archive-card:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)!important;background:#fff!important}
+.article .field{box-shadow:none!important;padding:14px!important}.article .field input,.article .field select,.article input,.article select,.article textarea{min-height:46px!important;border:2px solid var(--ink)!important;border-radius:0!important;background:var(--white)!important;color:var(--ink)!important;font:inherit!important}
+.article .pill{border-radius:0!important;background:var(--accent)!important}
+.article .cta,.article button:not(.secondary),.article .download{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:48px!important;padding:10px 18px!important;border:2px solid var(--ink)!important;border-radius:0!important;background:var(--accent)!important;color:#fff!important;font-family:"DotGothic16","Zen Kaku Gothic New",sans-serif!important;font-size:15px!important;font-weight:400!important;box-shadow:3px 3px 0 var(--ink)!important;text-decoration:none!important;transition:transform .12s,box-shadow .12s!important}
+.article .cta:hover,.article button:not(.secondary):hover,.article .download:hover{transform:translate(2px,2px)!important;box-shadow:1px 1px 0 var(--ink)!important;background:var(--accent-dark)!important}
+.article button.secondary{min-height:46px!important;border:2px solid var(--ink)!important;border-radius:0!important;background:var(--white)!important;color:var(--ink)!important;box-shadow:3px 3px 0 var(--ink)!important}.article .download{width:100%!important}
+.article .game-frame{border:2px solid var(--ink)!important;border-radius:0!important;background:#fff!important}
+.article .video,.article .video-wrap{overflow:hidden;border:2px solid var(--ink)!important;border-radius:0!important}.article .video iframe,.article .video-wrap iframe{display:block;width:100%;border:0}
+.article .meter{height:12px!important;border:2px solid var(--ink)!important;border-radius:0!important;background:#dedbd5!important}.article .fill{background:var(--accent)!important}
+.article .message{border:2px solid var(--ink)!important;border-left:6px solid var(--accent)!important;border-radius:0!important;background:#fff!important}
+.article .footer{margin-top:42px!important;padding-top:20px!important;border-top:2px solid var(--ink)!important;color:var(--muted)!important}.article .source-list li{overflow-wrap:anywhere}
+.site-sidebar{display:none!important}
+#archive .filters{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}#archive .archive-card{margin-top:12px!important}#archiveEmpty{padding:18px 0!important;color:var(--muted)!important}
+.archive-order{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.archive-order button{font:inherit;min-height:44px;padding:8px 14px;border:2px solid var(--ink);background:var(--accent);color:white;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
+.archive-order button.secondary{background:white;color:var(--ink)}
+.archive-order button[aria-pressed="true"]{background:var(--accent);color:white}
+.archive-order button[aria-pressed="false"]{background:white;color:var(--ink)}
+@media(max-width:760px){
+ body{font-size:16px!important}main{padding:0 18px 48px!important}
+ main>header{gap:8px 14px!important;min-height:0!important;padding:12px 0 14px!important;margin-bottom:16px!important}
+ .brand{font-size:17px!important}.tag{font-size:10px!important}.site-nav{order:3;width:100%;gap:22px;padding:5px 0 0;border-top:1px solid #c8c5bf}.site-nav a{font-size:13px}
+ .breadcrumb,.crumb{margin-bottom:14px!important}.article{max-width:none!important;margin-bottom:26px!important}
+ .article h1{font-size:clamp(30px,8vw,42px)!important}.article h2{font-size:21px!important}.article h3{font-size:17px!important}.article .lead{font-size:16px!important}
+ .article .hero{padding:18px!important;margin:15px 0 27px!important}.article .hero.landing-hero{grid-template-columns:1fr!important;gap:16px!important}
+ .article .hero-art-wrap,.article .hero-visual{margin:14px 0!important}.article .hero-art{max-height:240px}
+ .article .panel{margin-top:38px!important;padding-top:20px!important}.article .toc{padding:14px!important}
+ .article .lesson-row{grid-template-columns:52px minmax(0,1fr) 16px!important;gap:9px!important;padding:16px 3px!important}
+ .article .lesson-copy strong{font-size:16px!important}.article .lesson-summary{font-size:13px!important}
+ .article .video iframe{min-height:190px!important}.article .game-frame{min-height:420px}
+}
+@media(max-width:380px){main{padding-left:13px!important;padding-right:13px!important}.brand{font-size:15px!important}.tag{display:none!important}.site-nav{justify-content:space-between}.article .hero{padding:15px!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.article *{transition:none!important}}
+</style>
+</head><body><main><article class="article">
+<section class="panel game-card" id="game"><div class="between" style="margin-top:0"><h2 style="margin:0">💎 深層の宝石</h2><span id="round" class="tag">1 / 5 ラウンド</span></div><p class="small">「進む」で宝石を獲得。失敗すると手持ち分だけ失う。「帰る」で手持ちを確定。5ラウンドの合計を競おう。</p><div class="cave" aria-hidden="true">🕳️</div><div class="stats"><div class="stat"><strong id="bank">0</strong><small>確定得点</small></div><div class="stat"><strong id="held">0</strong><small>手持ち</small></div><div class="stat"><strong id="depth">0</strong><small>深さ</small></div></div><div class="between"><span>次の一歩の失敗率</span><strong id="risk">10%</strong></div><div class="meter" role="progressbar" aria-label="失敗率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="10" id="riskmeter"><div class="fill" id="riskfill" style="width:10%"></div></div><div class="message" role="status" aria-live="polite" id="message">新しい探検が始まりました。進むか、帰るか選んでください。</div><div class="actions"><button id="advance">さらに進む +4</button><button id="return" class="secondary">帰る・確定</button></div><button id="restart" class="secondary" style="width:100%;margin-top:10px">最初からやり直す</button></section>
+<section class="panel lab-card" id="lab"><h2>🧪 ルール改造ラボ</h2><p>数値を変えてもう一度プレイ。<strong>コード編集なしでも</strong>ゲームバランスを比較できる。</p><div class="controls"><div class="control"><label for="reward">一歩の宝石報酬 <output id="rewardOut">4 個</output></label><input id="reward" type="range" min="1" max="15" step="1" value="4"></div><div class="control"><label for="initial">最初の失敗率 <output id="initialOut">10%</output></label><input id="initial" type="range" min="0" max="60" step="5" value="10"></div><div class="control"><label for="increase">一歩ごとの失敗率上昇 <output id="increaseOut">10%</output></label><input id="increase" type="range" min="0" max="30" step="5" value="10"></div></div><p class="small">設定は次のラウンドから反映されます。すぐ試したい場合は「最初からやり直す」を押してください。</p><h3>結果を比較する</h3><div class="compare"><div class="tile"><span class="small">前回の最終得点</span><b id="previous">—</b></div><div class="tile"><span class="small">直近の最終得点</span><b id="latest">—</b></div></div><p class="small">得点は運にも左右されます。1回だけで結論を出さず、同じ設定を数回試しましょう。</p></section>
+
+
+</article></main>
+<script>
+'use strict';
+// 学習者向け：まずはここの数値を編集してみよう
+const DEFAULTS = {reward:4, initial:10, increase:10};
+const $ = id => document.getElementById(id);
+const state = {round:1,bank:0,held:0,depth:0,risk:10,done:false,previous:null,latest:null};
+const settings = () => ({reward:+$('reward').value, initial:+$('initial').value, increase:+$('increase').value});
+function show(msg){$('round').textContent=state.round+' / 5 ラウンド';$('bank').textContent=state.bank;$('held').textContent=state.held;$('depth').textContent=state.depth;$('risk').textContent=state.risk+'%';$('riskfill').style.width=state.risk+'%';$('riskmeter').setAttribute('aria-valuenow',state.risk);$('message').textContent=msg;$('advance').disabled=state.done;$('return').disabled=state.done;$('advance').textContent='さらに進む +'+settings().reward;$('previous').textContent=state.previous===null?'—':state.previous;$('latest').textContent=state.latest===null?'—':state.latest;}
+function endRound(msg){if(state.round>=5){state.done=true;state.previous=state.latest;state.latest=state.bank;show(msg+' 全5ラウンド終了！ 最終得点は'+state.bank+'点。');return;}state.round++;state.held=0;state.depth=0;state.risk=settings().initial;show(msg+' 次のラウンドへ。');}
+function advance(){if(state.done)return; if(Math.random()*100<state.risk){const lost=state.held;endRound('落盤！ 宝石'+lost+'個を失いました。');}else{state.held+=settings().reward;state.depth++;state.risk=Math.min(95,state.risk+settings().increase);show('成功！ 手持ちは'+state.held+'個。ここで帰れば確保できます。');}}
+function bankNow(){if(state.done)return;const gain=state.held;state.bank+=gain;endRound(gain+'個の宝石を無事に持ち帰りました。');}
+function reset(){state.round=1;state.bank=0;state.held=0;state.depth=0;state.risk=settings().initial;state.done=false;show('新しい探検が始まりました。進むか、帰るか選んでください。');}
+
+$('advance').addEventListener('click',advance);$('return').addEventListener('click',bankNow);$('restart').addEventListener('click',reset);
+for(const name of ['reward','initial','increase']){$(name).value=DEFAULTS[name];$(name).addEventListener('input',()=>{$(name+'Out').textContent=$(name).value+(name==='reward'?' 個':'%');show($('message').textContent);});}
+const downloadButton=$('download');if(downloadButton)downloadButton.addEventListener('click',()=>{try{const doc=document.documentElement.cloneNode(true),main=doc.querySelector('main'),article=doc.querySelector('article');main.querySelector('header')?.remove();main.querySelector('.breadcrumb')?.remove();for(const child of [...article.children])if(!['game','lab'].includes(child.id))child.remove();const title=doc.querySelector('title');if(title)title.textContent='DAY 01 Demo｜深層の宝石';const desc=doc.querySelector('meta[name=description]');if(desc)desc.setAttribute('content','深層の宝石。リスクとリターンを実験するオリジナルゲームデモです。');doc.querySelector('link[rel=canonical]')?.remove();const html='<!doctype html>\n'+doc.outerHTML;const blob=new Blob([html],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='GameDesignLab_Day001_2026-10-21.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);$('downloadNote').textContent='デモのみのHTMLをダウンロードしました。ゲームとルール改造はオフラインでも動作します。';}catch(e){$('downloadNote').textContent='ダウンロードできませんでした。Safariの共有メニューをご確認ください。'}});
+reset();
+</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+</body></html>

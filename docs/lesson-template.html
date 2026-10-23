@@ -1,0 +1,150 @@
+---
+day: 0
+date: 2026-01-01
+title: 〇〇が楽しい理由
+theme: テーマ名
+game: 作品名
+level: 初級
+minutes: 10
+summary: 一覧に出る1行説明（40字くらい）
+question: 今日の問い（プレイヤーは〜？ の形）
+goals:
+  - 〇〇の仕組みを説明できる
+  - 自作ゲームの〇〇を改善する案を作れる
+video:
+  id: YOUTUBE_ID
+  title: 〇〇 公式トレーラー
+  caption: 公式トレーラー。〇〇に注目。
+demo:
+  src: /demos/day000.html
+  title: デモの名前
+  height: 1200
+sources:
+  - title: Steam公式ストア「〇〇」
+    url: https://store.steampowered.com/
+    note: 発売日・価格・レビュー数（YYYY-MM-DD確認）
+sources_note: 事実・開発者の見解・批評・独自の分析を分けて記載しています。
+---
+{%- comment -%}
+このファイルを _lessons/dayNNN.html にコピーして使う。
+不要な部品は消してよい。
+{%- endcomment -%}
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：〇〇は〇〇でできている</h2>
+  <p>原則を2〜3文で。専門用語にはやさしい言い換えを添える。</p>
+
+  <ol class="flow mt-m">
+    <li><b>段階1</b><span>ひとこと</span></li>
+    <li><b>段階2</b><span>ひとこと</span></li>
+    <li><b>段階3</b><span>ひとこと</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row">
+      <span class="num-box num-box--fill">A</span>
+      <div><p class="list__title">ポイント</p><p class="list__text">説明</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：作品名</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>YYYY年M月D日（機種）</dd></div>
+    <div><dt>開発</dt><dd>開発者名</dd></div>
+    <div><dt>ジャンル</dt><dd>ジャンル</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">行動から感情までの流れ</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーがすること</th><th>ルールが返すもの</th><th>生まれる感情</th></tr></thead>
+      <tbody>
+        <tr><th>行動</th><td>反応</td><td>感情</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">結論を1〜2文で。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：何が支持され、なぜ選ばれた？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s"><li><span>…（出典・日付）</span></li></ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">不満の声</p>
+      <ul class="bullets bullets--muted mt-s"><li><span>…（出典・日付）</span></li></ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">評価が分かれる理由を1文で。</p>
+  </div>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>数字（発表日・発表元）</dd></div>
+    <div><dt>価格</dt><dd>価格（確認日）</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>要因</strong>　事実か仮説かを明記</span></li>
+  </ul>
+  <p class="note mt-s">要因ごとの寄与は断定できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：デモの名前</h2>
+  <p>遊び方を1〜2文で。</p>
+  <div class="chips mt-s">
+    <span class="chip">変えられるパラメータ1</span>
+    <span class="chip">変えられるパラメータ2</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">遊びながら確かめる問い</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">パラメータを1つ変える</p>
+      <p class="mt-s">何を何から何へ変え、何を予想し、何を記録するか。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">ルールを足す・変える</p>
+      <p class="mt-s">どんなルールを足し、何を確かめるか。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">複数の方針と長所・短所を考えられる問い</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">…</span></div>
+  </div>
+</section>

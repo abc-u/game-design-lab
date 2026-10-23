@@ -1,0 +1,51 @@
+---
+layout: default
+title: 教材一覧
+summary: Game Design Lab の全教材。ゲーム名・テーマ・レベルで探せます。
+---
+{%- assign lessons = site.lessons | sort: "day" | reverse -%}
+<p class="breadcrumb"><a href="{{ '/' | relative_url }}">トップ</a>　›　教材一覧</p>
+
+<section class="section">
+  <div class="page-head section-head">
+    <div>
+      <p class="eyebrow">STAGE LIST</p>
+      <h1>教材一覧</h1>
+    </div>
+    <span class="small muted">全<span id="count">{{ lessons.size }}</span>本</span>
+  </div>
+
+  <div class="filters" id="filters" hidden>
+    <label>ゲーム名・テーマで探す
+      <input type="search" id="q" placeholder="例：Celeste、リトライ" autocomplete="off">
+    </label>
+    <div class="seg" role="group" aria-label="レベル">
+      <button type="button" data-level="" aria-pressed="true">すべて</button>
+      <button type="button" data-level="初級" aria-pressed="false">初級</button>
+      <button type="button" data-level="中級" aria-pressed="false">中級</button>
+      <button type="button" data-level="上級" aria-pressed="false">上級</button>
+    </div>
+    <div class="seg" role="group" aria-label="並び順">
+      <button type="button" data-order="new" aria-pressed="true">新しい順</button>
+      <button type="button" data-order="old" aria-pressed="false">古い順</button>
+    </div>
+  </div>
+
+  <div class="rows" id="list">
+    {%- for l in lessons %}
+    {%- capture d %}{% include day.html n=l.day %}{% endcapture %}
+    <a class="row row--stack" href="{{ l.url | relative_url }}" data-day="{{ l.day }}" data-level="{{ l.level }}" data-search="{{ l.game }} {{ l.title }} {{ l.theme }} {{ l.summary }} {{ l.level }}">
+      <span class="row__day">DAY {{ d }}</span>
+      <span class="row__body">
+        <span class="row__game">{{ l.game }}</span>
+        <span class="row__title">{{ l.title }}</span>
+        <span class="row__meta">{{ l.level }}　・　{{ l.theme }}　・　{{ l.summary }}</span>
+      </span>
+      <span class="row__arrow" aria-hidden="true">▶</span>
+    </a>
+    {%- endfor %}
+    <p class="empty" id="empty" hidden>見つかりませんでした。別のことばで探してみてください。</p>
+  </div>
+</section>
+
+<script src="{{ '/assets/js/archive.js' | relative_url }}" defer></script>

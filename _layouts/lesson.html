@@ -1,0 +1,88 @@
+---
+layout: default
+---
+{%- capture dd %}{% include day.html n=page.day %}{% endcapture -%}
+{%- assign all = site.lessons | sort: "day" -%}
+{%- assign prev = nil -%}{%- assign next = nil -%}
+{%- for l in all -%}
+  {%- if l.day == page.day -%}
+    {%- assign i_prev = forloop.index0 | minus: 1 -%}
+    {%- assign i_next = forloop.index0 | plus: 1 -%}
+    {%- if i_prev >= 0 %}{% assign prev = all[i_prev] %}{% endif -%}
+    {%- assign next = all[i_next] -%}
+  {%- endif -%}
+{%- endfor -%}
+<article class="article">
+  <p class="breadcrumb"><a href="{{ '/' | relative_url }}">トップ</a>　›　<a href="{{ '/lessons/' | relative_url }}">教材一覧</a>　›　DAY {{ dd }}</p>
+
+  <div class="lesson-head">
+    <div class="day-badge" aria-hidden="true"><small>DAY</small><span>{{ dd }}</span></div>
+    <div class="lesson-head__text">
+      <p class="eyebrow">{{ page.game | upcase }}</p>
+      <h1>{{ page.title }}</h1>
+      <p class="meta">約{{ page.minutes | default: 10 }}分　・　{{ page.date | date: "%Y.%m.%d" }}　・　{{ page.level }}　・　{{ page.theme }}</p>
+    </div>
+  </div>
+
+  <div class="panel panel--shadow">
+    <p class="panel__label">今日の問い</p>
+    <p class="question">{{ page.question }}</p>
+    {%- if page.goals %}
+    <div class="goals">
+      <p class="panel__label">この教材でできるようになること</p>
+      <ul class="bullets mt-s">
+        {%- for g in page.goals %}
+        <li><span>{{ g }}</span></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}
+  </div>
+
+  <nav class="step-nav" aria-label="この教材の流れ">
+    <a href="#basics"><span>1</span>基礎</a>
+    <a href="#analysis"><span>2</span>分析</a>
+    <a href="#lab"><span>3</span>遊ぶ</a>
+    <a href="#challenge"><span>4</span>応用</a>
+  </nav>
+
+  {{ content }}
+
+  {%- if page.sources %}
+  <section class="lesson-section" id="sources">
+    <details class="more">
+      <summary>参考資料（{{ page.sources | size }}件）</summary>
+      <div class="more__body">
+        <ol class="sources">
+          {%- for s in page.sources %}
+          <li><a href="{{ s.url }}" rel="noopener">{{ s.title }}</a>{% if s.note %}<br><span class="muted">{{ s.note }}</span>{% endif %}</li>
+          {%- endfor %}
+        </ol>
+        {%- if page.sources_note %}<p class="note mt-s">{{ page.sources_note }}</p>{% endif %}
+      </div>
+    </details>
+  </section>
+  {%- endif %}
+
+  <nav class="pager" aria-label="前後の教材">
+    {%- if prev %}
+    {%- capture pd %}{% include day.html n=prev.day %}{% endcapture %}
+    <a href="{{ prev.url | relative_url }}">
+      <span class="pager__label">← 前の教材　DAY {{ pd }}</span>
+      <span class="pager__title">{{ prev.game }}｜{{ prev.title }}</span>
+    </a>
+    {%- endif %}
+    {%- if next %}
+    {%- capture nd %}{% include day.html n=next.day %}{% endcapture %}
+    <a class="pager__next" href="{{ next.url | relative_url }}">
+      <span class="pager__label">次の教材　DAY {{ nd }} →</span>
+      <span class="pager__title">{{ next.game }}｜{{ next.title }}</span>
+    </a>
+    {%- else %}
+    <a class="pager__next" href="{{ '/lessons/' | relative_url }}">
+      <span class="pager__label">教材一覧へ →</span>
+      <span class="pager__title">ほかのDAYを見る</span>
+    </a>
+    {%- endif %}
+  </nav>
+</article>

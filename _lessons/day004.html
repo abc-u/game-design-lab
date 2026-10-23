@@ -1,0 +1,221 @@
+---
+day: 4
+date: 2026-10-22
+title: 失敗しても「もう一回」が止まらない理由
+theme: 失敗とリトライ設計
+game: Celeste
+level: 中級
+minutes: 10
+summary: 何度も挑戦したくなる条件を、再開待ち時間や難度を変えて考える。
+question: 何度も失敗するのに、なぜ「もう一回」が止まらない？
+goals:
+  - 失敗が「学び」と「快感」になる3条件（原因が分かる・すぐやり直せる・上達を感じる）を説明できる
+  - 難度を下げる以外の方法で、自作ゲームの再挑戦しやすさを改善できる
+video:
+  id: CMzzXSYRgYs
+  title: Celeste 公式ゲームトレーラー
+  caption: 公式ゲームトレーラー。失敗から再挑戦までの速さと、部屋の区切り方に注目。
+demo:
+  src: /demos/day004.html
+  title: リトライ登山
+  height: 1100
+sources:
+  - title: Maddy Thorson “Celeste & Forgiveness”
+    url: https://maddymakesgames.com/articles/celeste_and_forgiveness/index.html
+    note: 開発者一次資料。入力補正の具体例（2026-10-22確認）
+  - title: 任天堂「『Celeste』の秘密。ゲーム設計のこだわりと、『コヨーテタイム』！？」
+    url: https://www.nintendo.com/jp/topics/article/19b31c18-6544-11e8-b9c0-063b7ac45a6d
+    note: 2018-06-08。ゲームジャム起源、テスト反復、ストーリー設計
+  - title: PlayStation Blog “Celeste Launches on PS4 January 25”
+    url: https://blog.playstation.com/2018/01/11/celeste-launches-on-ps4-january-25/
+    note: 2018-01-11。$19.99、発売日、Assist Mode
+  - title: "GameSpot “Celeste Review: More Than Just A Great Platformer”"
+    url: https://www.gamespot.com/reviews/celeste-review-more-than-just-a-great-platformer/1900-6416843/
+    note: 2018-01-25、9/10
+  - title: Push Square “Celeste Review”
+    url: https://www.pushsquare.com/reviews/ps4/celeste
+    note: 2018-01-25、8/10
+  - title: "Game Developer “Dissecting Design: The (In) Accessible Nature of Celeste”"
+    url: https://www.gamedeveloper.com/design/dissecting-design----the-in-accessible-nature-of-celeste
+    note: 2018-02-06。Assist Modeと難度・レベル設計の緊張
+  - title: Steam公式ストア「Celeste」
+    url: https://store.steampowered.com/app/504230/Celeste/
+    note: 英語レビュー総数・好評数・直近30日の比率（2026-10-22取得）
+  - title: Game Developer “Celeste has sold over 500,000 copies since January”
+    url: https://www.gamedeveloper.com/business/celeste-has-sold-over-500-000-copies-since-january
+    note: 2018-12-27。Matt Thorsonの公表に基づく50万本超
+  - title: The Game Awards 2018 公式アーカイブ
+    url: https://thegameawards.com/rewind/year-2018
+    note: 2018-12-06。Best Independent Game／Games for Impact
+  - title: Celeste 公式ゲームトレーラー
+    url: https://www.youtube.com/watch?v=CMzzXSYRgYs
+sources_note: ユーザー標本はSteam公式レビューAPI（英語・最新順の30件、2026-10-22取得）を教材作成者が分類したもので、全体比率を示す資料ではありません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：失敗を「次はできそう」に変える</h2>
+  <p>原因が読める失敗なら、プレイヤーは次の作戦を立てて試せます。結果がすぐ返ると、練習がその場で報われ、「今のミスを直したい」という気持ちが生まれます。</p>
+
+  <ol class="flow mt-m">
+    <li><b>挑戦</b><span>自分で狙いを立てる</span></li>
+    <li><b>失敗の手がかり</b><span>原因が見える</span></li>
+    <li><b>すぐリトライ</b><span>記憶が新しいうちに</span></li>
+    <li><b>上達の実感</b><span>前回と比べられる</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row">
+      <span class="num-box num-box--fill">A</span>
+      <div><p class="list__title">原因が読める</p><p class="list__text">当たり判定・操作の受付・敵の予告が一貫していると、「なぜ失敗したか」を推測できる。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">B</span>
+      <div><p class="list__title">やり直しが短い</p><p class="list__text">長い再開演出や戻り作業を減らし、操作を変えた結果をすぐ確かめられる。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">C</span>
+      <div><p class="list__title">挑戦は残す</p><p class="list__text">失敗をなくすのではなく、学べる情報と再挑戦の余白を残す。成功の重みは保てる。</p></div>
+    </div>
+  </div>
+
+  <div class="panel panel--dark mt-m">
+    <p class="panel__label">考え方のモデル</p>
+    <p class="panel__title">続けたい気持ち ≒ 原因への納得 × 次は直せそうか − 再開の手間</p>
+    <p class="mt-s">実測された公式ではなく、この教材の思考モデルです。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Celeste</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2018年1月25日（PS4・Steamほか）</dd></div>
+    <div><dt>価格</dt><dd>$19.99（PS4版の告知）</dd></div>
+    <div><dt>規模</dt><dd>700以上の短い画面</dd></div>
+  </dl>
+  <p class="mt-m">山を登る2D精密アクション。ジャンプ・壁登り・空中ダッシュと操作は少ないまま、短い画面ごとに障害の組み合わせを変えます。失敗の焦点を「山を最初から」ではなく<strong>「この操作を直す」</strong>に保っています。</p>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">設計と体験のつながり</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>設計</th><th>プレイヤーがすること</th><th>体験へのつながり</th></tr></thead>
+      <tbody>
+        <tr><th>小さな部屋・頻繁なチェックポイント</th><td>一つの課題に集中し、すぐ戻る</td><td>ミスの記憶が薄れないうちに、直す作戦を試せる</td></tr>
+        <tr><th>予測しやすい入力と移動</th><td>着地・壁つかみ・ダッシュのタイミングを調整</td><td>失敗を自分の操作に結びつけられ、成功を上達と感じる</td></tr>
+        <tr><th>コヨーテタイム・入力バッファ・角の補正</th><td>崖から少し出てジャンプ、着地直前に入力</td><td>「押したのに出なかった」不公平感が減り、操作を信頼できる</td></tr>
+        <tr><th>物語と登山の重ね合わせ</th><td>山を登りながら主人公の不安と向き合う</td><td>再挑戦が主人公の歩みと重なり、行動の意味が増す</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">開発者の説明（Celeste &amp; Forgiveness）</p>
+    <p class="panel__title">失敗を救うのではなく、「意図した入力の小さなズレ」を吸収する。</p>
+    <p class="mt-s muted">足場を離れても少しの間ジャンプできる、着地直前の入力を着地時に実行する、ジャンプ頂点で重力を弱める、角に引っかかりにくくする――難度を下げずに、操作を汲み取る「寛容さ」を足している。</p>
+  </div>
+
+  <h3 class="h-sub">ほかの高難度アクションとの違い</h3>
+  <ul class="bullets">
+    <li><span><strong>挑戦</strong>　高難度は保ちつつ、入力補正と細かな区切りで試しやすくした</span></li>
+    <li><span><strong>熟達</strong>　収集物・B面・追加章で、自分に合う挑戦の段階を選べる</span></li>
+    <li><span><strong>遊びやすさ</strong>　Assist Modeで速度・追加ダッシュ・無敵などを調整し、物語を進める道を残した</span></li>
+  </ul>
+  <p class="note mt-s">違いは単独の新発明ではなく、入力補正・部屋の構成・物語・難度調整の組み合わせにあります。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：誰が何を評価し、どこに困った？</h2>
+  <dl class="facts">
+    <div><dt>GameSpot</dt><dd>9/10</dd></div>
+    <div><dt>Push Square</dt><dd>8/10</dd></div>
+    <div><dt>Steam英語レビュー</dt><dd>約97%が好評（62,509件・2026.10.22取得）</dd></div>
+  </dl>
+
+  <div class="grid mt-m">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>975回死亡したが、頻繁なチェックポイントとすぐの再開で苛立ちが抑えられ、ほぼ全ての失敗から学べた（GameSpot）</span></li>
+        <li><span>すぐ再挑戦できることが「もう一回」感を生む（Push Square）</span></li>
+        <li><span>最新レビュー30件では、操作・ジャンプ9件、挑戦と達成感8件、物語7件が言及</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">課題として挙がった点</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>小さな難度の山が一、二か所ある（Push Square）</span></li>
+        <li><span>Assist Modeがあるだけで新規プレイヤーの難しさが解消するとは限らない。選ばれ方まで設計が必要（Game Developer）</span></li>
+      </ul>
+    </div>
+  </div>
+  <p class="note mt-s">レビュー30件は最新の英語投稿の小標本で、無作為抽出ではありません。理由は重複して数えています。</p>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>50万本超（2018年12月時点）</dd></div>
+    <div><dt>受賞</dt><dd>The Game Awards 2018 Best Independent Game ／ Games for Impact</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>約束を一つの告知に</strong>　発売前のPS Blogで、700以上の面・TowerFall制作陣・$19.99・Assist Modeをまとめて説明した</span></li>
+    <li><span><strong>制作者ブランド</strong>　「TowerFallの開発者が帰ってきた」と既存ファンに届く告知</span></li>
+    <li><span><strong>話題の幅</strong>　高難度だけでなく、物語・表現・操作が同時に評価された</span></li>
+  </ul>
+  <div class="panel panel--dark mt-m">
+    <p class="panel__label">企画に持ち帰る教訓</p>
+    <p class="panel__title">挑戦を売りにするなら、難度だけでなく「原因が読めるか」「再開が速いか」「上達を感じるか」「諦めても楽しむ道があるか」を一緒に設計する。</p>
+  </div>
+  <p class="note mt-s">配信や受賞が売上にどれだけ効いたかを示す公開データは確認できないため、断定しません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：リトライ登山</h2>
+  <p>タップでジャンプ、空中でもう一度タップすると二段ジャンプ。全3区間を約1〜3分で登ります。</p>
+  <div class="chips mt-s">
+    <span class="chip">リトライ待ち時間</span>
+    <span class="chip">障害の速さ</span>
+    <span class="chip">障害の高さ</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <ul class="bullets mt-s">
+      <li><span>失敗した位置やタイミングから、原因を説明できた？</span></li>
+      <li><span>待ち時間が長いと、次の試行の前に何を忘れた？</span></li>
+      <li><span>難度はそのままで待ち時間だけ短くすると、失敗は「罰」から「練習」に変わった？</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">待ち時間だけを変える</p>
+      <p class="mt-s">障害の高さ・速さは固定し、待ち時間を0.2秒→1.2秒に。「もう一回押したくなるまでの気持ち」と「失敗理由を覚えていたか」を比べる。逆向きも試そう。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">失敗後の情報を足す</p>
+      <p class="mt-s">自作ゲームに「失敗原因の予告」「直前1秒のリプレイ」「チェックポイント選択」「再開の短縮」のどれか1つだけ足す。初心者3人に前後を遊んでもらい、行動を変えた人数・再挑戦回数を記録する。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">あなたのゲームで失敗した人は、「原因」と「次に変える操作」を言葉にできる？　できないなら、演出・判定・情報のどこを直す？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">短いリトライ以外で再挑戦の心理的な負担を下げるなら、ヒント・チェックポイント・難易度調整・仲間の支援のどれを選ぶ？　挑戦の緊張と参加しやすさへの影響を比べよう。</span></div>
+  </div>
+</section>

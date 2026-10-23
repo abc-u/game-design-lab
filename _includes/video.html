@@ -1,0 +1,7 @@
+{%- comment -%} 公式トレーラーなどのYouTube埋め込み。front matter の video: { id, title, caption } を使う {%- endcomment -%}
+{%- if page.video %}
+<div class="video mt-m">
+  <iframe src="https://www.youtube-nocookie.com/embed/{{ page.video.id }}?rel=0" title="{{ page.video.title | default: '公式トレーラー' }}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p class="note mt-s">{{ page.video.caption }}　<a href="https://www.youtube.com/watch?v={{ page.video.id }}" rel="noopener">YouTubeで見る</a></p>
+{%- endif %}

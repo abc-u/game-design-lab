@@ -1,0 +1,246 @@
+---
+day: 3
+date: 2026-10-23
+title: 「あと1つで強い組み合わせ」が楽しい理由
+theme: パターン認識とシナジー
+game: Balatro
+level: 中級
+minutes: 10
+summary: カードの組み合わせが「あと一手試したい」を生む流れを確かめる。
+question: 「あと1つで強い組み合わせができる」は、なぜ楽しい？
+goals:
+  - 「気づく → 仮説を立てる → 試す」流れを、ルールでどう作るか説明できる
+  - 強い組み合わせが、選択の幅を広げるか・狭めるかを検証できる
+video:
+  id: w62bjWWj4tw
+  title: Balatro 公式ローンチトレーラー
+  caption: Playstack / LocalThunk 公式ローンチトレーラー。カードの動くテンポ、効果の重なり、大得点時の画面と音に注目。
+demo:
+  src: /demos/day003.html
+  title: 組み合わせ工房
+  height: 1500
+sources:
+  - title: Steam公式ストア「Balatro」
+    url: https://store.steampowered.com/app/2379780/Balatro/
+    note: 発売日、レビュー件数と比率、公式のゲーム説明・タグ（2026-10-21確認）
+  - title: Steam Community｜Most Helpful 英語レビュー
+    url: https://steamcommunity.com/app/2379780/reviews/?browsefilter=toprated&l=english
+    note: 肯定サンプルのレビュー本文（代表例で無作為ではない）
+  - title: Steam Community｜Most Helpful 英語否定レビュー
+    url: https://steamcommunity.com/app/2379780/negativereviews/?browsefilter=toprated&l=english
+    note: 高難度での運依存・構築の幅への批判例
+  - title: Playstack公式｜500万本販売発表
+    url: https://www.playstack.com/news/balatro-5-million-copies-sold/
+    note: 2025-01-21。The Game Awards以降の関心増についてのパブリッシャー見解
+  - title: The Verge｜販売推移とThe Game Awards後の動き
+    url: https://www.theverge.com/2025/1/21/24348727/balatro-5-million-copies-the-game-awards
+    note: 2025-01-21
+  - title: Polygon｜Balatro review
+    url: https://www.polygon.com/reviews/24084564/balatro-review-poker-game-deck-building-roguelite
+    note: 2024-02-19。得点計算の見えやすさと学習曲線
+  - title: PlayStation公式ストア｜Balatro（米国）
+    url: https://www.playstation.com/en-us/games/balatro/
+    note: 販売価格・発売日表示（地域・時期により変動）
+  - title: Polygon｜Balatroのモバイル版
+    url: https://www.polygon.com/news/448334/balatro-mobile-release-date-apple-arcade
+    note: 2024-09-05。$9.99の買い切り版とApple Arcadeでの提供
+  - title: The Guardian｜BalatroとPEGIレーティング
+    url: https://www.theguardian.com/games/2025/mar/04/video-game-age-ratings-problems-balatro-pegi
+    note: 2025-03-04。レーティング変更と一部ストアでの一時停止
+  - title: Game Informer｜LocalThunkインタビュー
+    url: https://gameinformer.com/interview/2024/03/21/balatro-was-almost-called-joker-poker-and-other-details-from-its-creator
+    note: 2024-03-21。Big Twoが発想の出発点、ポーカーは馴染みやすいテーマとして選んだ
+  - title: Game Developer｜なぜポーカーがプレイヤーの入口になったか
+    url: https://www.gamedeveloper.com/business/localthunk-knew-balatro-needed-to-draw-players-in-with-poker
+    note: 2024-05-02
+  - title: Rogueliker｜Balatro開発者インタビュー
+    url: https://rogueliker.com/balatro-interview/
+    note: 2024-03-07。ジョーカー導入、相互作用、バランス、ランダム性
+  - title: LocalThunk開発者AMA
+    url: https://www.reddit.com/r/Games/comments/1bdtmlg/ama_i_am_localthunk_developer_and_artist_for/
+    note: 2024-03-12。『Luck be a Landlord』からの影響、Gold Stakeへの評価
+  - title: LocalThunk公式｜The Balatro Timeline
+    url: https://localthunk.com/blog/balatro-timeline-3aarh
+    note: デモ・プレイテスト・開発判断・発売までの一次記録
+  - title: Luck be a Landlord 公式Steamストア
+    url: https://store.steampowered.com/app/1404850/Luck_be_a_Landlord/?l=english
+  - title: Slay the Spire 公式Steamストア
+    url: https://store.steampowered.com/app/646570/Slay_the_Spire/
+  - title: Playstack / LocalThunk｜公式ローンチトレーラー
+    url: https://www.youtube.com/watch?v=w62bjWWj4tw
+sources_note: 確認日は2026年10月21日。価格やレビュー件数は変動します。開発経緯は開発者の発言・記録、因果の説明と作品比較は本教材の分析です。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：パターン認識は「気づき」を「選択」に変える</h2>
+  <p>共通点に気づくと「この組み合わせは得かも」という予測が生まれます。試して結果が返ると、次に見るべき手がかりを学びます。</p>
+
+  <ol class="flow mt-m">
+    <li><b>手がかりを見る</b><span>● ▲ ●</span></li>
+    <li><b>規則に気づく</b><span>● ● ●</span></li>
+    <li><b>狙って試す</b><span>★ ★ ★</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row">
+      <span class="num-box num-box--fill">A</span>
+      <div><p class="list__title">分かりやすい土台</p><p class="list__text">同じ種類、連番など、見慣れた形を置くとルール理解の入口が短くなる。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">B</span>
+      <div><p class="list__title">組み替える余地</p><p class="list__text">同じ手が複数の得点条件に当てはまると、何を狙うかに迷いが生まれる。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">C</span>
+      <div><p class="list__title">結果が見える</p><p class="list__text">得点の内訳が見えると「なぜ成功したか」が分かり、次の仮説にできる。</p></div>
+    </div>
+  </div>
+  <p class="note mt-s">組み合わせの数だけ増やしても、効果が読めないと「判断」ではなく「当てずっぽうの負担」になります。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Balatro</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2024年2月（PC・Switch・PS・Xbox）／2024年9月 iOS・Android</dd></div>
+    <div><dt>開発・発売</dt><dd>LocalThunk ／ Playstack</dd></div>
+    <div><dt>ジャンル</dt><dd>スコアアタック型ローグライク</dd></div>
+  </dl>
+  <p class="mt-m">ポーカーの対戦を再現した作品ではありません。誰もが知っているポーカーの役を「パターンを見つける道具」として借り、役の価値や作り方をランごとに変えていくゲームです。</p>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">発想の出発点（開発者の説明）</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">発想</span><span class="list__body">友人と遊ぶために作ろうとした、広東系カードゲーム「Big Two」のオンライン版</span></div>
+    <div class="list__row"><span class="list__key">構造</span><span class="list__body">『Luck be a Landlord』から、敵と戦う代わりに「必要スコアを超える」形を取り入れた</span></div>
+    <div class="list__row"><span class="list__key">入口</span><span class="list__body">ポーカーはルールの元ではなく、図像・用語・役が広く知られた「入りやすいテーマ」として選んだ</span></div>
+  </div>
+
+  <h3 class="h-sub">行動から感情までの流れ</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーがすること</th><th>ルールが返すもの</th><th>生まれる感情</th></tr></thead>
+      <tbody>
+        <tr><th>手札から役を見つける</th><td>役名・強さ・点が表示される</td><td>「分かった、できそう」という入口の安心</td></tr>
+        <tr><th>出すか、捨てて引き直すか</th><td>残り手数と手札の変化が見える</td><td>迷い・期待・外した惜しさ。当たれば「読みが当たった」</td></tr>
+        <tr><th>目標スコアを超える</th><td>効果が順に発火し、得点が跳ねる</td><td>予想外の爆発、もう一段試したい欲求</td></tr>
+        <tr><th>ショップで効果を買う</th><td>以後の役の価値が変わる</td><td>発見・計画・投資への期待</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h-sub">快感の核（独自分析）</h3>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">1</p><p class="panel__title">発見が「自分の手柄」になる</p><p class="mt-s muted">相性を仮説にして試し、スコアが伸びる。答えを与えられるのではなく、自分で見つけたと感じる。</p></div>
+    <div class="panel"><p class="panel__label">2</p><p class="panel__title">報酬の時間幅が重なる</p><p class="mt-s muted">一手の得点、ブラインド突破、ランの達成、アンロック。短い反復に長い期待が乗る。</p></div>
+    <div class="panel"><p class="panel__label">3</p><p class="panel__title">安全策と賭けの両方に意味がある</p><p class="mt-s muted">確実に出すか、手数を使って高い役を狙うか。同じ資源を奪い合うので抽選ではなく選択になる。</p></div>
+    <div class="panel"><p class="panel__label">4</p><p class="panel__title">演出が「計算の読み上げ」になる</p><p class="mt-s muted">カードの動き・音・数値の増え方が、どの効果が得点を押し上げたかを順番に見せる。</p></div>
+  </div>
+
+  <div class="panel panel--dark mt-m">
+    <p class="panel__label">開発者の観察</p>
+    <p class="panel__title">強すぎる効果は隣の戦略を食いつぶし、弱すぎる効果は取る理由がなくなる。</p>
+    <p class="mt-s">強いシナジーは発見のごほうびだが、最適解が固定されると、ほかを試す意味が消える。LocalThunkは公開後も調整を続けたと語っている。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：「判断が効いた感覚」が分かれ目</h2>
+  <dl class="facts">
+    <div><dt>英語レビュー</dt><dd>98%が好評（105,211件）</dd></div>
+    <div><dt>直近30日</dt><dd>97%が好評（1,379件）</dd></div>
+  </dl>
+  <p class="note mt-s">Steamストア表示、2026年10月21日確認。</p>
+
+  <div class="grid mt-m">
+    <div class="panel">
+      <p class="pixel">肯定レビュー10件の主な理由</p>
+      <ul class="bullets mt-s">
+        <li><span>熱中・「あと1回」：5件</span></li>
+        <li><span>ミーム・レーティングの話題：2件</span></li>
+        <li><span>構築の深さ／意外な組み合わせ／初心者にも入口：各1件</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">否定レビュー10件の主な理由</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>運が腕を上回る感覚：5件</span></li>
+        <li><span>高難度で戦略が狭まる・同じ構成に寄る：3件</span></li>
+        <li><span>反復・単調さ：2件</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">争点は「運があること」そのものより、「自分の判断が結果に効いた感覚」があるかどうか。</p>
+  </div>
+  <p class="note mt-s">「最も役立った」英語レビューから肯定・否定を各10件選んで教材側が分類した代表例です。全体の割合ではありません。</p>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>500万本超（2025年1月21日 Playstack発表）</dd></div>
+    <div><dt>価格</dt><dd>米国PS $14.99／モバイル買い切り $9.99 または Apple Arcade</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>入口</strong>　ポーカーの役を使うので、知っている人はすぐ分かり、知らない人も役一覧で学べる</span></li>
+    <li><span><strong>違いの明確さ</strong>　「ポーカーの役をジョーカー効果で変形する」一点で、既存のデッキ構築作と区別しやすい</span></li>
+    <li><span><strong>口コミ</strong>　The Game Awards後に関心が急増したとPlaystackは説明</span></li>
+    <li><span><strong>発売時の摩擦</strong>　PEGIの年齢区分の変更で一部ストアが一時販売停止。のちに見直された（The Guardian）</span></li>
+  </ul>
+  <p class="note mt-s">面白さ・レビュー・賞・配信・多機種展開は互いに影響し合った可能性があり、それぞれの寄与率は確認できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：組み合わせ工房</h2>
+  <p>記号トークンを5枚引き、3枚を選んで得点。ペア・スリーカード・連番・別種の組み合わせでボーナスが変わります。全4ラウンドで目標を超えたらクリア。</p>
+  <div class="chips mt-s">
+    <span class="chip">3枚同じ形のボーナス</span>
+    <span class="chip">ペアのボーナス</span>
+    <span class="chip">クリア目標</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">数字の大きさを変えるだけで、狙う組み合わせは変わる？</p>
+    <p class="muted mt-s">改変前（ベースライン）と改変後の結果がブラウザ内に記録されます。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">報酬の差を検証する</p>
+      <p class="mt-s">3枚同じ形のボーナスを24点→42点に。どの形を狙うか予想し、選んだ組み合わせ・得点・迷い方を記録。予想と一致した？</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">新しい相乗効果を足す</p>
+      <p class="mt-s">デモHTMLの <code>scoreHand(cards, rules)</code> に「同じ役を2回続けると次が強くなる」連鎖ボーナスを足す。毎回同じ手に固定されないか確かめる。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <ul class="bullets">
+    <li><span><strong>入口</strong>　初心者がルールをつかむ「見慣れた形」はある？</span></li>
+    <li><span><strong>予測</strong>　選ぶ前に「これを取ったら何が変わるか」を想像できる？</span></li>
+    <li><span><strong>理由</strong>　成功のあと、どの行動が効いたかを本人が説明できる？</span></li>
+    <li><span><strong>幅</strong>　強い組み合わせを見つけたあとも、別の作戦を試す意味は残る？</span></li>
+  </ul>
+  <div class="list mt-m">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">アクションゲームで「同じ敵を連続で倒す」以外に、何と何を組み合わせると「自分で発見した」と感じる？　案を2つ出し、長所・短所を比べよう。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">得点や報酬を増やさずに、音・アニメーション・画面の「間」で組み合わせの発見をどう伝える？</span></div>
+  </div>
+</section>

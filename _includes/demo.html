@@ -1,0 +1,33 @@
+{%- comment -%} 遊べるデモ。front matter の demo: { src, title, height } を使う。デモ本体は demos/ に置く単体HTML {%- endcomment -%}
+{%- assign demo_url = page.demo.src | relative_url -%}
+<div class="demo mt-m">
+  <div class="demo__bar">
+    <span>▶ {{ page.demo.title }}</span>
+    <a href="{{ demo_url }}" target="_blank" rel="noopener">全画面で開く</a>
+  </div>
+  <iframe class="js-demo" src="{{ demo_url }}" title="{{ page.demo.title }}（遊べるデモ）" height="{{ page.demo.height | default: 900 }}" loading="lazy"></iframe>
+</div>
+<script>
+  // 同じサイト内のデモなので、中身の高さに合わせて iframe を伸ばす（スクロールの二重化を防ぐ）
+  // body が min-height:100vh のデモもあるので、子要素の下端で中身の高さを測る
+  document.querySelectorAll('.js-demo').forEach(function (f) {
+    function fit() {
+      try {
+        var d = f.contentDocument, bottom = 0;
+        Array.prototype.forEach.call(d.body.children, function (el) {
+          if (el.tagName !== 'SCRIPT') bottom = Math.max(bottom, el.getBoundingClientRect().bottom);
+        });
+        var cs = d.defaultView.getComputedStyle(d.body);
+        f.style.height = Math.ceil(bottom + parseFloat(cs.paddingBottom) + parseFloat(cs.marginBottom) + 16) + 'px';
+      } catch (e) {}
+    }
+    f.addEventListener('load', function () {
+      fit();
+      try {
+        var ro = new ResizeObserver(fit);
+        Array.prototype.forEach.call(f.contentDocument.body.children, function (el) { ro.observe(el); });
+      } catch (e) {}
+    });
+  });
+</script>
+<p class="note mt-s">デモはこの教材用のオリジナルです。実在作品の素材・コードは使っていません。　<a href="{{ demo_url }}" download>デモHTMLをダウンロード</a>（1ファイル・オフラインで動きます）</p>

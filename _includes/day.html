@@ -1,0 +1,2 @@
+{%- comment -%} 1 → "01"。使い方: {% include day.html n=page.day %} {%- endcomment -%}
+{%- assign d = include.n | plus: 0 -%}{%- if d < 10 -%}0{%- endif -%}{{ d }}

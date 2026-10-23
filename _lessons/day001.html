@@ -1,0 +1,154 @@
+---
+day: 1
+date: 2026-10-21
+title: 危険でも、もう一歩進みたくなる理由
+theme: リスクとリターン
+game: Lethal Company
+level: 初級
+minutes: 10
+summary: 進むか、帰るか。宝石集めのデモで撤退判断を体験する。
+question: 危険だと分かっていても、プレイヤーが「もう一歩」進みたくなるのはなぜ？
+goals:
+  - 報酬・危険・撤退の3つが、迷い（葛藤）を生む仕組みを説明できる
+  - 自作ゲームで「進むか、引くか」の判断が生まれるように数値を調整できる
+demo:
+  src: /demos/day001.html
+  title: 深層の宝石
+  height: 1500
+sources:
+  - title: Steam公式ストア「Lethal Company」
+    url: https://store.steampowered.com/app/1966720/Lethal_Company/?l=japanese
+    note: 発売日・早期アクセス・価格・対応人数・言語・レビュー数（2026-10-21確認。レビュー数・価格は変動）
+  - title: GameDiscoverCo “What can we learn from Lethal Company's huge success?”
+    url: https://newsletter.gamediscover.co/p/what-can-we-learn-from-lethal-companys
+    note: 2023-11-15。初期の販売・売上推計と配信／口コミの観察。推計であり公式発表ではない
+  - title: GameCritics.com “Lethal Company Review”
+    url: https://gamecritics.com/gc-staff/lethal-company-review/
+    note: 2024-03-11。批評家の長所・短所
+sources_note: 発売日・価格・レビュー数＝ストア掲載の事実。約64.2万本・約570万ドル＝GameDiscoverCoの当時の推計。配信・口コミに向く理由＝教材制作者の分析仮説。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：両方に価値があると、迷いが生まれる</h2>
+  <p>「進む」には報酬、「帰る」には安全があります。どちらにも価値があると、プレイヤーは迷います。さらに手持ちが増えるほど「失いたくない」気持ちも強くなります。</p>
+
+  <ol class="flow mt-m">
+    <li><b>報酬を積む</b><span>進むほど増える</span></li>
+    <li><b>危険が上がる</b><span>失敗しやすくなる</span></li>
+    <li><b>失うものが増える</b><span>手持ちが大きくなる</span></li>
+    <li><b>判断する</b><span>進む？ 帰る？</span></li>
+  </ol>
+
+  <div class="panel panel--dark mt-m">
+    <p class="panel__label">ポイント</p>
+    <p class="panel__title">大事なのは失敗率の高さではない。危険を理解したうえで「それでも進む価値がある」と判断できること。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Lethal Company</h2>
+
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2023年10月23日（Steam早期アクセス）</dd></div>
+    <div><dt>開発・販売</dt><dd>Zeekerss</dd></div>
+    <div><dt>人数</dt><dd>最大4人の協力プレイ</dd></div>
+  </dl>
+  <p class="mt-m">廃墟でスクラップを集め、会社のノルマを満たして帰還する協力ホラー。</p>
+
+  <h3 class="h-sub">「あと一つ拾うか、帰るか」が生まれる流れ</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">集める</span><span class="list__body">持ち帰り品が増えるほど、欲張る価値と、全滅して失う危険が同時に大きくなる</span></div>
+    <div class="list__row"><span class="list__key">夜</span><span class="list__body">時間とともに脅威が増え、「あと一つ拾うか、帰るか」がチームの判断になる</span></div>
+    <div class="list__row"><span class="list__key">事故</span><span class="list__body">仲間との音声が途切れる、目の前で事故が起きる。失敗そのものが笑い話・悲鳴・救出劇になる</span></div>
+  </div>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">分析仮説</p>
+    <p class="panel__title">仕組み → 緊張と判断 → 仲間と共有できる予測不能な場面。</p>
+    <p class="mt-s muted">この連鎖が、ただの戦利品集めを、配信や口コミで伝わりやすい体験にしている。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：何が支持され、なぜ選ばれた？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>Steam全言語レビュー約51万件、好評約49.5万件で「圧倒的に好評」</span></li>
+        <li><span>予測しにくい協力プレイから生まれる体験と恐怖（GameCritics.com、2024年3月）</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判された点</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>敵の種類や脅威の幅が限られる（同レビュー）</span></li>
+      </ul>
+    </div>
+  </div>
+  <p class="note mt-s">好評の件数は「何が面白いか」の証明ではありません。レビュー本文で、協力中の出来事・恐怖・笑いが繰り返し語られているかを確かめます。</p>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>価格</dt><dd>1,200円（日本ストア・2026年10月21日確認）</dd></div>
+    <div><dt>販売数</dt><dd>公式発表は確認できず</dd></div>
+    <div><dt>第三者推計</dt><dd>約64.2万本・約570万ドル（GameDiscoverCo、2023年11月時点）</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span>低価格の買い切りと、友人を誘いやすい少人数協力で「試しに買う」壁が低い</span></li>
+    <li><span>悲鳴・事故・連携ミスが配信で一目で伝わる。GameDiscoverCoは、従来型メディアより配信者と口コミ中心の広がりを指摘</span></li>
+  </ul>
+  <div class="panel panel--dark mt-m">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">面白さは口コミの材料。価格や遊ぶ環境は、その口コミが届く範囲を左右する。</p>
+  </div>
+  <p class="note mt-s">個々の要因が売上にどれだけ効いたかは測定されていません（分析仮説）。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：深層の宝石</h2>
+  <p>「進む」で宝石を獲得。失敗すると手持ちを失う。「帰る」で手持ちを確定。5ラウンドの合計を競います。</p>
+  <div class="chips mt-s">
+    <span class="chip">一歩の宝石報酬</span>
+    <span class="chip">最初の失敗率</span>
+    <span class="chip">一歩ごとの失敗率上昇</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">どの瞬間に「帰ろう」と決めた？<br>そのとき手持ちはいくつだった？</p>
+    <p class="muted mt-s">得点は運にも左右されます。1回で結論を出さず、同じ設定を数回試してから比べよう。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">危険が増えないとどうなる？</p>
+      <p class="mt-s">「一歩ごとの失敗率上昇」を0%にする。いつ帰るべきか、迷いは増える？ 減る？ 予想してから遊ぼう。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">大きな報酬は、危険を魅力的にする？</p>
+      <p class="mt-s">報酬を12個、失敗率上昇を25%にする。ダウンロードしたHTMLなら、末尾の <code>DEFAULTS</code>（reward・initial・increase）で初期値も変えられる。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">「帰る」一択にも「進む」一択にもならないようにするには、報酬・危険・失うものの何を調整する？　調整案を2つ出し、それぞれの長所・短所を比べよう。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">あなたのゲームの失敗は、ただの停止になっていない？　仲間や見ている人と語れる「出来事」に変えるなら、何を足す？　短い動画や一言で説明できるかも試そう。</span></div>
+  </div>
+</section>
