@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ぬって、集めて、もう一戦 — Game Design Lab DAY 08</title>
+<style>
+:root{color-scheme:light;--ink:#26252b;--muted:#696873;--paper:#f4f3ee;--line:#cfccd5;--purple:#6247d8;--orange:#eea541;--cell:#ebe9e3}
+*{box-sizing:border-box}body{margin:0;padding:14px;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+.app{max-width:760px;margin:auto}header{padding:12px 4px 10px}.kicker{color:#6553aa;font-size:.78rem;font-weight:800;letter-spacing:.08em}
+h1{font-size:clamp(1.25rem,5vw,1.8rem);line-height:1.25;margin:.2rem 0 .45rem}p{margin:.35rem 0;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.stat{padding:9px 10px;border:2px solid var(--line);border-radius:10px;background:#fff}.stat b{display:block;font-size:.75rem;color:var(--muted)}.stat span{font-size:1.08rem;font-weight:800}
+.board-wrap{padding:10px;border:2px solid var(--ink);border-radius:12px;background:var(--paper)}.board-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px;font-weight:750}
+.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;touch-action:manipulation}
+.cell{aspect-ratio:1/1;min-width:0;border:1.5px solid #bbb8c3;border-radius:6px;background:var(--cell);padding:0;position:relative;cursor:pointer}
+.cell.player{background:var(--purple);border-color:#47319e}.cell.enemy{background:var(--orange);border-color:#bd7920}
+.cell.token::after{content:"✦";position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(13px,4vw,21px);font-weight:900;color:#fff;text-shadow:0 1px 3px #222}
+.cell.token.neutral::after{color:#c28310;text-shadow:none}.cell:focus-visible{outline:3px solid #1f1e25;outline-offset:1px;z-index:2}
+.board-hint{font-size:.82rem;margin-top:8px}.bars{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pill{padding:5px 9px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:.84rem}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.control{padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+.control label{display:flex;justify-content:space-between;gap:8px;font-weight:750;font-size:.9rem}
+input[type=range]{width:100%;margin:10px 0 0;accent-color:var(--purple);min-height:28px}.toggles{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.toggle{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border:1.5px solid var(--line);border-radius:10px}.toggle input{width:22px;height:22px;accent-color:var(--purple);flex:none}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}button.action{min-height:46px;padding:10px 15px;border:2px solid var(--ink);border-radius:9px;background:var(--ink);color:#fff;font:inherit;font-weight:800;cursor:pointer;touch-action:manipulation}
+button.action.secondary{background:#fff;color:var(--ink)}button.action:disabled{opacity:.45;cursor:not-allowed}
+.result{padding:14px;border:2px solid var(--purple);border-radius:12px;background:#f4f1ff;margin:12px 0}.result h2{font-size:1.12rem;margin:0 0 5px}.result strong{color:#4932ae}
+.small{font-size:.82rem}[hidden]{display:none!important}
+@media(max-width:480px){body{padding:10px}.controls{grid-template-columns:1fr}.stats{gap:6px}.stat{padding:8px}.board{gap:3px}.board-wrap{padding:8px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="kicker">DAY 08 · PLAYABLE EXPERIMENT</div><h1>ぬって、集めて、もう一戦</h1>
+<p>8ターンの間、マスを塗って陣地を広げよう。星のマスを塗ると収集も進む。勝敗とは別の進捗が、次のプレイにつながるか試します。</p></header>
+<section class="stats" aria-label="現在の状況">
+  <div class="stat"><b>ターン</b><span id="turn">準備中</span></div><div class="stat"><b>自分の陣地</b><span id="playerCount">0</span></div><div class="stat"><b>収集した星</b><span id="stars">0</span></div>
+</section>
+<section class="board-wrap" aria-label="対戦フィールド">
+  <div class="board-top"><span>空いたマスを塗る</span><span>あと <b id="actionsLeft">2</b> 回</span></div>
+  <div class="board" id="board" role="grid" aria-label="7列、5行の塗りフィールド"></div>
+  <p class="board-hint" id="hint" aria-live="polite">試合を始めよう。</p>
+  <div class="bars"><span class="pill">相手の陣地 <b id="enemyCount">0</b></span><span class="pill">同点は引き分け</span></div>
+</section>
+<details style="margin-top:12px"><summary style="font-weight:800;cursor:pointer;padding:10px 2px">実験設定を開く</summary>
+  <div class="controls">
+    <div class="control"><label for="pressure">相手の塗る速さ <output id="pressureOut">1</output>マス</label><input id="pressure" type="range" min="1" max="3" step="1" value="1"></div>
+    <div class="control"><label for="turns">試合の長さ <output id="turnsOut">8</output>ターン</label><input id="turns" type="range" min="6" max="10" step="2" value="8"></div>
+  </div>
+  <div class="toggles">
+    <label class="toggle"><input id="lossProgress" type="checkbox" checked><span><b>負けても星の収集進捗を残す</b><br><span class="small">勝敗と別の目標が次の一戦につながるか比べる</span></span></label>
+    <label class="toggle"><input id="showStars" type="checkbox" checked><span><b>星の場所を最初から見せる</b><br><span class="small">目標の見えやすさだけを変える</span></span></label>
+  </div>
+</details>
+<div class="actions"><button class="action" id="start">試合を始める</button><button class="action secondary" id="retry" hidden>同じ条件でもう一戦</button><button class="action secondary" id="next" hidden>次のフィールドへ</button></div>
+<section class="result" id="result" hidden aria-live="polite"><h2 id="resultTitle">結果</h2><p id="resultText"></p><p id="resultPrompt"></p></section>
+<p class="small">このデモは作品の素材・コードを使わず、塗る行動と別目標の関係だけを試すオリジナルゲームです。</p>
+</main>
+<script>
+(function(){
+"use strict";
+const W=7,H=5,TILE=W*H,defaults={pressure:1,turns:8,lossProgress:true,showStars:true};
+const $=id=>document.getElementById(id);
+let settings={...defaults},cells=Array(TILE).fill("n"),starLocations=new Set(),starsThisRun=0,savedStars=0;
+let turn=1,shotsLeft=2,playing=false,mission=0,seed=418;
+function rng(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}
+function paint(i){
+ if(!playing||shotsLeft<=0||cells[i]==="p")return;
+ if(starLocations.has(i)){starsThisRun++;starLocations.delete(i)}
+ cells[i]="p";shotsLeft--;
+ if(shotsLeft===0){enemyTurn();turn++;shotsLeft=2}
+ if(turn>settings.turns)finish();
+ render();
+}
+function enemyTurn(){
+ for(let n=0;n<settings.pressure;n++){
+  const candidates=cells.map((v,i)=>(v==="p"||v==="n")&&!starLocations.has(i)?i:-1).filter(i=>i>=0);
+  if(!candidates.length)break;
+  /* 改造ポイント：候補の選び方を中央寄りに変えると、相手の圧力の性質が変わります。 */
+  const target=candidates[Math.floor(rng()*candidates.length)];cells[target]="e";
+ }
+}
+function startGame(next){
+ if(next)mission++;
+ settings={pressure:+$("pressure").value,turns:+$("turns").value,lossProgress:$("lossProgress").checked,showStars:$("showStars").checked};
+ $("pressureOut").value=String(settings.pressure);$("turnsOut").value=String(settings.turns);
+ seed=418+mission*7919;cells=Array(TILE).fill("n");starLocations=new Set();
+ turn=1;shotsLeft=2;playing=true;starsThisRun=0;cells[Math.floor(H/2)*W+Math.floor(W/2)]="p";
+ let placed=0;while(placed<5){const i=Math.floor(rng()*TILE);if(i===Math.floor(H/2)*W+Math.floor(W/2)||starLocations.has(i))continue;starLocations.add(i);placed++}
+ $("result").hidden=true;$("retry").hidden=true;$("next").hidden=true;$("start").hidden=true;
+ $("hint").textContent="空いたマスを選んで塗ろう。各ターン2回行動できる。";render();
+}
+function finish(){
+ playing=false;
+ const p=cells.filter(v=>v==="p").length,e=cells.filter(v=>v==="e").length,won=p>e,tie=p===e;
+ const retained=won||settings.lossProgress?starsThisRun:0;savedStars+=retained;
+ $("resultTitle").textContent=won?"フィールドを広く塗れた！":tie?"陣地は同じ！":"相手に押し返された";
+ $("resultText").textContent="自分 "+p+"マス / 相手 "+e+"マス。今回の星 "+starsThisRun+"個、収集記録に "+retained+"個。";
+ $("resultPrompt").textContent=won?"次は相手の速さを上げて、収集と陣地のどちらを優先するか試そう。":retained>0?"負けても収集は進んだ。次のフィールドで続けるか、ここで終えるか選べる。":"勝てず、収集も進まなかった。目標や報酬条件を変えるとどう感じる？";
+ $("result").hidden=false;$("retry").hidden=false;$("next").hidden=false;$("start").hidden=true;
+ $("hint").textContent="試合終了。設定や優先する目標を変えて比べよう。";render();
+}
+function render(){
+ const b=$("board");b.innerHTML="";
+ cells.forEach((v,i)=>{
+  const el=document.createElement("button");el.type="button";el.className="cell";
+  if(v==="p")el.classList.add("player");if(v==="e")el.classList.add("enemy");
+  const visibleStar=starLocations.has(i)&&settings.showStars;
+  if(visibleStar)el.classList.add("token");
+  el.setAttribute("role","gridcell");
+  el.setAttribute("aria-label",(Math.floor(i/W)+1)+"行"+(i%W+1)+"列、"+(v==="p"?"自分の色":v==="e"?"相手の色":"未塗装")+(visibleStar?"、星":""));
+  el.disabled=!playing||shotsLeft===0||v==="p";
+  el.addEventListener("click",()=>paint(i));b.appendChild(el);
+ });
+ $("turn").textContent=playing?turn+" / "+settings.turns:(turn>1?turn-1+" / "+settings.turns:"準備中");
+ $("actionsLeft").textContent=String(shotsLeft);$("playerCount").textContent=String(cells.filter(v=>v==="p").length);
+ $("enemyCount").textContent=String(cells.filter(v=>v==="e").length);$("stars").textContent=savedStars+"（今回 "+starsThisRun+"）";
+}
+$("start").addEventListener("click",()=>startGame(false));
+$("retry").addEventListener("click",()=>startGame(false));
+$("next").addEventListener("click",()=>startGame(true));
+$("pressure").addEventListener("input",e=>{$("pressureOut").value=e.target.value});
+$("turns").addEventListener("input",e=>{$("turnsOut").value=e.target.value});
+$("showStars").addEventListener("change",e=>{settings.showStars=e.target.checked;render()});
+render();
+})();
+</script>
+</body>
+</html>
+

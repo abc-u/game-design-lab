@@ -1,5 +1,9 @@
 {%- comment -%} 遊べるデモ。front matter の demo: { src, title, height } を使う。デモ本体は demos/ に置く単体HTML {%- endcomment -%}
 {%- assign demo_url = page.demo.src | relative_url -%}
+{%- assign padded_day = page.day | prepend: "000" -%}
+{%- assign day_number = padded_day | slice: -3, 3 -%}
+{%- assign day_date = page.date | date: "%Y-%m-%d" -%}
+{%- assign demo_filename = "GameDesignLab_Day" | append: day_number | append: "_" | append: day_date | append: ".html" -%}
 <div class="demo mt-m">
   <div class="demo__bar">
     <span>▶ {{ page.demo.title }}</span>
@@ -30,4 +34,4 @@
     });
   });
 </script>
-<p class="note mt-s">デモはこの教材用のオリジナルです。実在作品の素材・コードは使っていません。　<a href="{{ demo_url }}" download>デモHTMLをダウンロード</a>（1ファイル・オフラインで動きます）</p>
+<p class="note mt-s">デモはこの教材用のオリジナルです。実在作品の素材・コードは使っていません。　<a href="{{ demo_url }}" download="{{ demo_filename }}">デモHTMLをダウンロード</a>（1ファイル・オフラインで動きます）</p>

@@ -1,0 +1,202 @@
+---
+day: 8
+date: 2026-10-23
+title: 勝ち負け以外にも「もう一度遊ぶ理由」をつくる
+theme: 複数の目標と継続
+game: Splatoon 3
+level: 中級
+minutes: 10
+summary: 対戦の結果だけでなく、収集や自己表現が次のプレイにつながる設計を分析する。
+question: 勝てなかった試合のあとも、プレイヤーがもう一度遊びたくなる理由をどう作る？
+goals:
+  - 勝敗の目標と、収集・自己表現など別の目標がどう両立するか説明できる
+  - 自作ゲームに、敗北しても意味のある進捗を加える案を作れる
+video:
+  id: Rkz-PjCQjWk
+  title: Splatoon 3 Turf War 公式ゲームプレイ映像
+  caption: 任天堂公式映像（2022年4月22日公開）。インクが地面に残ることと、移動や陣取りに使われることに注目。
+demo:
+  src: /demos/day008.html
+  title: ぬって、集めて、もう一戦
+  height: 1150
+sources:
+  - title: 任天堂「スプラトゥーン3 商品情報」
+    url: https://www.nintendo.co.jp/switch/av5ja/products/soft.html
+    note: 発売日・希望小売価格（日本、2026-10-23確認）
+  - title: 任天堂「『スプラトゥーン3』国内販売本数が発売後3日間で345万本を突破」
+    url: https://www.nintendo.co.jp/corporate/release/2022/220912.html
+    note: 2022-09-12。国内発売後3日間の販売本数
+  - title: 任天堂「新しいお客様をお迎えしている『スプラトゥーン3』」
+    url: https://www.nintendo.co.jp/ir/pdf/2022/221109.pdf
+    note: 2022-11-08。初期販売実績と新規プレイヤー層についての説明
+  - title: Nintendo Co., Ltd.「Financial Results for Fiscal Year Ended March 31, 2023」
+    url: https://www.nintendo.co.jp/ir/pdf/2023/230509e.pdf
+    note: 2023-05-09。2023-03-31までの世界累計販売本数
+  - title: "任天堂「Ask the Developer Vol. 7: Splatoon 3 — Part 2」"
+    url: https://www.nintendo.com/us/whatsnew/ask-the-developer-vol-7-splatoon-3-part-2/
+    note: 2022-09-07。開発者が語るロッカー・収集要素・対戦を再び遊ぶ動機
+  - title: GameSpot「Splatoon 3 Review」
+    url: https://www.gamespot.com/reviews/splatoon-3-review/1900-6417951/
+    note: 2022-09-19。7/10。陣地塗りの見えやすさ、モードの幅、通信切断や進行の不満
+  - title: Nintendo Life「Splatoon 3 Review」
+    url: https://www.nintendolife.com/reviews/nintendo-switch/splatoon-3
+    note: 2022-09-07。9/10。遊びの磨き込みを評価し、大きな新要素が見えにくい点も指摘
+  - title: Metacritic「Splatoon 3 User Reviews」
+    url: https://www.metacritic.com/game/splatoon-3/user-reviews/
+    note: ユーザースコアとレビュー表示を確認（2026-10-23確認。件数・分布は変動）
+  - title: 任天堂公式「Splatoon 3 - Release Date Revealed」
+    url: https://www.youtube.com/watch?v=Rkz-PjCQjWk
+    note: 2022-04-22公開。Turf Warの公式ゲームプレイ映像
+  - title: "任天堂公式「Get ready for the Splatoon 3: Splatfest World Premiere demo!」"
+    url: https://splatoon.nintendo.com/en/news/get-ready-for-the-splatoon-3-splatfest-world-premiere-demo/
+    note: 2022-08-27の発売前グローバル体験イベントについて
+sources_note: 販売数と発売価格は任天堂の公表資料。レビュー数値は確認日時点の表示です。プレイヤーレビューの内容分類は表示レビューの小規模な便宜サンプルで、全購入者の割合ではありません。続ける理由の因果は独自分析として示します。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：勝つことだけが、次のプレイの理由ではない</h2>
+  <p>対戦ゲームでは、勝利や上達が大きな目標になります。でも、負けが続いた人や、競争に疲れた人には、それだけでは続ける理由になりません。</p>
+  <p>そこで、勝敗とは別に「集める」「見た目を整える」「別の遊び方を試す」といった目標を用意すると、プレイヤーは自分に合う楽しみ方を選べます。</p>
+  <ol class="flow mt-m">
+    <li><b>試合を遊ぶ</b><span>勝敗や塗った面積</span></li>
+    <li><b>結果を受け取る</b><span>経験・アイテム</span></li>
+    <li><b>別の目標へ進む</b><span>集める・飾る</span></li>
+    <li><b>次の試合を選ぶ</b><span>別の目的で再挑戦</span></li>
+  </ol>
+  <h3 class="h-sub">続ける理由を増やすときの設計ポイント</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">目標を選べる</p><p class="list__text">勝利、上達、収集など、プレイヤーが今の気分で目指すものを選べる。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">結果が残る</p><p class="list__text">一試合の勝敗だけで進みがゼロにならず、試したことや集めたものが見える。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">続けるか決められる</p><p class="list__text">次の目標が選択肢として見える。プレイヤーを引き止めるだけの仕掛けにはしない。</p></div></div>
+  </div>
+  <p class="note mt-s">「目標を増やせば必ず長く遊ぶ」という意味ではありません。別の目標が、誰のどんな動機に合うのかを確かめます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Splatoon 3</h2>
+  <p>本作のナワバリバトルでは、相手を倒すことだけでなく、床を自分のチームのインクで塗ることが勝敗に関わります。インクは得点の跡であり、イカになって移動する道でもあります。</p>
+  <dl class="facts mt-m">
+    <div><dt>発売</dt><dd>2022年9月9日（Nintendo Switch）</dd></div>
+    <div><dt>日本の発売時価格</dt><dd>6,578円（税込）</dd></div>
+    <div><dt>遊びの軸</dt><dd>ナワバリバトル、サーモンラン、ヒーローモード、収集・ロッカー・カード対戦</dd></div>
+  </dl>
+  {% include video.html %}
+  <figure class="lesson-figure mt-m">
+    <svg viewBox="0 0 720 250" width="100%" height="auto" role="img" aria-labelledby="ink-title ink-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ink-title">塗ったインクが次の行動を生む流れ</title>
+      <desc id="ink-desc">床を塗り、塗った場所を移動に使い、色の広がりで陣地の変化を確認する三段階の図。</desc>
+      <rect width="720" height="250" rx="14" fill="#f4f3ee"/>
+      <g font-family="sans-serif" text-anchor="middle">
+        <g transform="translate(30 32)">
+          <rect width="190" height="150" rx="12" fill="#fff" stroke="#24232a" stroke-width="3"/>
+          <text x="95" y="30" font-size="17" font-weight="700" fill="#24232a">1. 床を塗る</text>
+          <g transform="translate(28 48)">
+            <rect width="35" height="30" fill="#f4f3ee" stroke="#aaa"/><rect x="37" width="35" height="30" fill="#6549dd" stroke="#aaa"/><rect x="74" width="35" height="30" fill="#6549dd" stroke="#aaa"/>
+            <rect y="32" width="35" height="30" fill="#f4f3ee" stroke="#aaa"/><rect x="37" y="32" width="35" height="30" fill="#6549dd" stroke="#aaa"/><rect x="74" y="32" width="35" height="30" fill="#f4f3ee" stroke="#aaa"/>
+          </g>
+          <text x="95" y="135" font-size="14" fill="#444">行動が地面に残る</text>
+        </g>
+        <path d="M230 105h32m-9-9 9 9-9 9" stroke="#444" stroke-width="4" fill="none"/>
+        <g transform="translate(265 32)">
+          <rect width="190" height="150" rx="12" fill="#fff" stroke="#24232a" stroke-width="3"/>
+          <text x="95" y="30" font-size="17" font-weight="700" fill="#24232a">2. 道として使う</text>
+          <path d="M38 105c15-35 30-12 42-28s32-30 50-25" fill="none" stroke="#6549dd" stroke-width="16" stroke-linecap="round"/>
+          <circle cx="133" cy="51" r="13" fill="#25242a"/><path d="M130 37v-14m0 0-8 10m8-10 8 10" stroke="#25242a" stroke-width="3"/>
+          <text x="95" y="135" font-size="14" fill="#444">動ける範囲が変わる</text>
+        </g>
+        <path d="M465 105h32m-9-9 9 9-9 9" stroke="#444" stroke-width="4" fill="none"/>
+        <g transform="translate(500 32)">
+          <rect width="190" height="150" rx="12" fill="#fff" stroke="#24232a" stroke-width="3"/>
+          <text x="95" y="30" font-size="17" font-weight="700" fill="#24232a">3. 戦況が見える</text>
+          <rect x="32" y="55" width="126" height="24" rx="12" fill="#6549dd"/><rect x="95" y="55" width="63" height="24" rx="12" fill="#e7a344"/>
+          <text x="95" y="112" font-size="15" fill="#24232a">塗りの差を一目で確認</text><text x="95" y="136" font-size="13" fill="#555">撃破数だけに頼らない</text>
+        </g>
+        <text x="360" y="220" font-size="14" fill="#555">解説用の模式図。実際のゲーム画面ではありません。</text>
+      </g>
+    </svg>
+    <figcaption>塗る行動が、移動と勝敗の情報にもつながる。出典：教材制作者作成（ゲーム内画面の転載なし）。</figcaption>
+  </figure>
+  <h3 class="h-sub">ナワバリバトルの面白さ：塗るほど、選べる行動が変わる</h3>
+  <p>プレイヤーが床を塗ると、色の変化が画面に残ります。自分のインクは移動やインク補給にも使えるので、塗る行動は「得点を増やす」だけでなく「次の場所へ行く」準備にもなります。</p>
+  <p>終盤に盤面を見ると、どこを塗り返せば陣地が変わりそうかが分かります。撃破数の表を読まなくても、色の広がりから勝敗の見込みを想像できるため、短い試合でも自分の行動が戦況に関わったと感じやすくなります。</p>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">開発者の見解｜任天堂開発者インタビュー、2022-09-07</p>
+    <p class="panel__title">対戦が上手くなることだけを、遊び続ける理由にしたくなかった。</p>
+    <p class="mt-s">開発者は、集めたアイテムをロッカーに並べることや、カード対戦なども「もう一度バトルを遊ぶ理由」にしたかったと説明しています。これは開発者の意図であり、全プレイヤーが同じ動機で遊ぶというデータではありません。</p>
+  </div>
+  <h3 class="h-sub">続ける動機を、対戦の外にも置く</h3>
+  <p>試合で得たものは、ロッカーの飾り付けやカード収集など、勝敗とは別の遊びにつながります。「上手く勝ちたい人」と「アイテムを集めたい人」が、同じバトルを別の目標で遊べる設計です。</p>
+  <p class="note mt-s">独自分析：対戦の結果だけで満足できない人にも次の目的を渡し、遊び方の入口を広げています。一方、報酬だけを目的にした反復になると、作業感や義務感が出る可能性があります。</p>
+  <h3 class="h-sub">既存の対戦シューターと何が違う？</h3>
+  <p>撃破数を中心にする一般的なシューターと比べ、ナワバリバトルは床を塗る行動自体が勝利条件に入っています。敵を倒す腕前だけでなく、塗る場所、前線へ進む道、終盤に塗り返す判断が勝敗に関わります。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：遊びの幅は支持され、続編らしさは批判された</h2>
+  <h3 class="h-sub">批評家の声</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">9/10</span><span class="list__body">Nintendo Life（2022-09-07）は、遊びの磨き込み、いつでも遊べるサーモンラン、充実した一人用モードを評価。一方で、シリーズを変える大きな新要素が見えにくい点も挙げました。</span></div>
+    <div class="list__row"><span class="list__key">7/10</span><span class="list__body">GameSpot（2022-09-19）は、塗りの状態だけで優勢・劣勢が分かるデザインやモードの多さを評価。通信切断で進行が失われる不満、敵の種類やマップの新鮮さには留保を付けました。</span></div>
+  </div>
+  <h3 class="h-sub">プレイヤーの声</h3>
+  <p>MetacriticのNintendo Switch版ユーザースコアは7.4/10で「Mixed or Average」。ページには371件の文章レビューが表示されていました（2026-10-23確認。集計や表示件数は変動）。</p>
+  <div class="panel mt-s">
+    <p class="panel__label">表示レビュー10件を内容分類した小規模サンプル</p>
+    <p class="panel__title">7件に明確な肯定、3件に強い不満が見られた。</p>
+    <p class="mt-s">肯定では、インクと移動の独自性、武器やモードの幅、シリーズの磨き込みが挙がりました。不満では、マッチングや通信、マップの通路化、前作との差が小さいことが挙がりました。サンプルは無作為抽出ではなく、全レビューの割合を示しません。</p>
+  </div>
+  <h3 class="h-sub">面白さと商業的成果の関係</h3>
+  <dl class="facts">
+    <div><dt>確認できる成果</dt><dd>日本国内で発売後3日間に345万本。任天堂の2023年3月期資料では、2023年3月31日までに世界累計1,067万本。</dd></div>
+    <div><dt>価格・時期</dt><dd>日本の希望小売価格は6,578円（税込）。2022年9月9日にNintendo Switch専用ソフトとして発売。</dd></div>
+    <div><dt>認知の接点</dt><dd>任天堂は発売前にNintendo Direct、Turf War紹介映像、期間限定のSplatfest体験を実施。</dd></div>
+    <div><dt>競争環境</dt><dd>他のオンライン対戦ゲームやSwitch大作と遊ぶ時間を競う。撃破より塗りを勝利条件にする点が、シューター内での選ばれる理由になり得る（独自分析）。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>事実：</strong>発売時点でシリーズ作品があり、任天堂は過去作からのファンだけでなく新しいプレイヤーにも広げたいと説明していました。</span></li>
+    <li><span><strong>独自分析：</strong>色を塗るだけで勝敗の手がかりが見え、撃ち合い以外の貢献方法もあるため、シューターに慣れていない人にも目的が伝わりやすい設計です。</span></li>
+    <li><span><strong>市場仮説：</strong>Switchの普及、シリーズの認知、発売前イベント、複数モードが購入のきっかけを重ねた可能性があります。各要因が販売数にどれほど寄与したかは公表資料から分離できません。</span></li>
+  </ul>
+  <p class="note mt-s">販売本数は確認できる実績ですが、それだけで個々のプレイヤーが続けた理由や、面白さの因果を証明するものではありません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：ぬって、集めて、もう一戦</h2>
+  <p>マスをタップして自分の色に塗ります。陣地を広げるか、アイテムを集めるかを選び、負けたときにも次の目的が残るかを確かめてください。</p>
+  <div class="chips mt-s"><span class="chip">塗りの広さ</span><span class="chip">相手の塗る速さ</span><span class="chip">敗北後の収集進捗</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">負けたとき、残った収集進捗はもう一度遊ぶ理由になった？</p>
+    <p class="muted mt-s">勝つための塗りと、アイテムを取る塗りは同じ行動でも目的が違います。どちらを選びたくなったか、設定を変えて比べてください。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="panel">
+    <p class="panel__label">入門｜一つだけ変える</p>
+    <p class="panel__title">敗北後もアイテム進捗が残る設定を切り替える。</p>
+    <p class="mt-s">残る場合と残らない場合で、「次の試合を始めたい」と思うかを比べます。勝敗だけでなく、塗った面積とアイテム進捗も記録してください。</p>
+  </div>
+  <div class="panel mt-s">
+    <p class="panel__label">応用｜目標を追加する</p>
+    <p class="panel__title">自作ゲームに、勝敗と別の短い目標を一つ加える。</p>
+    <p class="mt-s">例：新しいルートの発見、見た目のカスタマイズ、プレイスタイルの記録。追加目標が遊び方を広げるのか、ただの作業になるのかをテストします。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">あなたのゲームでは、勝てないプレイヤーにどんな目標が残る？　報酬を渡す案と、見た目やプレイ記録を変えられる案の利点・弱点を比べよう。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">別の目標を追加すると、元の遊びを深める？　それとも報酬のための作業になる？　どの行動が変わったかで確かめよう。</span></div>
+  </div>
+</section>
+
