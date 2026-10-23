@@ -1,0 +1,215 @@
+---
+day: 6
+date: 2026-10-23
+title: 敵の次の手が見えると、なぜ「考える」が楽しいのか
+theme: 情報の公開と計画
+game: Into the Breach
+level: 中級
+minutes: 10
+summary: 敵の攻撃予告を出す・隠す・外すと、遊びがどう変わるかを試す。
+question: プレイヤーに「相手の次の手」をどこまで見せれば、運ではなく自分の判断で勝てた手応えが生まれる？
+goals:
+  - 情報を見せる量が、プレイヤーの選択と「負けた理由の納得感」をどう変えるか説明できる
+  - 自作ゲームの敵やイベントに、予告を出す・隠す・外すのどれを使うか理由つきで選べる
+demo:
+  src: /demos/day006.html
+  title: 予告つき防衛ライン
+  height: 1300
+sources:
+  - title: Steam公式ストア「Into the Breach」
+    url: https://store.steampowered.com/app/590380/Into_the_Breach/
+    note: 発売日・価格・レビュー件数と比率・Metacriticスコア・無料アップデートの説明（2026-10-23確認。価格とレビュー数は変動する）
+  - title: "Game Developer “Road to the IGF: Subset Games’ Into the Breach”"
+    url: https://www.gamedeveloper.com/game-platforms/road-to-the-igf-subset-games-i-into-the-breach-i-
+    note: 2018-02-23・開発者インタビュー（Justin Ma氏の回答）。予告攻撃を中核にした理由と、乱数を減らした意図（2026-10-23確認）
+  - title: Nintendo Life “Into the Breach Review (Switch eShop)”
+    url: https://www.nintendolife.com/reviews/switch-eshop/into_the_breach
+    note: 2018-09-04・批評（Mitch Vogel氏、9/10）。公平さ、短い戦闘、高い難度、見た目への留保（2026-10-23確認）
+  - title: Wikipedia “Into the Breach”
+    url: https://en.wikipedia.org/wiki/Into_the_Breach
+    note: 開発経緯・各機種の発売日・受賞歴・批評スコアの概観（2026-10-23確認。二次資料のため、重要な数値はSteamなどで再確認を推奨）
+  - title: Thinky Games “Into the Breach”
+    url: https://thinkygames.com/games/into-the-breach
+    note: パズル的な設計という観点の紹介記事（2026-10-23確認）
+  - title: Steam公式ストアページの公式トレーラー
+    url: https://store.steampowered.com/app/590380/Into_the_Breach/
+    note: 公式トレーラーはSteamストアページ上で見られる。YouTube上の公式動画IDは確認できなかったため、この教材では埋め込んでいない
+sources_note: 事実・開発者の見解・批評・独自の分析を分けて記載しています。販売本数は公式に公表されている資料を確認できなかったため、記載していません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：見える情報が「考える材料」になる</h2>
+  <p>ゲームの面白さは、<strong>どこまで見せるか</strong>でも変わります。相手の次の手が見えると、プレイヤーは運に頼らず「どう対応するか」を考えられます。逆に見えないと、予想と賭けが中心になります。</p>
+
+  <ol class="flow mt-m">
+    <li><b>予告が見える</b><span>敵は次に何をする？</span></li>
+    <li><b>手を比べる</b><span>どの対応が良い？</span></li>
+    <li><b>結果を予想</b><span>こうすれば、こうなる</span></li>
+    <li><b>納得する</b><span>失敗も自分の判断</span></li>
+  </ol>
+  <p class="note mt-s">1が欠けると、2〜4がまとめて弱くなります。</p>
+
+  <h3 class="h-sub">用語をやさしく</h3>
+  <div class="list">
+    <div class="list__row">
+      <span class="num-box num-box--fill">A</span>
+      <div><p class="list__title">予告（テレグラフ）</p><p class="list__text">敵が「次にこうする」と先に見せること。矢印や赤いマスなど。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">B</span>
+      <div><p class="list__title">完全情報</p><p class="list__text">盤面と相手の次の手が、すべて見えている状態。将棋は盤面が全部見える。この教材では「予告で情報がそろっている状態」の意味で使う。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">C</span>
+      <div><p class="list__title">不確実性</p><p class="list__text">結果が分からない部分。乱数や、見えない敵の行動から生まれる。</p></div>
+    </div>
+  </div>
+
+  <h3 class="h-sub">情報の出し方で、体験はこう変わる（独自分析）</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>出し方</th><th>プレイヤーがすること</th><th>生まれやすい体験（仮説）</th></tr></thead>
+      <tbody>
+        <tr><th>全部見せる</th><td>対応を比べて選ぶ</td><td>パズルを解く感じ。負けは自分の判断のせいになる</td></tr>
+        <tr><th>一部だけ見せる</th><td>見える脅威を優先し、見えない分を予想する</td><td>警戒と見落としの緊張</td></tr>
+        <tr><th>見せない</th><td>経験と勘で備える</td><td>驚きと賭け。理不尽に感じる人もいる</td></tr>
+        <tr><th>見せたが外れる</th><td>予告を信じていいか迷う</td><td>予告への信頼が下がる</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note mt-s">表は独自分析の仮説です。どれが良いかは、ゲームの狙いで決まります。</p>
+
+  <details class="more mt-m">
+    <summary>見えるのに難しいのは、なぜ？</summary>
+    <div class="more__body">
+      <p>情報が見えても、選べる手が少なく、守るものが多ければ、すべてを防げません。「見える」と「簡単」は別です。難しさは、情報の量ではなく<strong>手数の制約</strong>から作れます。</p>
+    </div>
+  </details>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Into the Breach</h2>
+
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2018年2月27日（Windows）。Switchは同年8月28日、モバイルは2022年7月19日（Wikipedia）</dd></div>
+    <div><dt>開発</dt><dd>Subset Games（『FTL: Faster Than Light』の開発元）</dd></div>
+    <div><dt>ジャンル</dt><dd>ターン制ストラテジー（ローグライク要素あり）</dd></div>
+  </dl>
+  <p class="note mt-s">公式トレーラーはSteamストアページで見られます（YouTubeの公式動画IDは確認できなかったため、埋め込みはしていません）。</p>
+
+  <h3 class="h-sub">ルールから体験への流れ</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーがすること</th><th>ルールが返すもの</th><th>生まれる感情（仮説）</th></tr></thead>
+      <tbody>
+        <tr><th>敵の攻撃予告を読む</th><td>今ターンに何が起きるか全部見える</td><td>「何を防ぐか」を決める緊張</td></tr>
+        <tr><th>味方や敵を動かす</th><td>押された敵の攻撃先がずれ、予告も動く</td><td>自分の手が結果を変えた手応え</td></tr>
+        <tr><th>被害が出る</th><td>予告を見ていたので原因が分かる</td><td>悔しいが、次の工夫を考えやすい</td></tr>
+        <tr><th>次のターンへ</th><td>戦闘は短く、ターン数にも限りがある</td><td>「もう1戦」を始めやすい</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">開発者の見解（Game Developer、2018年2月23日）</p>
+    <p class="panel__title">予告攻撃を核にしたのは、負けを「自分のせい」と感じられるようにするため。</p>
+    <p class="mt-s">Justin Ma氏は、攻撃がすべて予告され、攻撃に乱数がなければ、ゲームは「パズルのように感じられる」と語っています。『FTL』より乱数を減らす狙いもありました。※ 要旨であり、逐語の引用ではありません。</p>
+  </div>
+
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">予告は、難しさを下げるのではなく、「失敗の原因」をプレイヤーの手元に戻す装置。</p>
+  </div>
+
+  <h3 class="h-sub">ゲーム内の目標も「被害を減らす」</h3>
+  <p>Wikipediaによると、開発では建物の被害を避けることが、勝つことと並ぶ目標になるよう設計されました。予告で脅威が分かるからこそ、「敵を倒す」だけでなく「何を守るか」の選択が生まれます。</p>
+  <p class="note mt-s">ほかにも、ローグライクの繰り返しや部隊の組み合わせなど、別の魅力があります。この回は「情報の見せ方」に絞っています。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価：何が支持され、なぜ選ばれた？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>Steam英語レビュー93%が好評（12,722件／2026-10-23確認）</span></li>
+        <li><span>Metacritic 90（PC。Steamストア表示／2026-10-23確認）</span></li>
+        <li><span>Nintendo Life 9/10：情報がほぼ見えていて「めったに理不尽でない」、戦闘が短く続けやすい（2018-09-04）</span></li>
+        <li><span>受賞：The Game Awards 2018 最優秀ストラテジー、GDC Awards 2019 ベストデザインなど（Wikipedia）</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">不満・留保の声</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>難度が非常に高い。毎回きれいな正解があるとは限らない（Nintendo Life）</span></li>
+        <li><span>見た目は地味で、「忘れやすい」という評価もある（Nintendo Life。他媒体は絵や音楽を称賛しており、意見は分かれる）</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">「全部見える」ことは、公平さを生む一方で、考えることを求める。考えるのが好きな人に強く刺さる。</p>
+  </div>
+  <p class="note mt-s">批評の留保は少数の例で、全体の割合ではありません。</p>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売本数</dt><dd>公式の公表を確認できず、記載しません</dd></div>
+    <div><dt>価格</dt><dd>通常 $14.99（Steam、2026-10-23確認。同日は期間限定セールで $6.29）</dd></div>
+    <div><dt>展開</dt><dd>PC → Mac → Switch → モバイル。2022-07-19に無料の追加要素を配信（Wikipedia、Steam）</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>事実</strong>　『FTL』に続く2作目で、批評家の評価が高かった（Metacritic 90、複数の受賞）</span></li>
+    <li><span><strong>仮説</strong>　1戦が短く、ルールが見えるため、「こう動かせば良かった」と振り返りやすい。口コミで説明しやすかったかもしれない</span></li>
+    <li><span><strong>仮説</strong>　価格が手頃で、複数機種に広がったため、手に取る機会が増えた</span></li>
+  </ul>
+  <p class="note mt-s">各要因がどれだけ効いたかは、公開資料からは断定できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：予告つき防衛ライン</h2>
+  <p>敵は真下のマスを攻撃します。敵をタップして「押す」「撃つ」で被害を減らします。敵どうしを押しつけると、両方にダメージです。</p>
+  <div class="chips mt-s">
+    <span class="chip"><strong>予告の割合</strong>　見える敵の数</span>
+    <span class="chip"><strong>行動回数</strong>　手数の制約</span>
+    <span class="chip"><strong>ハズレ率</strong>　予告が外れる確率</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">予告を0%にしたとき、難しさは上がった？　それとも、考える楽しさが減った？</p>
+    <p class="muted mt-s">盤面は毎回同じです。結果の「予告どおりの被害」と「不意の被害」を、設定ごとに比べよう。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">予想と結果を比べる</p>
+      <p class="mt-s">「予告の割合」を100%→50%に変える。先に「家の耐久はいくつ減る？」「不意の被害は何回？」を予想し、再プレイの結果と並べて記録する。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">ルールを足す</p>
+      <p class="mt-s">例：「予告を見る」に行動を1回使う。または、強い敵だけ予告を隠す。どう遊びが変わるか予想し、<code>DEFAULTS</code> や関数を書き換えて確かめる。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">あなたのゲームで、プレイヤーが「なぜ負けたか分からない」瞬間はどこ？　<strong>予告を足す</strong>案と、<strong>負けた後に理由を見せる</strong>案の、長所と短所を比べよう。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">驚きを残したい敵やイベントはある？　予告を全部出す場合と、一部だけ隠す場合で、狙う感情と、合わない人はどう違う？</span></div>
+  </div>
+</section>
