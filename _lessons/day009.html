@@ -1,0 +1,141 @@
+---
+day: 9
+date: 2026-10-24
+title: 制約が「自分の部屋」に変わるとき：「Unpacking」の空間パズル
+theme: 制約とプレイヤーの自己表現
+game: Unpacking
+level: 中級
+minutes: 10
+summary: 置き場所の制約が選択と物語を生む仕組みを学び、自作ゲームの制約を調整する。
+question: 選択肢を絞りながら、プレイヤー自身が決めた感覚をどう残す？
+goals:
+  - 制約・選択・結果のつながりを自分の言葉で説明できる
+  - 「Unpacking」の入口、継続、離脱要因を資料に沿って分析できる
+  - 自作ゲームの制約を1つ変え、プレイヤー体験への影響を予想して試せる
+video:
+  id: vPcoMltTVXE
+  title: Unpacking Launch Trailer｜Witch Beam
+  caption: 公式ローンチトレーラー。箱から出る物、置き場所、音や画面の変化が、短い映像だけでどんな遊びを期待させるかに注目。
+demo:
+  src: /demos/day009.html
+  title: 新しい部屋に、持ち物の居場所をつくる
+  height: 1220
+sources:
+  - title: Witch Beam「Telling a story through someone's belongings in Unpacking」
+    url: https://www.gamedeveloper.com/design/telling-story-someones-belongings-unpacking
+    note: 2022-03-16公開。デザイナー Tim Dawson が、空間の制約・自由・物を通した物語について説明。
+  - title: Unpacking 公式 Steam ストア
+    url: https://store.steampowered.com/app/1135690/Unpacking/?l=japanese
+    note: 発売日・対応言語・作品説明・英語レビュー集計（2026-10-23確認。件数は変動）。
+  - title: Witch Beam「Unpacking is out now!」
+    url: https://witchbeam.com.au/2021/11/02/unpacking-is-out-now/
+    note: 2021-11-02公開。発売時の対応プラットフォームと、GIF共有・配信者向け施策の説明。
+  - title: Witch Beam「One year anniversary and merch」
+    url: https://witchbeam.com.au/2022/11/03/one-year-anniversary-and-merch/
+    note: 2022-11-03公開。発売から約1年で100万本を販売したと開発元が発表。
+  - title: Xbox Wire「Unpacking Is Now Available for PC, Xbox One, and Xbox Series X|S, Xbox Game Pass」
+    url: https://news.xbox.com/en-us/2021/11/02/unpacking-is-now-available-for-pc-xbox-one-and-xbox-series-xs-xbox-game-pass/
+    note: 2021-11-02公開。発売時のXbox/Game Pass展開。米国発売価格は19.99ドル。
+  - title: BAFTA「Games Awards 2022 winners announced」
+    url: https://www.bafta.org/media-centre/press-releases/bafta-games-awards-2022-winners-announced/
+    note: 2022-04-07公開。Narrative賞と一般投票のEE Game of the Yearを受賞。
+  - title: GameSpot「Unpacking Review – The Things We Carry」
+    url: https://www.gamespot.com/reviews/unpacking-review-the-things-we-carry/1900-6417774/
+    note: 2021-10-29公開。9/10。持ち物を通した物語と穏やかな配置体験を評価。
+  - title: Steamコミュニティ「Unpacking」ユーザーレビュー（日本語表示例）
+    url: https://store.steampowered.com/app/1135690/Unpacking/?curator_clanid=36531053&l=japanese
+    note: 2026-10-23確認。音・穏やかさを評価する声と、ボリューム・価格に不満を示す声を少数の例として確認。全利用者の割合ではない。
+  - title: GameFAQsに転載されたGameSpotレビュー
+    url: https://gamefaqs.gamespot.com/switch/323223-unpacking/reviews
+    note: 短さにも触れる批評家レビュー。短さを凝縮とみるか物足りなさとみるかは、購入者の期待・価格感で分かれうる。
+  - title: Witch Beam「Unpacking Launch Trailer」
+    url: https://www.youtube.com/watch?v=vPcoMltTVXE
+    note: 公式ローンチトレーラー。動画内の表現を確認する一次資料。
+sources_note: 販売本数は開発元が2022-11-03に公表した100万本の節目で、現在の累計ではありません。Steamのレビュー集計は2026-10-23確認時点の英語レビュー表示で変動します。開発者の説明、批評家評価、ストア上の集計、教材制作者の仮説を区別しています。売上への各要因の寄与を示す公開データはなく、因果は断定しません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：制約があると、選択に意味が生まれる</h2>
+  <p>ゲームで何でもできると自由に見えますが、選べる行動が多すぎると「何をすればいいか」がぼやけることがあります。置ける場所や使える回数を絞ると、プレイヤーは優先順位を考えます。その判断が結果に残ると、「自分で決めた」という手応えになります。</p>
+  <ol class="flow mt-m">
+    <li><b>目的</b><span>持ち物を部屋に置く</span></li>
+    <li><b>制約</b><span>棚や机の空きが限られる</span></li>
+    <li><b>選択</b><span>何をどこに置くか決める</span></li>
+    <li><b>結果</b><span>部屋と物語の読み取りが変わる</span></li>
+  </ol>
+  <h3 class="h-sub">制約を設計するときの確認点</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">目的に関係する制約か</p><p class="list__text">置ける数が少ないだけでなく、「どこを自分の居場所にするか」という遊びの問いにつながっているか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">選択肢が残っているか</p><p class="list__text">正解を一つに固定せず、便利さ・見た目・好みなど複数の基準で選べる余地があるか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">選んだ結果が見えるか</p><p class="list__text">配置や次の行動が変化し、プレイヤーが「この制約が判断に影響した」と気づけるか。</p></div></div>
+  </div>
+  <p class="note mt-s">制約を厳しくすれば面白くなるわけではありません。考える余地を作る制約と、試す気持ちを失わせる理不尽さを分けて観察します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：『Unpacking』— 物を置く行為が、暮らしを語る</h2>
+  <p>『Unpacking』は、箱から持ち物を出して新しい部屋へ配置するパズルゲームです。敵を倒す、制限時間内に片づけるといった目標はありません。それでも「次の箱を開けたい」「この物の居場所を見つけたい」と思わせるのはなぜか。ここでは、空間パズルと環境ストーリーテリングがどう結びつくかを見ます。</p>
+  <dl class="facts mt-m">
+    <div><dt>発売</dt><dd>2021年11月1日（Steam）／11月2日（Xbox・Switch等）</dd></div>
+    <div><dt>開発</dt><dd>Witch Beam（オーストラリア）</dd></div>
+    <div><dt>ジャンル・価格</dt><dd>片づけ・空間パズル。発売時の米国価格は19.99ドル</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">何が独自で、なぜ面白い？</h3>
+  <p>よくあるパズルは、盤面上の形を正しく収めることが中心です。本作では、物を置く場所の適切さが、パズルの手応えと人物像の想像を一度に生みます。例えば、趣味の道具を机に置くか、しまっておくか。プレイヤーは空間を整えながら、持ち主の生活や変化を読み取ります。</p>
+  <div class="table-wrap"><table class="table"><thead><tr><th>プレイヤーの行動</th><th>ルール・情報</th><th>体験へのつながり</th></tr></thead><tbody>
+    <tr><th>箱から物を出す</th><td>持ち物が少しずつ見える</td><td>次に何が出るか知りたい</td></tr>
+    <tr><th>置き場所を探す</th><td>棚の広さや形に制限がある</td><td>迷い、収まると納得する</td></tr>
+    <tr><th>物の組み合わせを見る</th><td>引っ越しごとに物が増減する</td><td>持ち主の変化を推測する</td></tr>
+  </tbody></table></div>
+  <h3 class="h-sub">始める・続ける・離れる理由</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">入口</span><div><p class="list__title">始めたくなる：見ただけで遊び方が伝わる</p><p class="list__text">箱から物を出して部屋に置く映像は、説明文がなくても「自分も試せそう」と伝わります。開発元は発売時にGIF共有や配信者向けの案内も行いました。短い動画・画像で遊びの核を見せやすい点は、口コミに向く設計だったという仮説を支えますが、販売への寄与を示す数字ではありません。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">継続</span><div><p class="list__title">続けたくなる：次の箱と、次の人生の手がかり</p><p class="list__text">一つの部屋が整うと、次の引っ越しで何が変わるかが気になります。持ち物の変化を追うことで、明示的な会話がなくても人生の続きが知りたくなる。開発者 Tim Dawson は、物の配置から持ち主の物語が立ち上がる設計を説明しています（開発者の見解）。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">離脱</span><div><p class="list__title">離れる理由：反復感と、短さへの期待差</p><p class="list__text">基本操作は箱を開けて配置する反復です。短く穏やかな体験を求める人には長所でも、複雑なパズルや長いプレイ時間を期待する人には物足りなさになり得ます。GameSpotは9/10で物を通した物語を高く評価する一方、レビューでは短さにも触れています。Steamの表示レビューから少数の文章例を見ると、「落ち着く」「物から物語を読み取る」「音が心地よい」という評価と、「4時間ほどで終わり、ボリューム・価格に不満」という声の両方があります（便宜的な例示で、全レビューの分類や割合ではありません）。短さを「凝縮」と見るか「価格に対して少ない」と見るかは、購入者の期待と価格感によって変わる、というのがここでの分析です。</p></div></div>
+  </div>
+  <div class="panel panel--shadow mt-m"><p class="panel__label">面白さの核｜教材制作者の分析</p><p class="panel__title">「置き場所を考える」判断が、空間の完成と人物の想像を同時に進める。</p><p class="mt-s">多くの整理パズルは、正解配置を見つけると終わります。本作は置いた物の並び自体が物語の手がかりになるため、クリア後にも「なぜこの物を持っているのか」を考える余白が残ります。</p></div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p><h2 class="h-section">評価と市場：評価されたこと、選ばれた背景</h2>
+  <dl class="facts">
+    <div><dt>販売実績</dt><dd>開発元は2022-11-03、発売から約1年で100万本販売と発表</dd></div>
+    <div><dt>批評家・賞</dt><dd>GameSpot 9/10（2021-10-29）。BAFTA 2022でNarrative賞・一般投票のEE Game of the Yearを受賞</dd></div>
+    <div><dt>プレイヤー評価</dt><dd>Steam英語レビューは2026-10-23確認時点で23,095件、93%が好評（変動する集計）</dd></div>
+  </dl>
+  <h3 class="h-sub">どう選ばれたのか：事実と仮説を分ける</h3>
+  <ul class="bullets mt-m">
+    <li><span><strong>確認できる事実：</strong>PC・Nintendo Switch・Xboxで同時期に発売され、Xbox版はGame Passにも展開。米国の発売時価格は19.99ドルでした。後にPlayStationやスマートフォンにも展開し、接点を増やしています。</span></li>
+    <li><span><strong>確認できる事実：</strong>開発元は発売時に、配信者向け情報やGIFで共有しやすい仕組みを案内。後年に100万本販売を公表しました。</span></li>
+    <li><span><strong>独自仮説：</strong>「引っ越しの荷ほどき」という誰にでも想像しやすい行為、穏やかな雰囲気、持ち物から物語を読む独自性が、従来のパズルゲームに慣れていない人にも作品の魅力を伝えた可能性があります。プレイ映像の短い切り抜きでも、操作と結果が伝わるのも共有に向きます。</span></li>
+    <li><span><strong>市場面の注意：</strong>同時期のインディー・パズルや「cozy」作品と、短時間で落ち着いて遊べるニーズを取り合ったと考えられます。一方で作品の短さは購入のハードルにもなり得ます。開発元の販売発表やレビュー集計から、各要因が何本分の販売を生んだかまでは分かりません。</span></li>
+  </ul>
+  <p class="note mt-s">「面白いから売れた」とだけ説明しない。作品の体験、価格と販売先、口コミで伝わる形、競合や遊ぶ時間の期待を分け、売上との因果が確認できない部分は仮説として扱います。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p><h2 class="h-section">遊ぶ：部屋に居場所をつくる</h2>
+  <p>持ち物を選んで置き場所へタップ。まず上限2個で遊び、次に1個または3個に変えて再プレイします。置き直すと結果も更新されます。デモは作品の発想を学ぶための独自モデルで、原作の再現ではありません。</p>
+  <div class="chips mt-s"><span class="chip">置き場所の上限</span><span class="chip">持ち物の置き直し</span><span class="chip">結果の比較</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">制約を変えたら、どんな理由で場所を選び、部屋の印象はどう変わった？</p><p class="mt-s">画面内の「HTMLをダウンロード」はデモのみを保存します。</p></div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p><h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門｜パラメータを1つ変える</p><p class="panel__title">場所の上限を2個から1個へ</p><p class="mt-s">遊ぶ前に「選択に迷う回数」「希望の場所を選べるか」を予想し、結果と照らします。次は3個でも試し、自由度が上がると考える余地がどう変わるか比べてください。</p></div>
+    <div class="panel"><p class="panel__label">応用｜ルールを足す</p><p class="panel__title">お気に入りの物に「手元に置く」条件を加える</p><p class="mt-s">例えば、毎日使う物は机かベッド脇にしか置けないルールにします。生活のリアリティが増えるか、正解探しが強まり自由な配置が減るかを、コードの ITEMS と place() のコメントを手がかりに試します。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p><h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで、選択肢を増やす方法と制約を強める方法のどちらが「自分で決めた」感覚につながりそうですか？考える余地・理解しやすさ・窮屈さの観点で比べてください。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">プレイヤーの行動を、勝敗以外の何の手がかりとして残せますか？部屋の配置、キャラクターの反応、次の選択肢など、物語や世界の見え方が変わる案を考えましょう。</span></div>
+  </div>
+</section>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee"><title>DAY 09｜部屋に居場所をつくる</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#24232a;--muted:#66636c;--line:#d9d7cf;--purple:#5b3df5;--mint:#dcebdd;--pink:#f7dfdc;--yellow:#f4e8b7}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;line-height:1.55}.wrap{max-width:760px;margin:auto;padding:18px 16px 30px}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px dotted var(--ink);padding:4px 0 12px;font-size:13px;font-weight:800;letter-spacing:.07em}.head span:last-child{color:var(--purple)}h1{font-size:clamp(23px,6vw,32px);line-height:1.25;margin:20px 0 8px}.lead{color:var(--muted);margin:0 0 18px}.panel{background:#fff;border:2px solid var(--ink);border-radius:8px;padding:16px;margin:14px 0}.panel h2{font-size:17px;margin:0 0 8px}.instructions{font-size:14px;margin:0;color:var(--muted)}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}.toolbar label{font-size:13px;font-weight:700}.toolbar select{font:inherit;padding:9px 34px 9px 10px;border:1px solid #bbb8ad;border-radius:7px;background:white;min-height:44px;color:var(--ink)}.items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}.item{background:#fff;border:1.5px solid var(--line);border-radius:8px;text-align:left;padding:11px;min-height:64px;color:var(--ink);font:inherit;cursor:pointer}.item b{display:block;font-size:15px}.item small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.item[aria-pressed="true"]{outline:3px solid var(--purple);border-color:var(--purple);background:#f1efff}.item:disabled{opacity:.52;cursor:default}.locations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.place{position:relative;background:#faf9f5;border:2px dashed #aaa79f;border-radius:8px;min-height:94px;padding:10px;text-align:left;color:var(--ink);font:inherit;cursor:pointer}.place strong{display:block}.place small{color:var(--muted)}.place .occupants{display:block;margin-top:6px;font-size:12px;color:#514a68;min-height:18px}.place:disabled{opacity:.52;cursor:default}.btn{min-height:46px;padding:10px 16px;border:2px solid var(--ink);border-radius:7px;background:var(--ink);color:white;font:inherit;font-weight:800;cursor:pointer}.btn.secondary{background:white;color:var(--ink)}.btn:focus-visible,.item:focus-visible,.place:focus-visible,select:focus-visible{outline:3px solid var(--purple);outline-offset:2px}.status{font-size:14px;min-height:24px;margin:10px 0 0;font-weight:700}.result{display:none;background:var(--mint);border-radius:8px;padding:14px;margin-top:14px}.result.show{display:block}.result p{margin:4px 0}.score{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.score span{background:#fff;border-radius:20px;padding:5px 10px;font-size:12px;font-weight:700}.legend{font-size:12px;color:var(--muted);margin-top:9px}.history{font-size:13px;padding-left:20px;margin:8px 0 0}.foot{font-size:12px;color:var(--muted);text-align:center;margin-top:16px}@media(min-width:600px){.wrap{padding:24px}.items{grid-template-columns:repeat(3,1fr)}.locations{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body><main class="wrap">
+<div class="head"><span>GAME DESIGN LAB / DAY 09</span><span>PLAY & MODIFY</span></div>
+<h1>新しい部屋に、持ち物の居場所をつくる</h1>
+<p class="lead">箱の中の5つを、限られた場所へ。どこに置くかで、その人らしさが少し見えてきます。</p>
+<section class="panel" aria-labelledby="how"><h2 id="how">遊び方</h2><p class="instructions">①持ち物を選び、②置き場所をタップ。全部置いたら結果を見ます。置いた物をもう一度タップすると移動できます。置き場所の上限は実験室で変えられ、変更すると配置がリセットされます。</p>
+<div class="toolbar"><label for="capacity">実験室｜各場所に置ける数</label><select id="capacity"><option value="2" selected>2個（ほどよい制約）</option><option value="1">1個（厳しい制約）</option><option value="3">3個（ゆるい制約）</option></select><button class="btn secondary" id="restart" type="button">最初から</button></div>
+<p class="legend">比較のコツ：始める前に「選びやすさ」「迷い」「部屋が自分らしくなった感じ」を予想し、設定を変えて確かめましょう。</p>
+</section>
+<section class="panel" aria-labelledby="box"><h2 id="box">箱の中身 <span id="placedCount">0 / 5</span></h2><div class="items" id="items"></div><p class="status" id="status" aria-live="polite">持ち物を1つ選んでください。</p></section>
+<section class="panel" aria-labelledby="room"><h2 id="room">部屋の置き場所</h2><div class="locations" id="locations"></div><div class="result" id="result" aria-live="polite"></div></section>
+<section class="panel"><h2>記録して比べる</h2><p class="instructions">制約を変えて2回遊び、各回の判断と結果を比べます。これは学習用の簡易モデルです。現実のプレイヤー全員の感情を測るものではありません。</p><ol class="history" id="history"><li>まだ記録はありません。</li></ol></section>
+<p class="foot">このデモは教材用に制作したオリジナル作品です。Unpackingの画像・音声・コードは使用していません。</p>
+</main>
+<script>
+'use strict';
+// 改造ポイント1：各場所の収容上限。1〜3の値を変えて、選択や結果の変化を比べる。
+const DEFAULT_CAPACITY=2;
+// 改造ポイント2：持ち物の名前と「置きたい場所」。候補を変えると、選択に生まれる迷いも変わる。
+const ITEMS=[
+ {id:'mug',name:'マグカップ',hint:'毎朝使うもの',home:'desk',tag:'朝の習慣'},
+ {id:'plant',name:'小さな観葉植物',hint:'窓辺に置きたい',home:'window',tag:'部屋を育てる'},
+ {id:'book',name:'読みかけの本',hint:'寝る前に読む',home:'bed',tag:'夜の習慣'},
+ {id:'pad',name:'ゲームパッド',hint:'よく遊ぶ道具',home:'desk',tag:'好きなこと'},
+ {id:'shoes',name:'スニーカー',hint:'外出で使う',home:'door',tag:'外とのつながり'}
+];
+const SPOTS=[{id:'desk',name:'机',color:'#f1efff'},{id:'window',name:'窓辺',color:'#eaf3e7'},{id:'bed',name:'ベッド脇',color:'#f7e8e5'},{id:'door',name:'玄関',color:'#f5edcf'},{id:'shelf',name:'棚',color:'#e9edf0'}];
+let capacity=DEFAULT_CAPACITY, selected=null, placements={}, runs=[];
+const $=id=>document.getElementById(id);
+function render(){
+ $('items').innerHTML=ITEMS.map(i=>{let spot=placements[i.id];return `<button class="item" type="button" data-item="${i.id}" aria-pressed="${selected===i.id}"><b>${i.name}</b><small>${spot?`${SPOTS.find(s=>s.id===spot).name}に置いた｜タップで移動`:`${i.hint}｜${i.tag}`}</small></button>`}).join('');
+ $('locations').innerHTML=SPOTS.map(s=>{const occupants=ITEMS.filter(i=>placements[i.id]===s.id);let full=occupants.length>=capacity;return `<button class="place" type="button" data-spot="${s.id}" style="background:${s.color}" ${full?'disabled':''}><strong>${s.name}</strong><small>${occupants.length} / ${capacity} 個</small><span class="occupants">${occupants.map(i=>i.name).join('、')||'ここに置く'}</span></button>`}).join('');
+ $('placedCount').textContent=`${Object.keys(placements).length} / ${ITEMS.length}`;
+ $('status').textContent=selected?`${ITEMS.find(i=>i.id===selected).name}をどこに置きますか？`:'持ち物を1つ選んでください。';
+ $('items').querySelectorAll('[data-item]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.item;if(selected===id){selected=null;render();return}if(placements[id])delete placements[id];selected=id;render()}));
+ $('locations').querySelectorAll('[data-spot]').forEach(b=>b.addEventListener('click',()=>place(b.dataset.spot)));
+ if(Object.keys(placements).length===ITEMS.length)finish();else $('result').classList.remove('show');
+}
+function place(spot){if(!selected)return;const count=ITEMS.filter(i=>placements[i.id]===spot).length;if(count>=capacity){$('status').textContent='いっぱいです。別の場所を選ぶか、置いた物を選んで移動してください。';return}placements[selected]=spot;selected=null;render()}
+function finish(){const matches=ITEMS.filter(i=>placements[i.id]===i.home).length;const clusters=SPOTS.filter(s=>ITEMS.filter(i=>placements[i.id]===s.id).length>1).length;let headline=matches>=4?'暮らしの習慣が見える部屋':matches>=2?'自分らしい工夫が見える部屋':'思いがけない配置の部屋';let story=matches>=4?'よく使う物に、自然と手の届く居場所を選びました。':matches>=2?'便利さと自分の好みを混ぜて、部屋を整えました。':'いつもの置き方を外したことで、新しい暮らし方が見えてきます。';
+ $('result').innerHTML=`<strong>できあがり｜${headline}</strong><p>${story}</p><div class="score"><span>使いたい場所に置いた ${matches} / 5</span><span>物が集まった場所 ${clusters}</span><span>制約 ${capacity}個 / 場所</span></div><p class="instructions">問い：置きやすさが変わると、選び方や「この人らしい」という読み取りはどう変わりましたか？</p>`;$('result').classList.add('show');runs.unshift(`上限${capacity}個：希望場所に${matches}/5個｜物を置く選択を完了`);runs=runs.slice(0,4);$('history').innerHTML=runs.map(r=>`<li>${r}</li>`).join('');$('status').textContent='全部置けました。設定を変えて、もう一度比べてみましょう。'}
+$('capacity').addEventListener('change',e=>{capacity=Number(e.target.value);placements={};selected=null;render();$('status').textContent=`上限を${capacity}個に変更しました。箱を開け直して比べましょう。`});
+$('restart').addEventListener('click',()=>{placements={};selected=null;render();$('status').textContent='箱を開けました。持ち物を選んでください。'});
+render();
+</script></body></html>
