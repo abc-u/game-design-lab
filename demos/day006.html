@@ -3,246 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>予告つき防衛ライン｜Game Design Lab DAY 06</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#f4f3ee">
+<title>予告を読んで、次の作戦へ｜Game Design Lab DAY 06</title>
 <style>
-:root{--bg:#f4f3ee;--ink:#16161a;--accent:#5b3df5;--warn:#d9480f;--line:2px solid #16161a;--shadow:4px 4px 0 #16161a;--pixel:"DotGothic16",sans-serif}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:15px/1.6 "Zen Kaku Gothic New",sans-serif;overflow-x:hidden}
-main{max-width:480px;margin:0 auto;padding:14px 14px 20px}
-h1{font-family:var(--pixel);font-weight:400;font-size:24px;line-height:1.25;margin:2px 0 4px}
-h2{font-family:var(--pixel);font-weight:400;font-size:17px;margin:0 0 4px}
-.kicker{font-family:var(--pixel);font-size:13px;color:var(--accent)}
-.desc{font-size:13px;margin:0 0 10px}
-.bar{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.pill{border:var(--line);background:#fff;padding:2px 8px;font-size:13px}
-.pill b{font-family:var(--pixel);font-weight:400;color:var(--accent);font-size:16px}
-.msg{min-height:44px;border:var(--line);background:#fff;padding:6px 10px;font-size:13px;margin:8px 0}
-.board{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}
-.cell{position:relative;aspect-ratio:1;border:var(--line);background:#fff;padding:0;display:flex;align-items:center;justify-content:center;font-family:var(--pixel);font-size:22px;color:var(--ink);cursor:default;touch-action:manipulation;min-width:0}
-.cell.enemy{background:#e9e5ff;cursor:pointer}
-.cell.sel{outline:3px solid var(--accent);outline-offset:1px;background:#d8d0ff}
-.cell.bld{background:#d9d6cb}
-.cell.bld.dead{background:#fff;color:#999;border-style:dashed}
-.cell.target::after{content:"";position:absolute;inset:3px;border:3px dashed var(--accent);pointer-events:none}
-.cell.hit{animation:flash .5s}
-@keyframes flash{0%{background:var(--warn)}100%{}}
-.hp{position:absolute;left:3px;bottom:1px;font-size:11px;letter-spacing:1px}
-.tele{position:absolute;right:3px;top:0;font-size:15px;color:var(--accent)}
-.tele.hid{color:#777}
-.mark{position:absolute;right:3px;bottom:1px;font-size:11px;color:var(--accent)}
-.btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 6px}
-button.b{font:inherit;font-weight:700;font-size:14px;min-height:46px;border:var(--line);background:#fff;color:var(--ink);box-shadow:var(--shadow);cursor:pointer;touch-action:manipulation;padding:4px}
-button.b:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-button.b.main{background:var(--accent);color:#fff}
-button.b:disabled{opacity:.4;box-shadow:none;cursor:default}
-.end{width:100%;margin-top:6px}
-.lab{margin-top:14px;border:var(--line);background:#fff;padding:8px 10px}
-.lab summary{font-family:var(--pixel);font-size:16px;cursor:pointer}
-.ctl{margin-top:10px}
-.ctl label{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
-.ctl output{font-family:var(--pixel);color:var(--accent)}
-input[type=range]{width:100%;accent-color:var(--accent);min-height:30px;margin:2px 0}
-.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.cmp div{border:var(--line);padding:6px 8px;font-size:12px;min-height:56px}
-.cmp strong{display:block;font-family:var(--pixel);font-weight:400;color:var(--accent);font-size:13px}
-.hint{font-size:11px;margin-top:8px}
-.hint code{background:#e9e5ff;padding:0 3px}
-.result{display:none;margin-top:12px;border:var(--line);background:#fff;padding:10px 12px;box-shadow:var(--shadow)}
-.result p{margin:4px 0;font-size:13px}
-.legend{font-size:12px;margin:2px 0 0}
-.foot{font-size:11px;margin-top:10px}
-@media(max-width:400px){main{padding:10px}.cell{font-size:19px}h1{font-size:21px}}
+:root{--bg:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--red:#d9480f;--line:2px solid var(--ink);--shadow:3px 3px 0 var(--ink)}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;overflow-x:hidden}main{max-width:470px;margin:auto;padding:12px 14px 18px}.kicker{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--purple)}h1{font-size:23px;line-height:1.25;margin:2px 0 4px}h2{font-size:17px;margin:0 0 5px}.desc{font-size:13px;margin:0 0 9px}.goal{border-left:4px solid var(--purple);padding:5px 9px;background:#fff;font-size:13px;margin:8px 0}.stats{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}.pill{border:var(--line);background:#fff;padding:2px 7px;font-size:12px}.pill b{color:var(--purple)}.msg{min-height:43px;border:var(--line);background:white;padding:7px 9px;font-size:13px;margin:7px 0}.board{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}.cell{position:relative;aspect-ratio:1;border:var(--line);background:#fff;display:flex;align-items:center;justify-content:center;padding:0;font:700 18px/1 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;cursor:default;touch-action:manipulation;min-width:0}.cell.enemy{background:#e9e5ff;cursor:pointer}.cell.sel{outline:3px solid var(--purple);outline-offset:1px;background:#d8d0ff}.cell.home{background:#ddd9cd}.cell.home.dead{background:white;color:#999;border-style:dashed}.cell.target:after{content:"";position:absolute;inset:3px;border:3px dashed var(--purple);pointer-events:none}.cell.hit{animation:hit .35s}@keyframes hit{50%{background:#ffc3aa}}.hp{position:absolute;left:2px;bottom:0;font-size:9px;letter-spacing:0}.arrow{position:absolute;right:2px;top:0;color:var(--purple);font-size:13px}.unknown{color:#666}.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:9px 0 6px}button{font:inherit}button.action,button.primary{min-height:44px;border:var(--line);background:#fff;box-shadow:var(--shadow);font-weight:700;padding:5px;touch-action:manipulation;cursor:pointer}button.primary{background:var(--purple);color:#fff;width:100%;margin-top:4px}button:disabled{opacity:.4;box-shadow:none;cursor:default}button:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}.legend{font-size:11px;margin:3px 0}.lab{margin-top:12px;border:var(--line);background:#fff;padding:8px 10px}.lab summary{font-weight:700;cursor:pointer}.ctl{margin-top:8px}.ctl label{display:flex;justify-content:space-between;gap:6px;font-size:12px;font-weight:700}.ctl output{font-weight:700;color:var(--purple)}input[type=range]{width:100%;min-height:28px;accent-color:var(--purple);margin:1px 0}input[type=checkbox]{width:20px;height:20px;accent-color:var(--purple);vertical-align:middle}.check{display:flex;gap:8px;align-items:center;font-size:12px;margin-top:7px}.result{display:none;margin-top:11px;border:var(--line);background:#fff;padding:9px 10px;box-shadow:var(--shadow)}.result p{font-size:13px;margin:4px 0}.result .next{background:#f0edff;padding:7px 8px;margin:7px 0;font-size:12px}.resultBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.resultBtns button{min-height:44px;border:var(--line);padding:5px;font-weight:700;background:#fff;box-shadow:var(--shadow);cursor:pointer}.resultBtns .primary{background:var(--purple);color:#fff;margin:0;width:auto}.compare{font-size:11px;margin:7px 0 0;color:#444}.foot{font-size:10px;margin:9px 0 0;color:#444}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #f0a000;outline-offset:2px}@media(max-width:360px){main{padding:10px}.cell{font-size:16px}h1{font-size:21px}.resultBtns{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <main>
-<div class="kicker">GAME DESIGN LAB · DAY 06</div>
-<h1>予告つき防衛ライン</h1>
-<p class="desc">敵は毎ターン、真下のマスを攻撃する。敵をタップして、押す・撃つで被害を減らそう。1プレイ約2分。</p>
+  <div class="kicker">GAME DESIGN LAB · DAY 06</div>
+  <h1>予告を読んで、次の作戦へ</h1>
+  <p class="desc">敵の攻撃先を読み、押す・撃つで街を守ろう。短い戦闘を通じて「一手を選ぶ理由」と「次を試す理由」を比べます。</p>
+  <p class="goal"><b>今回の目標：</b>6ターン、家の耐久をできるだけ残す。攻撃予告のマスを見て、敵を選んでから行動。</p>
+  <div class="stats"><span class="pill">作戦 <b id="mission">1</b></span><span class="pill">ターン <b id="turn">1</b>/<span id="turns">6</span></span><span class="pill">行動 <b id="ap">3</b></span><span class="pill">家の耐久 <b id="hp">10</b></span><span class="pill">撃破 <b id="kills">0</b></span></div>
+  <div class="msg" id="msg" aria-live="polite">敵をタップして、押すか撃つ。紫の点線の家を守ろう。</div>
+  <div class="board" id="board" aria-label="5列5行の防衛盤面"></div>
+  <p class="legend">紫の点線＝敵が狙う家　↓＝攻撃予告　？＝狙いが不明　家の■＝耐久</p>
+  <div class="buttons"><button class="action" id="left">◀ 押す</button><button class="action" id="shoot">撃つ</button><button class="action" id="right">押す ▶</button></div>
+  <button class="primary" id="end">ターン終了｜敵が攻撃する</button>
 
-<div class="bar">
-  <span class="pill">ターン <b id="turn">1</b>/<span id="turns">6</span></span>
-  <span class="pill">行動 <b id="ap">3</b></span>
-  <span class="pill">家の耐久 <b id="bhp">10</b></span>
-  <span class="pill">撃破 <b id="kills">0</b></span>
-</div>
-<div class="msg" id="msg" aria-live="polite"></div>
-<div class="board" id="board" aria-label="5×5の盤面"></div>
-<p class="legend">紫の点線＝敵が次に攻撃するマス　「?」＝予告なし　「ハズレ」はときどき起きる</p>
+  <details class="lab" open>
+    <summary>実験室｜何を変えると、続けたくなる？</summary>
+    <div class="ctl"><label for="tele">攻撃予告が見える敵 <output id="teleOut"></output></label><input id="tele" type="range" min="0" max="100" step="25" value="100"></div>
+    <div class="ctl"><label for="actions">1ターンの行動回数 <output id="actionsOut"></output></label><input id="actions" type="range" min="1" max="4" step="1" value="3"></div>
+    <label class="check"><input id="nextGoal" type="checkbox" checked>結果画面に「次の目標」を表示する</label>
+    <p class="compare" id="compare">前回の結果：なし。まず1回遊んで、基準を作ろう。</p>
+    <p class="foot">改造ポイント：下の <code>DEFAULTS</code> と <code>spawn()</code>。予告・行動回数・敵の出方を変えられます。</p>
+  </details>
 
-<div class="btns">
-  <button class="b" id="pushL">◀ 押す</button>
-  <button class="b" id="shoot">撃つ</button>
-  <button class="b" id="pushR">押す ▶</button>
-</div>
-<button class="b main end" id="endTurn">ターン終了（敵が動く）</button>
-
-<details class="lab" open>
-  <summary>実験室｜予告の出し方を変える</summary>
-  <div class="ctl"><label for="tele">予告が見える敵の割合 <output id="teleOut"></output></label>
-    <input id="tele" type="range" min="0" max="100" step="25"></div>
-  <div class="ctl"><label for="actions">1ターンの行動回数 <output id="actionsOut"></output></label>
-    <input id="actions" type="range" min="1" max="4" step="1"></div>
-  <div class="ctl"><label for="miss">予告がハズレる確率 <output id="missOut"></output></label>
-    <input id="miss" type="range" min="0" max="50" step="10"></div>
-  <div class="cmp">
-    <div><strong>前回の結果</strong><span id="prev">まだありません</span></div>
-    <div><strong>今の設定</strong><span id="cur"></span></div>
-  </div>
-  <p class="hint">改造ポイント：ファイル先頭近くの <code>DEFAULTS</code>。敵の数・耐久・ターン数を変えられます。</p>
-</details>
-
-<div class="result" id="result" aria-live="polite">
-  <h2 id="rTitle"></h2>
-  <p id="rText"></p>
-  <button class="b main end" id="again">同じ盤面でもう一度</button>
-</div>
-<p class="foot">オリジナルの学習用デモです。盤面の並びは毎回同じなので、設定だけを変えて結果を比べられます。</p>
+  <section class="result" id="result" aria-live="polite">
+    <h2 id="resultTitle">作戦結果</h2><p id="resultText"></p>
+    <div class="next" id="nextText"></div>
+    <p class="compare" id="replayCount"></p>
+    <div class="resultBtns"><button id="retry">同じ盤面でもう一度</button><button class="primary" id="next">次の作戦へ</button></div>
+  </section>
+  <p class="foot">オリジナルの学習用ゲームです。結果はこのブラウザ内だけで表示し、記録を送信しません。設定を一つずつ変え、予想と遊び方を比べてください。</p>
 </main>
-
 <script>
 'use strict';
-// ===== 改造ポイント：初期値はここにまとめています =====
+// ===== 改造ポイント：この値を変えると、初期ルールが変わります =====
 const DEFAULTS = {
-  turns: 6,        // ゲームのターン数
-  actions: 3,      // 1ターンに使える行動回数（押す・撃つ 各1回）
-  spawn: 3,        // 毎ターン、上の列に現れる敵の数
-  telegraph: 100,  // 予告が見える敵の割合（%）。0なら攻撃先は見えない
-  miss: 0,         // 予告と違うマスを攻撃する確率（%）。大きいほど予告を信用できない
-  spawnRow: 1,     // 敵が現れる行（0=最上段）。大きいほど家に早く届く
-  enemyHp: 2,      // 敵の耐久
+  turns: 6,        // 1プレイの長さ。短いほど結果まで早く届く
+  actions: 3,      // 1ターンに選べる行動数。多いほど脅威に対処しやすい
+  spawn: 3,        // 敵が出る数
+  telegraph: 100,  // 攻撃先を見せる割合（%）
   buildingHp: 2,   // 家1軒の耐久
-  seed: 7          // 敵が出る位置の乱数の種。同じ値なら毎回同じ盤面になる
+  seed: 7          // 同じ盤面を比べるための固定値
 };
-// ====================================================
-const SIZE = 5, BROW = 4;           // 5×5。最下段(4行目)が家
-const $ = id => document.getElementById(id);
-const P = { ...DEFAULTS };          // 実験室のスライダーで書き換わる現在値
-let G, sel = null, prev = null;
-
-function rng(seed){ let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-
-function fresh(){
-  return { turn: 1, ap: P.actions, enemies: [], b: Array(SIZE).fill(P.buildingHp), kills: 0,
-           surprise: 0, seen: 0, over: false, rs: rng(P.seed), rm: rng(P.seed + 99), id: 0, hitCells: new Set() };
-}
-function enemyAt(c, r){ return G.enemies.find(e => e.c === c && e.r === r); }
-function spawn(){
-  for (let i = 0; i < P.spawn; i++){
-    for (let t = 0; t < 6; t++){
-      const c = Math.floor(G.rs() * SIZE);
-      const shown = G.rm() * 100 < P.telegraph;
-      if (!enemyAt(c, P.spawnRow)){ G.enemies.push({ id: G.id++, c, r: P.spawnRow, hp: P.enemyHp, shown }); break; }
-    }
-  }
-}
-function say(s){ $('msg').textContent = s; }
-
+// ================================================================
+const SIZE=5, HOME_ROW=4, $=id=>document.getElementById(id);
+const P={...DEFAULTS};let G,selected=null,missionNo=1,runCount=0,lastResult=null;
+function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function fresh(seed){return{turn:1,ap:P.actions,enemies:[],homes:Array(SIZE).fill(P.buildingHp),kills:0,seenDamage:0,hiddenDamage:0,over:false,rs:rng(seed),rpos:rng(seed+71),rAim:rng(seed+131),id:0,hit:new Set()};}
+function at(c,r){return G.enemies.find(e=>e.c===c&&e.r===r);}
+function spawn(){for(let i=0;i<P.spawn;i++){for(let n=0;n<8;n++){const c=Math.floor(G.rs()*SIZE);if(!at(c,0)){const shown=G.rpos()*100<P.telegraph;G.enemies.push({id:G.id++,c,r:0,hp:2,shown,aim:shown?c:Math.floor(G.rAim()*SIZE)});break;}}}}
+function say(s){$('msg').textContent=s;}
 function render(){
-  $('turn').textContent = G.turn; $('turns').textContent = P.turns; $('ap').textContent = G.ap;
-  $('bhp').textContent = G.b.reduce((a, b) => a + b, 0); $('kills').textContent = G.kills;
-  const board = $('board'); board.replaceChildren();
-  const targets = new Set(G.enemies.filter(e => e.shown).map(e => e.c + ',' + (e.r + 1)));
-  for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++){
-    const e = enemyAt(c, r), d = document.createElement('button');
-    d.type = 'button'; d.className = 'cell';
-    if (r === BROW){
-      d.classList.add('bld'); const hp = G.b[c];
-      if (hp <= 0) d.classList.add('dead');
-      d.textContent = hp > 0 ? '家' : '×';
-      if (hp > 0) d.insertAdjacentHTML('beforeend', '<span class="hp">' + '■'.repeat(hp) + '</span>');
-      d.setAttribute('aria-label', (c + 1) + '列の家 耐久' + hp);
-    } else if (e){
-      d.classList.add('enemy'); if (sel === e.id) d.classList.add('sel');
-      d.textContent = '敵';
-      d.insertAdjacentHTML('beforeend', '<span class="hp">' + '■'.repeat(e.hp) + '</span><span class="tele ' + (e.shown ? '' : 'hid') + '">' + (e.shown ? '↓' : '?') + '</span>');
-      d.setAttribute('aria-label', (c + 1) + '列' + (r + 1) + '行の敵 耐久' + e.hp + (e.shown ? ' 下を攻撃' : ' 攻撃先は不明'));
-      d.addEventListener('click', () => { if (G.over) return; sel = sel === e.id ? null : e.id; render(); });
-    } else d.setAttribute('aria-label', (c + 1) + '列' + (r + 1) + '行 空き');
-    if (targets.has(c + ',' + r)) d.classList.add('target');
-    if (G.hitCells.has(c + ',' + r)) d.classList.add('hit');
-    board.append(d);
+  $('mission').textContent=missionNo;$('turn').textContent=G.turn;$('turns').textContent=P.turns;$('ap').textContent=G.ap;$('hp').textContent=G.homes.reduce((a,b)=>a+b,0);$('kills').textContent=G.kills;
+  const board=$('board');board.replaceChildren();const targets=new Set(G.enemies.filter(e=>e.shown).map(e=>e.aim+','+HOME_ROW));
+  for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const e=at(c,r),b=document.createElement('button');b.type='button';b.className='cell';
+    if(r===HOME_ROW){b.classList.add('home');if(G.homes[c]<=0)b.classList.add('dead');b.textContent=G.homes[c]>0?'家':'×';if(G.homes[c]>0)b.insertAdjacentHTML('beforeend','<span class="hp">'+'■'.repeat(G.homes[c])+'</span>');b.setAttribute('aria-label',(c+1)+'列目の家、耐久'+G.homes[c]);}
+    else if(e){b.classList.add('enemy');if(e.id===selected)b.classList.add('sel');b.textContent='敵';b.insertAdjacentHTML('beforeend','<span class="hp">'+'■'.repeat(e.hp)+'</span><span class="arrow '+(e.shown?'':'unknown')+'">'+(e.shown?'↓':'？')+'</span>');b.setAttribute('aria-label',(c+1)+'列目の敵、耐久'+e.hp+(e.shown?'、紫点線の家を攻撃':'、攻撃先不明'));b.addEventListener('click',()=>{if(!G.over){selected=selected===e.id?null:e.id;render();}});}
+    else b.setAttribute('aria-label',(c+1)+'列目、'+(r+1)+'行目、空き');
+    if(targets.has(c+','+r))b.classList.add('target');if(G.hit.has(c+','+r))b.classList.add('hit');board.append(b);
   }
-  G.hitCells.clear();
-  const has = G.enemies.some(x => x.id === sel), can = !G.over && G.ap > 0 && has;
-  $('pushL').disabled = $('pushR').disabled = $('shoot').disabled = !can;
-  $('endTurn').disabled = G.over;
-  $('cur').textContent = '予告' + P.telegraph + '%・行動' + P.actions + '回・ハズレ' + P.miss + '%';
+  G.hit.clear();const selectedExists=G.enemies.some(e=>e.id===selected),can=!G.over&&G.ap>0&&selectedExists;
+  $('left').disabled=$('right').disabled=$('shoot').disabled=!can;$('end').disabled=G.over;
+  $('teleOut').textContent=P.telegraph+'%';$('actionsOut').textContent=P.actions+'回';
 }
-
-function act(kind){
-  const e = G.enemies.find(x => x.id === sel); if (!e || G.ap <= 0 || G.over) return;
-  if (kind === 'shoot'){
-    e.hp--; G.hitCells.add(e.c + ',' + e.r);
-    if (e.hp <= 0){ G.enemies = G.enemies.filter(x => x !== e); G.kills++; sel = null; say('撃破！攻撃は消えた。'); } else say('命中。耐久が減った。');
-  } else {
-    const nc = e.c + (kind === 'L' ? -1 : 1);
-    if (nc < 0 || nc >= SIZE){ say('端なので押せない。行動は減らない。'); return; }
-    const o = enemyAt(nc, e.r);
-    if (o){
-      e.hp--; o.hp--; G.hitCells.add(e.c + ',' + e.r); G.hitCells.add(o.c + ',' + o.r);
-      for (const x of [e, o]) if (x.hp <= 0){ G.enemies = G.enemies.filter(y => y !== x); G.kills++; if (sel === x.id) sel = null; }
-      say('敵どうしがぶつかり、両方にダメージ！');
-    } else { e.c = nc; say('押した。攻撃先が横にずれた。'); }
+function action(type){const e=G.enemies.find(x=>x.id===selected);if(!e||G.ap<1||G.over)return;
+  if(type==='shoot'){e.hp--;G.hit.add(e.c+','+e.r);if(e.hp<=0){G.enemies=G.enemies.filter(x=>x!==e);G.kills++;selected=null;say('撃破。次の攻撃が一つ消えた。');}else say('命中。敵の耐久が減った。');}
+  else{const nc=e.c+(type==='left'?-1:1);if(nc<0||nc>=SIZE){say('盤面の端には押せない。行動は残る。');return;}const other=at(nc,e.r);if(other){e.hp--;other.hp--;G.hit.add(e.c+','+e.r);G.hit.add(other.c+','+other.r);for(const x of[e,other])if(x.hp<=0){G.enemies=G.enemies.filter(y=>y!==x);G.kills++;if(selected===x.id)selected=null;}say('敵同士が衝突。両方の耐久が減った。');}else{const shift=nc-e.c;e.c=nc;e.aim=Math.max(0,Math.min(SIZE-1,e.aim+shift));say('押した。敵の位置と狙う家が横にずれた。');}}
+  G.ap--;render();
+}
+function endTurn(){if(G.over)return;let damage=0,hidden=0;const order=[...G.enemies].sort((a,b)=>b.r-a.r||a.c-b.c);
+  for(const e of order){if(!G.enemies.includes(e))continue;const target=at(e.c,e.r+1);if(e.r+1===HOME_ROW){if(G.homes[e.aim]>0){G.homes[e.aim]--;damage++;if(e.shown)G.seenDamage++;else{G.hiddenDamage++;hidden++;}G.hit.add(e.aim+','+HOME_ROW);}}else if(target){target.hp--;G.hit.add(target.c+','+target.r);if(target.hp<=0){G.enemies=G.enemies.filter(x=>x!==target);G.kills++;}}
+    if(e.r<HOME_ROW-1&&!at(e.c,e.r+1)&&G.enemies.includes(e))e.r++;
   }
-  G.ap--; render();
+  if(G.turn>=P.turns){finish();return;}G.turn++;G.ap=P.actions;selected=null;spawn();say(damage?'家に'+damage+'件の被害。次の攻撃が見えた。'+(hidden?'（うち予告なし '+hidden+' 件）':''):'被害なし。次の攻撃が見えた。');render();
 }
-
-function endTurn(){
-  if (G.over) return;
-  let log = [], bad = 0;
-  const order = [...G.enemies].sort((a, b) => b.r - a.r || a.c - b.c);
-  for (const e of order){
-    if (!G.enemies.includes(e)) continue;
-    let tc = e.c, wobble = false;
-    if (G.rm() * 100 < P.miss){ tc = e.c + (G.rm() < 0.5 ? -1 : 1); if (tc < 0 || tc >= SIZE) tc = e.c; wobble = tc !== e.c; }
-    const tr = e.r + 1, o = enemyAt(tc, tr);
-    if (tr === BROW){
-      if (G.b[tc] > 0){ G.b[tc]--; bad++; G.hitCells.add(tc + ',' + tr); if (!e.shown || wobble) G.surprise++; else G.seen++; }
-    } else if (o){ o.hp--; G.hitCells.add(tc + ',' + tr); if (o.hp <= 0){ G.enemies = G.enemies.filter(y => y !== o); G.kills++; } }
-    if (tr < BROW && !enemyAt(e.c, tr) && G.enemies.includes(e)) e.r = tr;
-  }
-  if (G.turn >= P.turns){ finish(); return; }
-  G.turn++; G.ap = P.actions; sel = null; spawn();
-  say(bad ? '家が ' + bad + ' 回やられた。次の敵が現れた。' : '被害なし。次の敵が現れた。');
-  render();
-}
-
-function finish(){
-  G.over = true; render();
-  const hp = G.b.reduce((a, b) => a + b, 0), max = SIZE * P.buildingHp, alive = G.b.filter(x => x > 0).length;
-  const sum = '家の耐久 ' + hp + '/' + max + '・撃破 ' + G.kills + '・予告どおりの被害 ' + G.seen + '・不意の被害 ' + G.surprise;
-  $('rTitle').textContent = hp >= max * 0.7 ? '防衛成功！' : hp >= max * 0.4 ? 'なんとか持ちこたえた' : '街が大きく壊れた';
-  $('rText').textContent = sum + '（無事な家 ' + alive + '軒）。「不意の被害」は、予告が見えない・ハズレだったために防げなかった被害です。';
-  $('result').style.display = 'block';
-  prev = '予告' + P.telegraph + '%・行動' + P.actions + '・ハズレ' + P.miss + '% → ' + sum;
-  $('prev').textContent = prev;
-  say('終了。設定を変えて、同じ盤面でもう一度。');
-}
-
-function start(msg){
-  G = fresh(); sel = null; spawn();
-  $('result').style.display = 'none';
-  say(msg || '敵をタップ → 押す／撃つ。紫の点線の家を守ろう。');
-  render();
-}
-function sync(){
-  P.telegraph = +$('tele').value; P.actions = +$('actions').value; P.miss = +$('miss').value;
-  $('teleOut').value = P.telegraph + '%'; $('actionsOut').value = P.actions + '回'; $('missOut').value = P.miss + '%';
-}
-['tele', 'actions', 'miss'].forEach(id => $(id).addEventListener('input', () => { sync(); start('設定を変えて、最初からやり直した。'); }));
-$('pushL').addEventListener('click', () => act('L'));
-$('pushR').addEventListener('click', () => act('R'));
-$('shoot').addEventListener('click', () => act('shoot'));
-$('endTurn').addEventListener('click', endTurn);
-$('again').addEventListener('click', () => start());
-
-$('tele').value = DEFAULTS.telegraph; $('actions').value = DEFAULTS.actions; $('miss').value = DEFAULTS.miss;
-sync(); start();
+function finish(){G.over=true;render();const total=G.homes.reduce((a,b)=>a+b,0),max=SIZE*P.buildingHp,alive=G.homes.filter(x=>x>0).length;const summary='家の耐久 '+total+'/'+max+'・撃破 '+G.kills+'・予告ありの被害 '+G.seenDamage+'・予告なし '+G.hiddenDamage;
+  $('resultTitle').textContent=total>=max*.7?'防衛成功！':'街に被害が出た';$('resultText').textContent=summary+'。予告が見えたとき、どこまで防げたかを振り返ろう。';
+  $('nextText').textContent=$('nextGoal').checked?'次の目標：同じ街を、違う敵配置で守る。前回の作戦が通じるか試そう。':'次の目標は非表示。目標の手がかりがないと、再挑戦の理由は見つけやすい？';
+  $('result').style.display='block';lastResult={summary,tele:P.telegraph,actions:P.actions};runCount++;$('replayCount').textContent='この画面でのプレイ回数：'+runCount+'回。次の作戦を選ぶか、ここで終えるかも自分で決めよう。';$('compare').textContent='前回：'+summary+'（予告 '+P.telegraph+'%・行動 '+P.actions+'回）';say('作戦終了。結果から、次に変えるルールを一つ決めよう。');}
+function start(seed=P.seed,message='敵をタップして、押すか撃つ。攻撃予告を止めよう。'){G=fresh(seed);selected=null;spawn();$('result').style.display='none';say(message);render();}
+function sync(){P.telegraph=+$('tele').value;P.actions=+$('actions').value;}
+['tele','actions'].forEach(id=>$(id).addEventListener('input',()=>{sync();start(P.seed,'設定を変えた。予告と行動回数がプレイに反映される。');}));
+$('left').addEventListener('click',()=>action('left'));$('right').addEventListener('click',()=>action('right'));$('shoot').addEventListener('click',()=>action('shoot'));$('end').addEventListener('click',endTurn);
+$('retry').addEventListener('click',()=>start(P.seed,'同じ盤面で再挑戦。前の結果と比べてみよう。'));
+$('next').addEventListener('click',()=>{missionNo++;start(P.seed+missionNo*97,'新しい敵配置。前の作戦のどこを変える？');});
+$('nextGoal').addEventListener('change',()=>{if(G.over)$('nextText').textContent=$('nextGoal').checked?'次の目標：同じ街を、違う敵配置で守る。前回の作戦が通じるか試そう。':'次の目標は非表示。目標の手がかりがないと、再挑戦の理由は見つけやすい？';});
+sync();start();
 </script>
 </body>
 </html>
