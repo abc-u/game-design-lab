@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>星間ゲート審査｜Game Design Lab DAY 10</title>
+  <style>
+    :root{--ink:#16161a;--bg:#f4f3ee;--paper:#fff;--muted:#5b5b65;--accent:#5b3df5;--good:#137a4b;--bad:#b3261e;--line:2px solid var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55}button,input{font:inherit}button{min-height:48px;border:var(--line);border-radius:0;background:var(--paper);color:var(--ink);font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--ink);touch-action:manipulation}button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}button:disabled{opacity:.5;cursor:not-allowed}.app{max-width:760px;margin:auto;padding:18px 14px 40px}h1,h2,p{margin:0}h1{font-size:clamp(24px,6vw,36px);line-height:1.2}h2{font-size:19px}.kicker{color:var(--accent);font-weight:800;letter-spacing:.08em;margin-bottom:6px}.lead{margin-top:10px;color:var(--muted)}.box{margin-top:18px;padding:16px;background:var(--paper);border:var(--line)}.settings{display:grid;gap:16px}.setting label{display:flex;justify-content:space-between;gap:12px;font-weight:700}.setting input[type=range]{width:100%;min-height:40px;accent-color:var(--accent)}.toggle{display:flex;align-items:center;gap:10px}.toggle input{width:24px;height:24px;accent-color:var(--accent)}.primary{width:100%;background:var(--accent);color:#fff;margin-top:16px}.secondary{width:100%;margin-top:12px}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.stat{padding:8px 4px;border:1px solid var(--ink);background:var(--paper);text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:11px;color:var(--muted)}.rules{margin:8px 0 0;padding-left:22px}.rules li+li{margin-top:5px}.case{margin-top:14px}.person{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:12px;border-bottom:1px solid #bbb}.avatar{display:grid;place-items:center;flex:0 0 58px;height:58px;background:#e7e2ff;border:var(--line);font-size:28px}.person__text{flex:1}.person__name{font-size:20px;font-weight:800}.person__line{color:var(--muted)}.docs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.doc{padding:10px;border:1px solid var(--ink);background:#faf9f5}.doc small{display:block;color:var(--muted)}.story{margin-top:12px;padding:10px;border-left:5px solid var(--accent);background:#efecff}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.deny{background:#26262b;color:#fff}.allow{background:#e8fff2}.feedback{min-height:52px;margin-top:12px;padding:10px;border:1px dashed var(--ink);font-weight:700}.feedback.good{color:var(--good);border-color:var(--good)}.feedback.bad{color:var(--bad);border-color:var(--bad)}.result{text-align:left}.result h2{font-size:24px}.result__mark{font-size:42px;float:right}.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.summary div{padding:10px;border:1px solid var(--ink)}.summary b{display:block;font-size:22px}.history{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}.history th,.history td{padding:7px;border:1px solid var(--ink);text-align:left}.note{font-size:13px;color:var(--muted);margin-top:10px}.download{margin-top:20px;padding-top:16px;border-top:1px solid #bbb}.download button{width:100%}@media(max-width:480px){.app{padding-left:10px;padding-right:10px}.box{padding:13px}.docs{grid-template-columns:1fr}.hud{grid-template-columns:repeat(2,1fr)}.actions{position:sticky;bottom:8px;z-index:2}.actions button{min-height:56px}.summary{grid-template-columns:1fr 1fr}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <p class="kicker">DAY 10 · PLAYABLE LAB</p>
+  <h1>星間ゲート審査</h1>
+  <p class="lead">規則を読み、6人の通行を許可・拒否します。正確さだけでなく、事情を知ったとき判断がどう変わるか観察してください。</p>
+
+  <section class="box" id="setup" aria-labelledby="setupTitle">
+    <h2 id="setupTitle">改造ラボ｜開始前の設定</h2>
+    <div class="settings">
+      <div class="setting">
+        <label for="ruleCount"><span>同時に使う規則</span><output id="ruleOut">2個</output></label>
+        <input id="ruleCount" type="range" min="1" max="3" value="2" step="1">
+      </div>
+      <div class="setting">
+        <label for="timeLimit"><span>制限時間</span><output id="timeOut">60秒</output></label>
+        <input id="timeLimit" type="range" min="45" max="75" value="60" step="15">
+      </div>
+      <label class="toggle" for="storyOn"><input id="storyOn" type="checkbox" checked><span><strong>人物の事情を表示</strong><br><small>規則上の正解と助けたい気持ちが衝突する</small></span></label>
+    </div>
+    <button class="primary" id="start">審査を始める</button>
+    <p class="note">合格条件：時間内に6人を処理し、規則上の正解を5件以上。事情による救助は別に記録します。</p>
+  </section>
+
+  <section id="game" hidden aria-live="polite">
+    <div class="hud" aria-label="進行状況">
+      <div class="stat"><b id="progress">1/6</b><span>審査</span></div>
+      <div class="stat"><b id="timer">60</b><span>残り秒</span></div>
+      <div class="stat"><b id="correct">0</b><span>規則上の正解</span></div>
+      <div class="stat"><b id="rescued">0</b><span>救助</span></div>
+    </div>
+    <section class="box" aria-labelledby="rulesTitle">
+      <h2 id="rulesTitle">今日の通行規則</h2>
+      <ol class="rules" id="rules"></ol>
+    </section>
+    <section class="box case" id="caseBox" aria-labelledby="caseName">
+      <div class="person">
+        <div class="avatar" aria-hidden="true" id="avatar">◉</div>
+        <div class="person__text"><p class="person__name" id="caseName"></p><p class="person__line" id="caseLine"></p></div>
+      </div>
+      <div class="docs" id="docs"></div>
+      <p class="story" id="story"></p>
+      <div class="actions">
+        <button class="deny" id="deny">拒否する</button>
+        <button class="allow" id="allow">許可する</button>
+      </div>
+      <p class="feedback" id="feedback">規則と通行証を比べてください。</p>
+    </section>
+  </section>
+
+  <section class="box result" id="result" hidden aria-live="assertive">
+    <span class="result__mark" id="resultMark" aria-hidden="true">✓</span>
+    <p class="kicker">RESULT</p><h2 id="resultTitle"></h2><p id="resultText" class="lead"></p>
+    <div class="summary">
+      <div><b id="sumCorrect">0/6</b><span>規則上の正解</span></div><div><b id="sumRescued">0</b><span>事情を優先した救助</span></div><div><b id="sumTime">0秒</b><span>使った時間</span></div><div><b id="sumMiss">—</b><span>多かった見落とし</span></div>
+    </div>
+    <button class="primary" id="replay">同じ設定でもう一度</button>
+    <button class="secondary" id="change">設定を変える</button>
+  </section>
+
+  <section class="box" id="historyBox" hidden>
+    <h2>直近3回の比較</h2>
+    <table class="history"><thead><tr><th>規則</th><th>時間</th><th>事情</th><th>正解</th><th>救助</th></tr></thead><tbody id="history"></tbody></table>
+  </section>
+
+  <section class="download">
+    <button id="download">このデモHTMLをダウンロード</button>
+    <p class="note">記事ではなく、このゲームと改造ラボだけを単一HTMLで保存します。外部通信はしません。</p>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  // プレイ後の表示状態ではなく、編集しやすい初期状態のHTMLを保存する。
+  const ORIGINAL_HTML='<!doctype html>\n'+document.documentElement.outerHTML;
+  const $ = id => document.getElementById(id);
+  const RULES = [
+    { id:'sector', label:'出身区画が「青」だけ通行できる', check:c=>c.sector==='青', miss:'出身区画' },
+    { id:'permit', label:'通行証の期限が「有効」である', check:c=>c.permit==='有効', miss:'期限' },
+    { id:'cargo', label:'胞子コンテナの持ち込みは禁止', check:c=>c.cargo!=='胞子', miss:'積荷' }
+  ];
+  // 改造課題：CASESに、証言と書類の矛盾を持つ人物を追加してみよう。
+  const CASES = [
+    {name:'ミナ・レイ',sector:'青',permit:'有効',cargo:'種子',story:'研究区で新しい作物を育てます。',urgent:false,face:'◇'},
+    {name:'オル・タス',sector:'赤',permit:'有効',cargo:'工具',story:'事故で負傷した弟へ薬を届けたい。',urgent:true,face:'△'},
+    {name:'ユウ・ノア',sector:'青',permit:'失効',cargo:'衣類',story:'更新窓口が閉鎖され、帰る場所がありません。',urgent:true,face:'○'},
+    {name:'ケイ・ヴァン',sector:'青',permit:'有効',cargo:'胞子',story:'希少な胞子を市場へ運びます。',urgent:false,face:'□'},
+    {name:'サラ・エン',sector:'赤',permit:'失効',cargo:'胞子',story:'観光です。急いでください。',urgent:false,face:'▽'},
+    {name:'ハル・イオ',sector:'青',permit:'有効',cargo:'部品',story:'軌道エレベーターの修理班です。',urgent:false,face:'◎'}
+  ];
+  let state=null, ticker=null, history=[];
+  const settings=()=>({rules:+$('ruleCount').value,time:+$('timeLimit').value,story:$('storyOn').checked});
+  function syncSettings(){ $('ruleOut').textContent=$('ruleCount').value+'個'; $('timeOut').textContent=$('timeLimit').value+'秒'; }
+  function shuffledCases(){ return CASES.map(x=>({...x})).sort(()=>Math.random()-.5); }
+  function legal(c){ return RULES.slice(0,state.cfg.rules).every(r=>r.check(c)); }
+  function failures(c){ return RULES.slice(0,state.cfg.rules).filter(r=>!r.check(c)); }
+  function start(){
+    clearInterval(ticker); const cfg=settings();
+    state={cfg,cases:shuffledCases(),i:0,left:cfg.time,correct:0,rescued:0,start:Date.now(),misses:{},finished:false};
+    $('setup').hidden=true;$('result').hidden=true;$('game').hidden=false;
+    $('rules').innerHTML=RULES.slice(0,cfg.rules).map(r=>`<li>${r.label}</li>`).join('');
+    render(); ticker=setInterval(()=>{state.left--; $('timer').textContent=state.left; if(state.left<=0)finish('time');},1000);
+  }
+  function render(){
+    const c=state.cases[state.i];
+    $('progress').textContent=(state.i+1)+'/6';$('timer').textContent=state.left;$('correct').textContent=state.correct;$('rescued').textContent=state.rescued;
+    $('avatar').textContent=c.face;$('caseName').textContent=c.name;$('caseLine').textContent='通行希望者 #'+(state.i+1);
+    $('docs').innerHTML=`<div class="doc"><small>出身区画</small><strong>${c.sector}</strong></div><div class="doc"><small>通行証</small><strong>${c.permit}</strong></div><div class="doc"><small>積荷</small><strong>${c.cargo}</strong></div><div class="doc"><small>申請目的</small><strong>${c.urgent?'緊急':'通常'}</strong></div>`;
+    $('story').hidden=!state.cfg.story;$('story').textContent='「'+c.story+'」';
+    $('feedback').className='feedback';$('feedback').textContent='規則と通行証を比べてください。';
+    $('allow').disabled=false;$('deny').disabled=false;
+  }
+  function decide(allow){
+    if(!state||state.finished||state.i>=state.cases.length)return;
+    $('allow').disabled=true;$('deny').disabled=true;
+    const c=state.cases[state.i], should=legal(c), ok=allow===should, bad=failures(c);
+    if(ok) state.correct++; else bad.forEach(r=>state.misses[r.miss]=(state.misses[r.miss]||0)+1);
+    if(allow&&!should&&c.urgent&&state.cfg.story) state.rescued++;
+    $('correct').textContent=state.correct;$('rescued').textContent=state.rescued;
+    const f=$('feedback'); f.className='feedback '+(ok?'good':'bad');
+    if(ok) f.textContent=should?'規則どおり許可。照合成功。':'規則どおり拒否。違反：'+bad.map(r=>r.miss).join('・');
+    else if(allow&&c.urgent&&state.cfg.story) f.textContent='規則違反ですが事情を優先。救助として記録し、正確さは失いました。';
+    else f.textContent='見落とし：'+(bad.length?bad.map(r=>r.miss).join('・'):'規則上は通行できます');
+    setTimeout(()=>{if(!state||state.finished)return;state.i++;if(state.i>=state.cases.length)finish('done');else render();},650);
+  }
+  function finish(reason){
+    if(!state||state.finished)return;state.finished=true;clearInterval(ticker);ticker=null;$('game').hidden=true;$('result').hidden=false;
+    const passed=reason==='done'&&state.correct>=5, used=Math.min(state.cfg.time,Math.round((Date.now()-state.start)/1000));
+    const top=Object.entries(state.misses).sort((a,b)=>b[1]-a[1])[0];
+    $('resultMark').textContent=passed?'✓':'×';$('resultTitle').textContent=passed?'監査合格':'監査不合格';
+    $('resultText').textContent=reason==='time'?'時間切れ。情報を探す位置と優先順位を見直そう。':passed?'正確さを保って全員を処理しました。':'全員を処理しましたが、正解5件に届きませんでした。';
+    $('sumCorrect').textContent=state.correct+'/6';$('sumRescued').textContent=state.rescued;$('sumTime').textContent=used+'秒';$('sumMiss').textContent=top?top[0]:'なし';
+    history.unshift({rules:state.cfg.rules,time:state.cfg.time,story:state.cfg.story?'あり':'なし',correct:state.correct,rescued:state.rescued});history=history.slice(0,3);renderHistory();
+  }
+  function renderHistory(){ $('historyBox').hidden=false;$('history').innerHTML=history.map(h=>`<tr><td>${h.rules}個</td><td>${h.time}秒</td><td>${h.story}</td><td>${h.correct}/6</td><td>${h.rescued}</td></tr>`).join(''); }
+  function change(){clearInterval(ticker);ticker=null;state=null;$('result').hidden=true;$('game').hidden=true;$('setup').hidden=false;$('setup').scrollIntoView({behavior:'smooth'});}
+  function download(){
+    const url=URL.createObjectURL(new Blob([ORIGINAL_HTML],{type:'text/html;charset=utf-8'}));
+    const a=document.createElement('a');a.href=url;a.download='GameDesignLab_Day010_2026-10-24.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  $('ruleCount').addEventListener('input',syncSettings);$('timeLimit').addEventListener('input',syncSettings);
+  $('start').addEventListener('click',start);$('allow').addEventListener('click',()=>decide(true));$('deny').addEventListener('click',()=>decide(false));
+  $('replay').addEventListener('click',start);$('change').addEventListener('click',change);$('download').addEventListener('click',download);syncSettings();
+})();
+</script>
+</body>
+</html>

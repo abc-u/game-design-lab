@@ -1,0 +1,168 @@
+---
+day: 10
+date: 2026-10-24 00:00:00 +0900
+title: "書類作業が判断になるとき：『Papers, Please』の情報設計"
+theme: "情報の階層化と段階的複雑化"
+game: "Papers, Please"
+level: 中級
+minutes: 10
+summary: "増える規則を読める形に整理し、照合・時間・人情が一つの判断になる設計を学ぶ。"
+question: "情報を増やしても、プレイヤーが『分からない』ではなく『判断した』と感じるには？"
+goals:
+  - 情報量と判断の難しさを分け、認知負荷を調整する手順を説明できる
+  - 作品の入口・継続・離脱と、書類照合が葛藤へ変わる因果を分析できる
+  - 自作ゲームの規則数・参照距離・時間圧を変え、判断の手応えを比較できる
+video:
+  id: _QP5X6fcukM
+  title: "Papers, Please - Trailer｜Lucas Pope"
+  caption: "Lucas Pope公式トレーラー（2013年公開）。紙を動かす操作、警告音、人物の短い言葉が、事務作業を緊張へ変える順番に注目。"
+demo:
+  src: /demos/day010.html
+  title: "星間ゲート審査：規則と事情を照合する"
+  height: 1320
+sources:
+  - title: "Papers, Please 公式Presskit"
+    url: https://www.papersplea.se/presskit/
+    note: "発売日、開発・販売元、対応機種、20のエンディング、公式画像・受賞歴（2026-10-24確認）。"
+  - title: "Steam公式ストア『Papers, Please』"
+    url: https://store.steampowered.com/app/239030/Papers__Please/?l=english
+    note: "発売日、9.99米ドル、作品説明、レビュー表示（2026-10-24確認。価格・件数は地域や時点で変動）。"
+  - title: "Game Developer『Road to the IGF: Lucas Pope's Papers, Please』"
+    url: https://www.gamedeveloper.com/design/road-to-the-igf-lucas-pope-s-i-papers-please-i-
+    note: "2014-02-04公開。開発者インタビュー。旅券審査への着想、速度・正確さ・家族扶養の設計、約9か月の初期開発。"
+  - title: "Lucas Pope『Papers, Please Development Logs』"
+    url: https://dukope.com/devlogs/papers-please/
+    note: "2012〜2023年の開発記録一覧（2026-10-24確認）。公開デモ、反復開発、移植の一次資料。"
+  - title: "Game Developer『Papers, Please has sold 5 million copies in a decade』"
+    url: https://www.gamedeveloper.com/business/papers-please-has-sold-5-million-copies-in-a-decade
+    note: "2023-08-09公開。作者発表に基づく、10年間・全機種合計500万本の節目。"
+  - title: "Metacritic『Papers, Please critic reviews』"
+    url: https://www.metacritic.com/game/papers-please/critic-reviews/
+    note: "PC版40批評、Metascore 85。肯定39・賛否混合1・否定0（2026-10-24確認）。"
+  - title: "GameSpot『Papers, Please Review』"
+    url: https://www.gamespot.com/reviews/papers-please-review/1900-6412914/
+    note: "2013-10-08公開、8/10。道徳的判断と物語を評価し、照合指定の扱いにくさと日単位のやり直しを批判。"
+  - title: "Cabellosほか『Do pro-social video games promote moral activity?』"
+    url: https://link.springer.com/article/10.1007/s10639-022-11072-x
+    note: "2022-05-10公開。2013-08-08〜2020-06-05のスペインSteamレビュー1,560件を分析。標本範囲と研究目的に注意。"
+  - title: "Lucas Pope公式『Papers, Please - Trailer』"
+    url: https://www.youtube.com/watch?v=_QP5X6fcukM
+    note: "2013年公開の公式トレーラー。動画はYouTubeの公式埋め込みを使用。"
+sources_note: "販売500万本は作者が2023年に公表した全機種・10年間の節目で、現在の累計や売上額ではありません。Steam集計は2026-10-24確認時点で変動します。開発者発言、批評集計、限定されたレビュー研究、教材制作者の仮説を分けています。"
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：情報には「考えられる量」の上限がある</h2>
+  <p>選択肢を難しくしたいとき、規則や数値を一度に増やすだけでは、プレイヤーは判断せず見落とします。そこで設計者は、必要な情報を見つけ、比べ、決められる順番に整理します。</p>
+  <p>今回学ぶのは<strong>情報の階層化と段階的複雑化</strong>です。最初は核となる照合だけを覚えさせ、理解したところへ新しい規則を一つずつ加えます。難しさの中心を「暗記」ではなく「どの規則を使うかの判断」に置く技術です。</p>
+
+  <ol class="flow mt-m">
+    <li><b>見つける</b><span>今回見る情報を目立たせる</span></li>
+    <li><b>比べる</b><span>規則と対象を近くに置く</span></li>
+    <li><b>決める</b><span>許可・拒否など行動を絞る</span></li>
+    <li><b>学ぶ</b><span>理由つきの結果をすぐ返す</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計で調整する四つのつまみ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">同時に見る項目</p><p class="list__text">名前・期限・所属・荷物など、1回の判断で照合する項目数。増やすほど探索時間が延びます。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">参照する距離</p><p class="list__text">規則と対象が同じ画面にあるか、別ページを開くか。距離が遠いほど、記憶する負担が増えます。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">増やす順番</p><p class="list__text">新規則は、既に覚えた操作を使って試せる形で一つずつ足します。毎回すべてを変えると学習の足場が消えます。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">D</span><div><p class="list__title">誤りの返し方</p><p class="list__text">不正解だけでなく、見落とした項目を示します。次の一人で修正できると、失敗が学習になります。</p></div></div>
+  </div>
+  <p class="note mt-s">作品分析では「規則がいつ増えるか」「必要情報をどこで探すか」「間違いから次の照合へどう学ぶか」を確かめます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：『Papers, Please』— 照合が葛藤へ変わる</h2>
+  <p>プレイヤーは架空国家の入国審査官として、旅券や許可証を規則集と比べ、入国を許可するか拒否します。速く正確に処理すれば賃金を得ますが、規則に反する人の事情を知ると、正解どおりに押すだけでは済まなくなります。</p>
+  <dl class="facts mt-m">
+    <div><dt>発売</dt><dd>2013年8月8日（Windows・macOS・Linux）。後にiPad、Vita、iPhone、Android</dd></div>
+    <div><dt>開発・販売</dt><dd>Lucas Pope／3909 LLC</dd></div>
+    <div><dt>価格・対象</dt><dd>Steam 9.99米ドル（2026-10-24確認）。文章照合と重い題材を楽しめる一人用</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">この作品ならでは：事務作業と物語が同じ操作にある</h3>
+  <p>一般的な物語ゲームは、会話の選択肢で善悪を選ばせます。本作は、書類を動かし、規則を探し、判を押す日常業務の中に人の事情を入れます。物語を見る操作と、賃金を得る操作が分かれていません。</p>
+  <div class="table-wrap"><table class="table"><thead><tr><th>具体的な場面</th><th>ルールの反応</th><th>感情・次の行動</th></tr></thead><tbody>
+    <tr><th>期限と顔写真を照合する</th><td>正確なら賃金、誤りなら警告・罰金</td><td>次は速く見抜きたい</td></tr>
+    <tr><th>規則違反の人物の事情を聞く</th><td>助けると自分の家計が傷む場合がある</td><td>正しさと損失の間で迷う</td></tr>
+    <tr><th>一日の収支を決める</th><td>食費・暖房・薬を限られた賃金から選ぶ</td><td>翌日は処理を改善したい</td></tr>
+  </tbody></table></div>
+  <p class="note mt-s">開発者インタビューでは、旅券審査の反復への関心から、処理人数と複雑化する規則を家族扶養へ結びつけた設計が説明されています。道徳的な意味づけは、規則と家計の圧力が組み合わさって生じます。</p>
+
+  <h3 class="h-sub">始めたくなる仕組み：一文で分かる、変わった仕事</h3>
+  <p><strong>接点：</strong>「ディストピアの書類審査」という珍しい題材、短い公式トレーラー、公開デモ、Steamで9.99米ドルという入口があります。<strong>最初の行動：</strong>序盤は少ない規則で旅券へ判を押すため、複雑な物語を理解する前に仕事の手触りへ触れられます。</p>
+  <p class="note mt-s">公開デモや受賞、動画・口コミが認知を広げた可能性はありますが、各接点が販売へ何本寄与したかは公表されていません。</p>
+
+  <h3 class="h-sub">続けたくなる仕組み：一人処理するたび、次の課題が残る</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">今</span><div><p class="list__title">同じ一日の中</p><p class="list__text">照合→判定→警告という短い周期で、見落とした項目を次の人物ですぐ試せます。正確さと速度の両方を更新したくなります。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">次</span><div><p class="list__title">次の日へ</p><p class="list__text">新しい書類や規則、人物の再登場、家族の状態が翌日の目標になります。公式情報では物語に20の結末があり、別の判断を試す理由も残ります。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">後</span><div><p class="list__title">遊び終えた後</p><p class="list__text">「規則に従っただけ」と「自分で選んだ」の境界を話しやすく、配信や感想で判断の違いを共有できます。これは継続率の実測ではなく、作品構造からの独自分析です。</p></div></div>
+  </div>
+
+  <h3 class="h-sub">離れる理由：意図した反復も、全員には価値にならない</h3>
+  <p>書類確認の反復、増える参照項目、時間圧は、官僚制の息苦しさを体験させる一方、素早いアクションや気楽さを求める人には退屈・疲労になります。GameSpotは道徳的判断を評価しつつ、相違点を指定する操作の扱いにくさも批判しました。</p>
+  <p>スペインのSteamレビュー1,560件を対象にした2022年の研究では、明示的な道徳内容を含むのは77件（4.94%）でした。道徳内容のない1,483件では「退屈」に対応する語が81件で確認されています。これは全プレイヤーの満足度ではなく、2013〜2020年・スペインの投稿を研究目的で分類した限定標本です。</p>
+
+  <div class="panel panel--shadow mt-m"><p class="panel__label">面白さの核｜独自分析</p><p class="panel__title">覚えた手順を速く回したい気持ちへ、規則では処理できない人間の事情を差し込む。</p><p class="mt-s">情報整理の上達が気持ちよいほど、一つの例外で手が止まります。技能の快感と判断の痛みを同じ「判を押す」操作へ重ねた点が、単なる間違い探しとの違いです。</p></div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：奇抜な入口を、長く届く商品にした</h2>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>作者発表：発売10年間・全機種合計500万本（2023年8月）</dd></div>
+    <div><dt>批評家</dt><dd>Metacritic PC版85／40媒体。肯定39・賛否混合1・否定0（2026-10-24確認）</dd></div>
+    <div><dt>Steam</dt><dd>全言語・全購入区分の表示レビュー80,819件。直近301件の97%が好評（2026-10-24確認、変動）</dd></div>
+  </dl>
+
+  <h3 class="h-sub">何が評価され、何が批判された？</h3>
+  <ul class="bullets mt-m">
+    <li><span><strong>批評家：</strong>GameSpotは8/10で、道徳的な選択、単調さの中の引力、説教に寄りすぎない物語を評価。一方、相違点を指摘する操作と、日単位の再開で結果を回避できる点を批判しました（2013-10-08）。</span></li>
+    <li><span><strong>批評集計：</strong>Metacriticの40媒体では39件が肯定、1件が賛否混合。高評価は多いものの、40媒体の集計を全プレイヤーの好みとは扱いません。</span></li>
+    <li><span><strong>プレイヤー研究：</strong>レビュー1,560件のうち、明示的な道徳内容は77件。長く遊んだ投稿者ほど道徳内容へ触れる傾向がありましたが、研究者は「多くの投稿が道徳を語った」とは結論づけていません。</span></li>
+    <li><span><strong>離脱の手がかり：</strong>同研究で退屈の語が確認され、批評でも反復と操作摩擦が論点です。反復が主題を伝えることと、繰り返しを楽しいと感じることは別です。</span></li>
+  </ul>
+
+  <h3 class="h-sub">なぜ選ばれた？ 面白さ以外の条件も分ける</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">商品</span><span class="list__body"><strong>事実：</strong>PCから始まり、iPad、Vita、iPhone、Androidへ展開。低い必要容量と単画面の操作は移植しやすく、接点を長期に増やしました。</span></div>
+    <div class="list__row"><span class="list__key">価格</span><span class="list__body"><strong>事実：</strong>Steamでは9.99米ドル。独特な題材を試す購入リスクを抑え、セールも入口になりました。</span></div>
+    <div class="list__row"><span class="list__key">話題</span><span class="list__body"><strong>事実：</strong>IGF、BAFTAなどを受賞し、公式Presskitは媒体向け素材を整備。判断が人によって変わるため、記事・動画・会話の題材にもなりました。</span></div>
+    <div class="list__row"><span class="list__key">市場</span><span class="list__body"><strong>独自仮説：</strong>大作が扱いにくい事務労働と政治的圧力を、一人開発の小さな作品が明確な一文と画面で差別化しました。競合作品の少ない題材は目立ちやすい反面、模倣してもテーマと操作が結びつかなければ同じ価値にはなりません。</span></div>
+  </div>
+  <p class="note mt-s">500万本と高評価は確認できますが、価格・受賞・動画・移植・面白さのどれが何本を生んだかは非公表です。「面白いから売れた」と一因へまとめません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：星間ゲート審査</h2>
+  <p>規則と通行証を照合し、6人の旅行者を許可・拒否します。まず規則2個で遊び、次に3個へ変更してください。事情表示を入れると、正確さだけでは決めにくい人物も現れます。</p>
+  <div class="chips mt-s"><span class="chip">同時に見る規則数</span><span class="chip">制限時間</span><span class="chip">人物の事情表示</span><span class="chip">結果比較</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">規則を増やしたとき、考える時間が増えたのか、探す時間が増えただけなのか？</p><p class="mt-s">デモで分かるのは、この短いセッション内の正答・時間・救助判断です。長期の継続率は測っていません。画面内のダウンロードはデモだけを保存します。</p></div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門｜一つ変えて比べる</p><p class="panel__title">規則を2個から3個へ</p><p class="mt-s">遊ぶ前に「正答数」「一人あたりの判断時間」「見落とす項目」を予想します。同じ制限時間で再プレイし、難しくなった理由が記憶・探索・判断のどれかを書き分けてください。</p></div>
+    <div class="panel"><p class="panel__label">応用｜新しい面白さを足す</p><p class="panel__title">例外を、見破れる手がかりにする</p><p class="mt-s">CASESのコメントを手がかりに、証言と書類の矛盾を一件追加します。規則を暗記した人だけでなく、人物の言葉を読んだ人が気づける設計にし、情報の置き場所も調整してください。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームでプレイヤーが間違えたとき、原因は「判断が難しい」「必要情報を見つけられない」「結果の理由が分からない」のどれですか？ それぞれ直すUI・規則・フィードバックを分けて考えてください。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">効率よく行うほど、別の価値を失う行動はありますか？ 戦闘、店経営、会話、探索のどれかへ移し、数字上の正解とプレイヤー自身の判断を同じ操作で衝突させる案を作りましょう。</span></div>
+  </div>
+</section>
