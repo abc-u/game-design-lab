@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>停電会議｜Game Design Lab DAY 11</title>
+  <style>
+    :root{--ink:#16161a;--bg:#f4f3ee;--paper:#fff;--muted:#5b5b65;--accent:#5b3df5;--good:#137a4b;--bad:#b3261e;--line:2px solid var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55}button,select,input{font:inherit}button,select{min-height:48px;border:var(--line);border-radius:0;background:var(--paper);color:var(--ink);font-weight:700}button{cursor:pointer;box-shadow:3px 3px 0 var(--ink);touch-action:manipulation}button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.app{max-width:760px;margin:auto;padding:18px 14px 40px}h1,h2,p{margin:0}h1{font-size:clamp(25px,6vw,37px);line-height:1.2}h2{font-size:19px}.kicker{color:var(--accent);font-weight:800;letter-spacing:.08em;margin-bottom:6px}.lead{margin-top:10px;color:var(--muted)}.box{margin-top:18px;padding:16px;background:var(--paper);border:var(--line)}.settings{display:grid;gap:16px}.setting label{display:flex;justify-content:space-between;gap:12px;font-weight:700}.setting input[type=range]{width:100%;min-height:40px;accent-color:var(--accent)}.setting select{width:100%;margin-top:7px;padding:8px}.primary{width:100%;background:var(--accent);color:#fff;margin-top:16px}.secondary{width:100%;margin-top:12px}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.stat{padding:8px 4px;border:1px solid var(--ink);background:var(--paper);text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:11px;color:var(--muted)}.incident{padding:10px;border-left:5px solid var(--accent);background:#efecff;margin-top:10px}.suspects{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.suspect{padding:9px 3px;min-height:68px}.suspect span{display:block;font-size:22px}.evidence{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.evidence button{text-align:left;padding:10px;min-height:64px}.evidence button small{display:block;color:var(--muted);font-weight:500}.notes{display:grid;gap:7px;margin-top:12px}.note-card{padding:10px;border:1px solid var(--ink);background:#faf9f5}.note-card b{color:var(--accent)}.vote-title{margin-top:16px;font-weight:800}.vote{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px}.vote button.selected{background:var(--ink);color:#fff}.feedback{min-height:52px;margin-top:12px;padding:10px;border:1px dashed var(--ink);font-weight:700}.feedback.good{color:var(--good);border-color:var(--good)}.feedback.bad{color:var(--bad);border-color:var(--bad)}.result h2{font-size:24px}.result__mark{font-size:42px;float:right}.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.summary div{padding:10px;border:1px solid var(--ink)}.summary b{display:block;font-size:22px}.history{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}.history th,.history td{padding:7px;border:1px solid var(--ink);text-align:left}.note{font-size:13px;color:var(--muted);margin-top:10px}.download{margin-top:20px;padding-top:16px;border-top:1px solid #bbb}.download button{width:100%}@media(max-width:480px){.app{padding-left:10px;padding-right:10px}.box{padding:13px}.hud{grid-template-columns:repeat(2,1fr)}.suspects{grid-template-columns:repeat(2,1fr)}.evidence,.vote,.summary{grid-template-columns:1fr 1fr}.vote{position:sticky;bottom:8px;z-index:2}.vote button{min-height:56px}}@media(max-width:340px){.evidence{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <p class="kicker">DAY 11 · PLAYABLE LAB</p>
+  <h1>停電会議</h1>
+  <p class="lead">三つの停電事件を調べます。見られる証拠には上限があります。重要だと思う場所を選び、妨害者へ投票してください。</p>
+
+  <section class="box" id="setup" aria-labelledby="setupTitle">
+    <h2 id="setupTitle">改造ラボ｜開始前の設定</h2>
+    <div class="settings">
+      <div class="setting"><label for="scanCount"><span>1事件の調査回数</span><output id="scanOut">2回</output></label><input id="scanCount" type="range" min="1" max="3" value="2" step="1"></div>
+      <div class="setting"><label for="clarity"><span>証拠の明確さ</span></label><select id="clarity"><option value="clear">明確：機械ログが対象を示す</option><option value="fuzzy">曖昧：証言や不鮮明な記録</option></select></div>
+      <div class="setting"><label for="timeLimit"><span>会議の制限時間</span><output id="timeOut">60秒</output></label><input id="timeLimit" type="range" min="40" max="80" value="60" step="20"></div>
+    </div>
+    <button class="primary" id="start">会議を始める</button>
+    <p class="note">合格条件：3事件のうち2件以上を正しく投票。証拠は同じ事件で重複して調べられません。</p>
+  </section>
+
+  <section id="game" hidden aria-live="polite">
+    <div class="hud"><div class="stat"><b id="progress">1/3</b><span>事件</span></div><div class="stat"><b id="timer">60</b><span>残り秒</span></div><div class="stat"><b id="scans">2</b><span>残り調査</span></div><div class="stat"><b id="correct">0</b><span>正解</span></div></div>
+    <section class="box">
+      <h2 id="caseTitle">第1事件</h2><p class="incident" id="incident"></p>
+      <div class="suspects" id="suspects" aria-label="容疑者"></div>
+    </section>
+    <section class="box">
+      <h2>どの証拠を調べる？</h2><div class="evidence" id="evidence"></div>
+      <div class="notes" id="notes" aria-live="polite"></div>
+      <p class="vote-title">妨害者へ投票</p><div class="vote" id="vote"></div>
+      <p class="feedback" id="feedback">証拠を選ぶか、今ある情報で投票してください。</p>
+    </section>
+  </section>
+
+  <section class="box result" id="result" hidden aria-live="assertive">
+    <span class="result__mark" id="resultMark" aria-hidden="true">✓</span><p class="kicker">RESULT</p><h2 id="resultTitle"></h2><p class="lead" id="resultText"></p>
+    <div class="summary"><div><b id="sumCorrect">0/3</b><span>正しい投票</span></div><div><b id="sumScans">0</b><span>使った調査</span></div><div><b id="sumTime">0秒</b><span>使った時間</span></div><div><b id="sumConfidence">—</b><span>調査使用率</span></div></div>
+    <button class="primary" id="replay">同じ設定でもう一度</button><button class="secondary" id="change">設定を変える</button>
+  </section>
+
+  <section class="box" id="historyBox" hidden><h2>直近3回の比較</h2><table class="history"><thead><tr><th>調査</th><th>明確さ</th><th>時間</th><th>正解</th></tr></thead><tbody id="history"></tbody></table></section>
+  <section class="download"><button id="download">このデモHTMLをダウンロード</button><p class="note">記事ではなく、このゲームと改造ラボだけを単一HTMLで保存します。外部通信はしません。</p></section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const ORIGINAL_HTML='<!doctype html>\n'+document.documentElement.outerHTML;
+  const $=id=>document.getElementById(id);
+  const PEOPLE=[['アオ','◆'],['アカ','●'],['キイロ','▲'],['ムラサキ','■']];
+  // 改造課題：CASESへ証言を追加し、一つだけ嘘になるよう clues の clear / fuzzy を設計しよう。
+  const CASES=[
+    {place:'炉心区画',culprit:'アカ',incident:'炉心の冷却が停止。停止命令は12:05に送られた。',clues:[
+      ['端末履歴','12:05、アカのIDで停止命令。','12:05、共有端末でアカのIDが使われた。'],
+      ['通路カメラ','12:04〜12:06、アオとキイロは貨物室で一緒。','停止前後、貨物室に二つの影。色は不鮮明。'],
+      ['位置ログ','12:05、ムラサキは展望区画の扉を開閉。','ムラサキのIDは展望区画付近で反応。'],
+      ['本人の証言','アカ「炉心には行っていない」','アカ「たぶん通信室にいた」']
+    ]},
+    {place:'水耕区画',culprit:'ムラサキ',incident:'給水弁が閉じられた。操作時刻は15:20。',clues:[
+      ['弁の接触記録','15:20、ムラサキの手袋IDを検出。','弁から紫色の繊維。ただし制服は共用。'],
+      ['配送記録','アカは15:18〜15:23、荷物を受領。','アカの受領署名はあるが、時刻は手書き。'],
+      ['作業映像','15:20、アオとキイロが外壁修理中。','外壁カメラに二人。顔は判別できない。'],
+      ['本人の証言','ムラサキ「弁には触れていない」','ムラサキ「水耕区画を通ったかもしれない」']
+    ]},
+    {place:'通信区画',culprit:'キイロ',incident:'救難信号が削除された。削除時刻は18:42。',clues:[
+      ['操作ログ','18:42、キイロの個人キーで削除。','個人キーはキイロ用だが、机に置かれていた。'],
+      ['食堂カメラ','18:41〜18:44、アオとアカは食堂で会話。','食堂に二人。色の組み合わせは不明。'],
+      ['医療記録','18:42、ムラサキは検査台を使用。','検査台の使用記録。利用者名は欠損。'],
+      ['本人の証言','キイロ「通信区画へは行っていない」','キイロ「時刻は覚えていない」']
+    ]}
+  ];
+  let state=null,ticker=null,history=[];
+  const settings=()=>({scans:+$('scanCount').value,clarity:$('clarity').value,time:+$('timeLimit').value});
+  function sync(){ $('scanOut').textContent=$('scanCount').value+'回';$('timeOut').textContent=$('timeLimit').value+'秒'; }
+  function start(){clearInterval(ticker);const cfg=settings();state={cfg,i:0,left:cfg.time,correct:0,used:0,start:Date.now(),seen:new Set(),finished:false};$('setup').hidden=true;$('result').hidden=true;$('game').hidden=false;render();ticker=setInterval(()=>{state.left--;$('timer').textContent=state.left;if(state.left<=0)finish('time');},1000);}
+  function render(){const c=CASES[state.i];state.seen=new Set();state.roundScans=state.cfg.scans;$('progress').textContent=(state.i+1)+'/3';$('timer').textContent=state.left;$('scans').textContent=state.roundScans;$('correct').textContent=state.correct;$('caseTitle').textContent='第'+(state.i+1)+'事件｜'+c.place;$('incident').textContent=c.incident;
+    $('suspects').innerHTML=PEOPLE.map(p=>`<div class="suspect"><span>${p[1]}</span><b>${p[0]}</b></div>`).join('');$('notes').innerHTML='';$('evidence').innerHTML=c.clues.map((x,n)=>`<button data-clue="${n}">${x[0]}<small>タップして確認</small></button>`).join('');$('vote').innerHTML=PEOPLE.map(p=>`<button data-vote="${p[0]}">${p[0]}</button>`).join('');$('feedback').className='feedback';$('feedback').textContent='証拠を選ぶか、今ある情報で投票してください。';
+    $('evidence').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>inspect(+b.dataset.clue,b)));$('vote').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>vote(b.dataset.vote)));
+  }
+  function inspect(n,button){if(!state||state.finished||state.seen.has(n)||state.roundScans<=0)return;state.seen.add(n);state.roundScans--;state.used++;button.disabled=true;$('scans').textContent=state.roundScans;const c=CASES[state.i],text=c.clues[n][state.cfg.clarity==='clear'?1:2];$('notes').insertAdjacentHTML('beforeend',`<div class="note-card"><b>${c.clues[n][0]}</b><br>${text}</div>`);if(state.roundScans===0)$('evidence').querySelectorAll('button').forEach(b=>b.disabled=true);}
+  function vote(name){if(!state||state.finished)return;const c=CASES[state.i],ok=name===c.culprit;if(ok)state.correct++;$('correct').textContent=state.correct;$('vote').querySelectorAll('button').forEach(b=>b.disabled=true);$('evidence').querySelectorAll('button').forEach(b=>b.disabled=true);const f=$('feedback');f.className='feedback '+(ok?'good':'bad');f.textContent=(ok?'正解。':'誤投票。')+'妨害者は'+c.culprit+'。最も強い根拠は「'+c.clues[0][1]+'」';setTimeout(()=>{if(!state||state.finished)return;state.i++;if(state.i>=CASES.length)finish('done');else render();},900);}
+  function finish(reason){if(!state||state.finished)return;state.finished=true;clearInterval(ticker);ticker=null;$('game').hidden=true;$('result').hidden=false;const passed=reason==='done'&&state.correct>=2,usedTime=Math.min(state.cfg.time,Math.round((Date.now()-state.start)/1000)),possible=state.cfg.scans*CASES.length,confidence=Math.round((state.used/possible)*100);$('resultMark').textContent=passed?'✓':'×';$('resultTitle').textContent=passed?'推理成功':'推理未達';$('resultText').textContent=reason==='time'?'時間切れ。調べる証拠の優先順位を見直そう。':passed?'限られた情報から2件以上を見抜きました。':'証拠の量と確かさが判断に足りたか振り返ろう。';$('sumCorrect').textContent=state.correct+'/3';$('sumScans').textContent=state.used+'/'+possible;$('sumTime').textContent=usedTime+'秒';$('sumConfidence').textContent=confidence+'%';history.unshift({scans:state.cfg.scans,clarity:state.cfg.clarity==='clear'?'明確':'曖昧',time:state.cfg.time,correct:state.correct});history=history.slice(0,3);renderHistory();}
+  function renderHistory(){$('historyBox').hidden=false;$('history').innerHTML=history.map(h=>`<tr><td>${h.scans}回</td><td>${h.clarity}</td><td>${h.time}秒</td><td>${h.correct}/3</td></tr>`).join('');}
+  function change(){clearInterval(ticker);ticker=null;state=null;$('result').hidden=true;$('game').hidden=true;$('setup').hidden=false;$('setup').scrollIntoView({behavior:'smooth'});}
+  function download(){const url=URL.createObjectURL(new Blob([ORIGINAL_HTML],{type:'text/html;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='GameDesignLab_Day011_2026-10-25.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  $('scanCount').addEventListener('input',sync);$('timeLimit').addEventListener('input',sync);$('start').addEventListener('click',start);$('replay').addEventListener('click',start);$('change').addEventListener('click',change);$('download').addEventListener('click',download);sync();
+})();
+</script>
+</body>
+</html>

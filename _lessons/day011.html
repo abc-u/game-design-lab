@@ -1,0 +1,167 @@
+---
+day: 11
+date: 2026-10-25 00:00:00 +0900
+title: "疑う材料をどう渡すか：『Among Us』の不完全情報"
+theme: "不完全情報と推理の手がかり"
+game: "Among Us"
+level: 中級
+minutes: 10
+summary: "情報を隠すだけでなく、行動から推理できる手がかりを設計し、疑いと会話が生まれる条件を学ぶ。"
+question: "正解を隠したまま、プレイヤーが『勘』ではなく『自分で推理した』と感じるには？"
+goals:
+  - 不完全情報を、隠す情報・観察できる行動・確かめる手段に分けられる
+  - 作品の入口・継続・離脱と、作業が疑いへ変わる因果を説明できる
+  - 手がかりの量と明確さを変え、推理と偶然の境界を比較できる
+video:
+  id: sYvKjZKunyo
+  title: "Among Us Beta Launch Trailer｜Innersloth"
+  caption: "Innersloth公式の初期トレーラー（2018-06-15公開）。単純な移動・作業・会議が、誰を信じるかという物語へ変わる見せ方に注目。"
+demo:
+  src: /demos/day011.html
+  title: "停電会議：証拠を選んで容疑者を投票する"
+  height: 1290
+sources:
+  - title: "Innersloth『Among Us Press Kit』"
+    url: https://www.innersloth.com/press-kit-among-us/
+    note: "2018-06-15のモバイル版発売、当時3人での開発、2020年11月の月間アクティブ約5億人、YouTube・Twitch指標、公式画像（2026-10-25確認）。"
+  - title: "Innersloth『Among Us』公式ページ"
+    url: https://www.innersloth.com/games/among-us/
+    note: "4〜15人、クルーとインポスターの基本ルール、対応機種（2026-10-25確認）。"
+  - title: "Steam公式ストア『Among Us』"
+    url: https://store.steampowered.com/app/945360/Among_Us/
+    note: "PC版発売日、4.99米ドル、直近と英語レビュー集計（2026-10-25確認。価格・件数は地域や時点で変動）。"
+  - title: "Innersloth『The Future of Among Us』"
+    url: https://www.innersloth.com/the-future-of-among-us/
+    note: "2020-09-23公開。続編を中止し、旧コードの制約を抱えながら原作改善へ集中するという開発者発表。"
+  - title: "Kotaku『Among Us' Improbable Rise To The Top Of Twitch』"
+    url: https://kotaku.com/among-us-improbable-rise-to-the-top-of-twitch-1844986025
+    note: "2020-09-08公開。開発者インタビュー。韓国・ブラジルでの拡散、配信者による成長、当初は配信を想定していなかった事実。"
+  - title: "Metacritic『Among Us』PC版"
+    url: https://www.metacritic.com/game/among-us/
+    note: "批評9件とユーザー評価1,105件の分布（2026-10-25確認）。投稿者集団に限られる。"
+  - title: "WIRED『Among Us Taps Into Our Obsession With Betrayal』"
+    url: https://www.wired.com/story/among-us-psychology-betrayal/
+    note: "2021-02-03公開。心理学者と開発元への取材。自律性・有能感・関係性、会話と裏切りの体験を分析。"
+  - title: "WIRED『Among Us has a bunch of security holes that let cheaters run wild』"
+    url: https://www.wired.com/story/among-us-cheats-hacks/
+    note: "2020-11-22公開。チートが基本ルールを壊す具体例と、当時の小規模開発体制の対応を報道。"
+  - title: "Innersloth公式『Among Us Beta Launch Trailer』"
+    url: https://www.youtube.com/watch?v=sYvKjZKunyo
+    note: "2018-06-15公開。教材内の動画埋め込み元。"
+sources_note: "約5億MAUと動画・配信指標はInnerslothのPress Kit記載値で、販売本数や現在の利用者数ではありません。SteamとMetacriticは2026-10-25確認時点の表示です。開発者発言、集計、批評・ユーザー意見、教材制作者の仮説を分けています。"
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：不完全情報は「分からない」ではなく「確かめたい」を作る</h2>
+  <p>推理ゲームで正解を隠すだけでは、判断は当てずっぽうになります。プレイヤーが面白いと感じるには、見えていない答えを、観察した行動から少しずつ絞れる必要があります。</p>
+  <p>今回学ぶ<strong>不完全情報</strong>は、全員が同じ事実を持たない状態です。設計者は「隠す答え」「行動に残る手がかり」「確かめる手段」の三つを組み、情報を集める行動そのものをゲームにします。</p>
+
+  <ol class="flow mt-m">
+    <li><b>隠す</b><span>役割や目的など、最初から見せない答えを決める</span></li>
+    <li><b>残す</b><span>移動・時間・資源に、答えを推理できる痕跡を作る</span></li>
+    <li><b>確かめる</b><span>観察・質問・投票に回数や時間の制約を置く</span></li>
+    <li><b>明かす</b><span>結果と根拠を返し、次の推理を更新させる</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計で調整する三つのつまみ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">量</span><div><p class="list__title">調べられる手がかりの数</p><p class="list__text">少なすぎると運、多すぎると作業になります。決める前に何個を選べるかで、情報の価値を作ります。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">質</span><div><p class="list__title">手がかりの確かさ</p><p class="list__text">機械ログ、目撃、本人の証言では信頼度が違います。強い情報ほど取得条件や危険を置きます。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">時</span><div><p class="list__title">答えを出すまでの時間</p><p class="list__text">観察時間と会議時間を分け、情報を探すか、今ある材料で決めるかを選ばせます。</p></div></div>
+  </div>
+  <p class="note mt-s">作品分析では「普段の作業がどう痕跡になるか」「会議で情報の意味がどう変わるか」「誤投票の後に何を学べるか」を確かめます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：『Among Us』— 作業がアリバイになる</h2>
+  <p>クルーは船内のタスクを進めながら、味方に紛れたインポスターを探します。インポスターは同じ見た目と移動を利用し、妨害と殺害を行います。死体報告や緊急会議で全員が話し、投票で一人を追放します。</p>
+  <dl class="facts mt-m">
+    <div><dt>発売</dt><dd>2018年6月15日モバイル版。PC版は2018年11月16日</dd></div>
+    <div><dt>開発・販売</dt><dd>Innersloth。当初は3人の小規模チーム</dd></div>
+    <div><dt>価格・対象</dt><dd>モバイルは無料、Steamは4.99米ドル（2026-10-25確認）。4〜15人の会話型パーティーゲーム</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">この作品ならでは：身体を動かす推理と会話を往復する</h3>
+  <p>人狼系ゲームでは、発言が主な推理材料になりやすい本作は、短いタスク、部屋の配置、移動経路、死体発見の時刻を会話の材料にします。アクション中の「どこで誰を見たか」が、会議では証言と反証へ変わります。</p>
+  <div class="table-wrap"><table class="table"><thead><tr><th>具体的な行動</th><th>残る情報</th><th>生まれる判断・感情</th></tr></thead><tbody>
+    <tr><th>タスクのため単独で部屋へ行く</th><td>進捗は得るが、目撃者が減る</td><td>効率と安全のどちらを取るか迷う</td></tr>
+    <tr><th>別のプレイヤーと移動する</th><td>互いのアリバイになるが、相手が敵かもしれない</td><td>安心と疑いが同時に生まれる</td></tr>
+    <tr><th>会議で経路を説明する</th><td>複数の記憶と発言が衝突する</td><td>納得、疑念、誤投票への緊張が生まれる</td></tr>
+  </tbody></table></div>
+  <p class="note mt-s">「誰が怪しいか」を直接表示せず、全員が行う普通の移動と作業に意味を持たせた点が特徴です。かわいい見た目と短い効果音は殺害の重さを和らげ、裏切りをパーティーの笑いへ戻します。</p>
+
+  <h3 class="h-sub">始めたくなる仕組み：友人の会話が、そのまま宣伝になる</h3>
+  <p><strong>接点：</strong>無料のモバイル版、4.99米ドルのPC版、単純な見た目と「仲間に裏切り者がいる」という一文で参加の負担を下げました。Kotakuの開発者取材では、韓国・ブラジルの動画から広がり、2020年7月に配信者Sodapoppinらを通じて英語圏でも急伸した経緯が語られています。</p>
+  <p><strong>最初の行動：</strong>移動と短いタスクは説明なしでも触れます。その途中で他人とすれ違うだけで「見られた」「怪しい」という意味が生まれ、最初の会議までに作品の核へ触れられます。</p>
+
+  <h3 class="h-sub">続けたくなる仕組み：答えより、人間関係が毎回変わる</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">今</span><div><p class="list__title">試合中</p><p class="list__text">タスク→目撃→会議→投票の周期で、前の発言を次の行動で確かめます。正体が同じでも人の動きが違うため、毎回新しい証拠が生まれます。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">次</span><div><p class="list__title">次の試合</p><p class="list__text">役割がランダムに替わり、「今度はうまく嘘をつく」「前回の癖を見抜く」という個人目標が残ります。短い試合は再挑戦の区切りも明確です。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">後</span><div><p class="list__title">遊び終えた後</p><p class="list__text">誤投票や名演技を会話・動画・切り抜きとして共有できます。WIREDは、交流・自律性・有能感が体験を支えると分析しています。</p></div></div>
+  </div>
+
+  <h3 class="h-sub">離れる理由：面白さを作る人間が、摩擦にもなる</h3>
+  <p>会話の質をプレイヤーへ委ねるため、知らない人の無言退出、暴言、談合、根拠のない投票は推理を壊します。WIREDは2020年当時、改造クライアントによる移動・投票・殺害などのチートを報じました。</p>
+  <p>同じマップと役割を反復すると、親しい固定メンバーでも発言の癖が読まれ、驚きが減ります。Innerslothは人気急増後、続編を中止して原作改善へ集中しましたが、旧コードへの追加が難しいことも公式に説明しています。</p>
+
+  <div class="panel panel--shadow mt-m"><p class="panel__label">面白さの核｜独自分析</p><p class="panel__title">進めるための普通の行動を、信じるための証拠と、疑うための証拠に同時変換する。</p><p class="mt-s">タスク自体の操作は単純でも、誰の近くで行うかによって意味が変わります。技能の快感を増やす前に、行動が他人の判断へどうつながるかを設計した点が、単なるミニゲーム集との違いです。</p></div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：配信で「遊ぶ場面」まで商品になった</h2>
+  <dl class="facts">
+    <div><dt>利用指標</dt><dd>公式Press Kit：約5億MAU（2020年11月）。販売本数・売上額ではない</dd></div>
+    <div><dt>批評家</dt><dd>Metacritic PC版85／9媒体。肯定8・賛否混合1・否定0</dd></div>
+    <div><dt>プレイヤー</dt><dd>Steam英語レビュー382,891件の92%が好評。直近4,015件の93%が好評（2026-10-25確認）</dd></div>
+  </dl>
+
+  <h3 class="h-sub">プレイヤーはどこを評価し、どこで離れた？</h3>
+  <ul class="bullets mt-m">
+    <li><span><strong>批評家9件：</strong>Metacriticでは8件が肯定、1件が賛否混合。短時間で覚えられる操作、疑いが育つ会話、友人と遊ぶパーティー性が繰り返し評価され、Jeuxvideo.comは反復による失速とサーバー不具合を指摘しました。</span></li>
+    <li><span><strong>Steamの大規模集計：</strong>英語レビュー382,891件の92%が好評です。好評率は満足の方向を示しますが、「推理」「交流」など理由別の公式内訳はないため、件数を作りません。</span></li>
+    <li><span><strong>Metacritic利用者1,105件：</strong>肯定504件（46%）、賛否混合482件（44%）、否定119件（11%）。掲載例では友人との遊びや単純で緊張のある心理戦が評価され、友人がいない場合の浅さ、反復、荒らし・運営への不満が批判されています。</span></li>
+    <li><span><strong>標本の限界：</strong>Metacritic投稿者は全利用者の無作為標本ではなく、Steamの好評率とも母集団が違います。二つの比率を直接比較して全体傾向とはしません。</span></li>
+  </ul>
+
+  <h3 class="h-sub">なぜ選ばれた？ 面白さと市場条件を分ける</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">入口</span><span class="list__body"><strong>事実：</strong>モバイル無料、PC低価格、複数機種、短いルール説明で友人を誘いやすい商品でした。</span></div>
+    <div class="list__row"><span class="list__key">配信</span><span class="list__body"><strong>事実：</strong>公式Press Kitは2020年10月までのYouTube 40億回超の視聴、同年第4四半期のTwitch 12.2億超の視聴セッションを記載。観客も「誰が嘘をつくか」を推理できます。</span></div>
+    <div class="list__row"><span class="list__key">時期</span><span class="list__body"><strong>独自分析：</strong>2020年の対面交流が難しい時期に、音声通話で友人と集まれる場になりました。ただし各要因がMAUへ何人寄与したかは公表されていません。</span></div>
+    <div class="list__row"><span class="list__key">差別化</span><span class="list__body"><strong>独自分析：</strong>人狼の会話へ、空間移動と小さな作業を加えました。観客にも状況が読みやすく、プレイ・観戦・切り抜きの三つへ同じ疑いが広がります。</span></div>
+  </div>
+  <p class="note mt-s">公式は2020年11月の約5億MAUを公表していますが、累計販売本数と売上額はこの資料では確認できません。成功を「面白かったから」だけにまとめず、無料入口、配信との相性、発売後の地域的な口コミ、社会状況を併記します。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：停電会議</h2>
+  <p>停電が起きた三つの区画で、4人のうち妨害者を投票します。全部は調べられません。どの証拠を先に見るか決め、限られた材料で2件以上を当ててください。</p>
+  <div class="chips mt-s"><span class="chip">調査回数</span><span class="chip">証拠の明確さ</span><span class="chip">会議時間</span><span class="chip">結果比較</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">証拠を減らしたとき、推理が鋭くなったのか、運の割合が増えただけなのか？</p><p class="mt-s">同じ明確さで調査回数だけを変え、正解数と使った調査の割合を比べます。このデモは一人用の情報選択を切り出したもので、対人会話や長期継続率は測っていません。</p></div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門｜一つ変えて比べる</p><p class="panel__title">調査3回を1回へ</p><p class="mt-s">遊ぶ前に正解数と確信度を予想します。証拠の明確さと時間は固定し、間違いが「読み違い」「情報不足」「時間切れ」のどれだったか記録してください。</p></div>
+    <div class="panel"><p class="panel__label">応用｜会話の価値を足す</p><p class="panel__title">一つだけ嘘を含む証言を作る</p><p class="mt-s">CASESのコメントを手がかりに、容疑者同士の証言を一件追加します。誰が嘘をつけるか、別の証拠で矛盾を確かめられるか、嘘を見破ったときの手応えまで設計してください。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで隠している情報は、行動にどんな痕跡を残しますか？ 戦闘なら敵の予備動作、経営なら客の表情、探索なら環境音として、観察できる形へ置き換えてください。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">一つの行動を、進行と推理の両方へ使えますか？ プレイヤーが先へ進むほど情報も増え、同時に危険へ近づくルールを二案作り、分かりやすさと緊張を比べましょう。</span></div>
+  </div>
+</section>
