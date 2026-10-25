@@ -1,0 +1,199 @@
+---
+day: 12
+date: 2026-10-26
+title: "一拭きが気持ちいいのはなぜ？『PowerWash Simulator』の進捗フィードバック"
+theme: "即時フィードバックと進捗の可視化"
+game: "PowerWash Simulator"
+level: 中級
+minutes: 10
+summary: "小さな行動の結果をすぐ伝え、長い作業を続けられる進捗設計を学ぶ。"
+question: "地味な行動でも、プレイヤーが「もう少し続けよう」と思える結果をどう返す？"
+goals:
+  - 行動・反応・進捗表示を分けて、手応えが伝わる設計を説明できる
+  - 『PowerWash Simulator』の入口、継続、離脱を、具体的な仕組みと評価から分析できる
+  - 自作ゲームのフィードバック間隔を変え、行動の気持ちよさと長期目標への見通しを比べられる
+video:
+  id: nIdOILxKsBA
+  title: "PowerWash Simulator Launch Trailer｜FuturLab"
+  caption: "公式ローンチトレーラー（2022年7月14日公開）。汚れが落ちる画面変化と効果音、作業後に現れる景色を見てください。"
+demo:
+  src: /demos/day012.html
+  title: "ひと拭きの手応え"
+  height: 880
+sources:
+  - title: "FuturLab「Level Design of PowerWash Simulator」｜80 Level"
+    url: https://80.lv/articles/level-design-of-powerwash-simulator
+    note: "2024-01-22公開。Dan Chequer氏が多層の汚れ、装備進行、動画の満足感を再現する設計、配信者とSteamレビューの影響を説明。"
+  - title: "FuturLab「Thank You for 12 million PowerWash Simulator Players」"
+    url: https://www.futurlab.co.uk/news/thank-you-for-12-million-powerwash-simulator-players
+    note: "2024-04-22公開。12百万人のプレイヤー数を発表。販売本数とは区別。DLCとMeta Quest版にも言及。"
+  - title: "Steam公式ストア『PowerWash Simulator』"
+    url: https://store.steampowered.com/app/1290000/PowerWash_Simulator/
+    note: "2026-10-26確認。英語レビュー38,605件中97%が好評、直近30日176件中94%が好評。米国表示価格24.99ドル。地域・時期で変動。"
+  - title: "Square Enix Collective「PowerWash Simulator Early Access発表」"
+    url: https://press.uk.square-enix.com/SQUARE-ENIX-COLLECTIVE-TEAMS-UP-WITH-FUTURLAB-ON-SUPER-SOOTHING-SIMULA
+    note: "2021-05-27公開。2021-05-19にSteam Early Access開始、Square Enix Collectiveとの提携を発表。"
+  - title: "Xbox Wire「PowerWash Simulator is Ready to Clean Up with Game Pass」"
+    url: https://news.xbox.com/en-us/2022/07/05/powerwash-simulator-is-here-to-clean-up-with-game-pass/
+    note: "2022-07-05公開。7月14日発売とGame Pass初日提供を告知。無料プレイと2人協力Career、最大6人Freeplayを紹介。"
+  - title: "GameSpot「PowerWash Simulator Review – Filthy Rich」"
+    url: https://www.gamespot.com/reviews/powerwash-simulator-review-filthy-rich/1900-6417923/
+    note: "2022-07-26公開、7/10。心地よい作業と独自性を評価しつつ、長い作業が時間を消費する点や進行の中断を論じる。"
+  - title: "Push Square「PowerWash Simulator (PS5) Review」"
+    url: https://www.pushsquare.com/reviews/ps5/powerwash-simulator
+    note: "2023-02-14公開。反復と遅いテンポを認めながら、汚れを剥がす視覚変化、完了音、長いCareerの継続性を評価。"
+  - title: "Metacritic『PowerWash Simulator』批評家レビュー"
+    url: https://www.metacritic.com/game/powerwash-simulator/
+    note: "レビュー媒体ごとの評価を掲載。機種別集計のためSteamユーザー評価と母集団を混ぜない（2026-10-26確認）。"
+  - title: "FuturLab公式「PowerWash Simulator Launch Trailer」"
+    url: https://www.youtube.com/watch?v=nIdOILxKsBA
+    note: "2022-07-14公開。公式ローンチトレーラー。"
+  - title: "Steamユーザーレビュー（WONDERなパン、PowerWash Simulator）"
+    url: https://steamcommunity.com/id/always_decline/recommended/1290000/
+    note: "2023-12-13投稿、51.9時間プレイ・14人が参考になったと表示。落ち着くプレイ、満足感、当時のコンテンツ不足を語る個別意見（2026-10-26確認）。"
+  - title: "Steamコミュニティ「The treehouse」"
+    url: https://steamcommunity.com/app/1290000/discussions/0/3056238885200948974/
+    note: "2021-07-12の一つの議論。大きな仕事を退屈とする声と、景色が現れる過程を楽しむ声、最後の1%探しへの苛立ちが同じスレッドにある。"
+sources_note: "プレイヤー数12百万人はFuturLab公表値で、販売本数や有料購入者数ではありません。Steam英語レビュー集計は確認時点で変動します。批評家評価、プラットフォーム集計、開発者の説明、個別の声、独自分析を分けています。"
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：行動の結果を、気づける形ですぐ返す</h2>
+  <p>プレイヤーがボタンを押しても、何が変わったか見えなければ、操作は手応えになりません。設計では、入力に対する反応と、目標へどれだけ近づいたかを伝える表示を組み合わせます。</p>
+  <p>この考え方を<strong>フィードバック</strong>と呼びます。効果音・色・動きは「今の一手が届いた」と知らせ、ゲージや完了表示は「全体のどこまで進んだか」を伝えます。役割の違う情報を重ねると、次の一手を自分で選びやすくなります。</p>
+
+  <ol class="flow mt-m">
+    <li><b>行動</b><span>プレイヤーが一箇所を狙って洗う</span></li>
+    <li><b>即時反応</b><span>汚れが消え、音と色が変わる</span></li>
+    <li><b>進捗</b><span>対象の残りが数値で分かる</span></li>
+    <li><b>次の目標</b><span>別の面を洗うか、仕事を終えるか選ぶ</span></li>
+  </ol>
+
+  <h3 class="h-sub">自作ゲームで使う手順</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">行動の直後に変化を返す</p><p class="list__text">移動、攻撃、配置など、中心となる操作を一つ選び、成功・失敗が画面上でどう分かるか確認します。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">短い進捗と大きな目標を分ける</p><p class="list__text">一発の命中は即時反応、ボス撃破は長期進捗です。大きな達成表示だけに頼らず、途中の変化も返します。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">伝える頻度を調整する</p><p class="list__text">反応が少ないと成功を見落とし、多すぎると画面が騒がしくなります。何回の行動ごとに音や表示を出すか、実験で比べます。</p></div></div>
+  </div>
+  <p class="note mt-s">この三点を使い、汚れを落とす一手が「気持ちいい」と評価された作品を分析します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：『PowerWash Simulator』</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>Steam Early Access：2021年5月19日／正式版：2022年7月14日</dd></div>
+    <div><dt>開発</dt><dd>FuturLab（英国）</dd></div>
+    <div><dt>ジャンル</dt><dd>一人称クリーニング・シミュレーション</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">まず見る図：一拭きから、次の仕事へ</h3>
+  <figure class="mt-m">
+    <svg viewBox="0 0 760 220" role="img" aria-labelledby="feedback-title feedback-desc" style="width:100%;height:auto;display:block;background:#fff;border:2px solid #16161a">
+      <title id="feedback-title">PowerWash Simulatorの行動と進捗の流れ</title>
+      <desc id="feedback-desc">水を当てると汚れが消え、音と色が変わる。小さな部位の完了と仕事全体の進捗が、次の狙いを示す。</desc>
+      <rect x="24" y="42" width="150" height="116" fill="#e9e6ff" stroke="#16161a" stroke-width="3"/><text x="99" y="88" text-anchor="middle" font-size="21" font-family="sans-serif" fill="#16161a">水を当てる</text><text x="99" y="121" text-anchor="middle" font-size="16" font-family="sans-serif" fill="#555">操作・狙い</text>
+      <path d="M184 100h50" stroke="#5b3df5" stroke-width="5"/><path d="M234 100l-14-10v20z" fill="#5b3df5"/>
+      <rect x="246" y="42" width="150" height="116" fill="#c9f0e0" stroke="#16161a" stroke-width="3"/><text x="321" y="88" text-anchor="middle" font-size="21" font-family="sans-serif" fill="#16161a">汚れが消える</text><text x="321" y="121" text-anchor="middle" font-size="16" font-family="sans-serif" fill="#555">色・水音・効果音</text>
+      <path d="M406 100h50" stroke="#5b3df5" stroke-width="5"/><path d="M456 100l-14-10v20z" fill="#5b3df5"/>
+      <rect x="468" y="42" width="126" height="116" fill="#fff1bf" stroke="#16161a" stroke-width="3"/><text x="531" y="88" text-anchor="middle" font-size="21" font-family="sans-serif" fill="#16161a">進捗が進む</text><text x="531" y="121" text-anchor="middle" font-size="16" font-family="sans-serif" fill="#555">部位・仕事</text>
+      <path d="M604 100h50" stroke="#5b3df5" stroke-width="5"/><path d="M654 100l-14-10v20z" fill="#5b3df5"/>
+      <rect x="666" y="42" width="78" height="116" fill="#f0f0f0" stroke="#16161a" stroke-width="3"/><text x="705" y="88" text-anchor="middle" font-size="18" font-family="sans-serif" fill="#16161a">次を</text><text x="705" y="117" text-anchor="middle" font-size="18" font-family="sans-serif" fill="#16161a">選ぶ</text>
+      <text x="380" y="197" text-anchor="middle" font-size="16" font-family="sans-serif" fill="#52525b">教材制作者の整理図｜公式映像・開発者インタビューをもとに作成</text>
+    </svg>
+    <figcaption class="note mt-s">公式映像の汚れの変化と、開発者が説明する「見る満足感」を、設計上の因果として整理しました。画像出典：FuturLab公式トレーラー（2022-07-14）・80 Level（2024-01-22）。</figcaption>
+  </figure>
+
+  <h3 class="h-sub">一拭きが、なぜ手応えになる？</h3>
+  <p>プレイヤーはノズルを選び、汚れた面へ水を当てます。汚れた部分だけが消えて元の色が現れ、対象部位が完了すると表示と音が返るため、「今の狙いで掃除が進んだ」と目で確かめられます。</p>
+  <p>さらに仕事全体の進捗が残るので、一部分の完了が次の小目標になり、全体ゲージは長い仕事の終点を示します。装備を強化すると、圧力・距離・範囲の選び方が増えますが、どこから洗うかはプレイヤーが決めます。</p>
+
+  <h3 class="h-sub">始めたくなる仕組み：名前だけで遊びが伝わる</h3>
+  <p><strong>開発者の見解：</strong>デザインディレクターのDan Chequer氏は、ゲーム名から中心メカニクスが伝わり、自分の興味に合うか購入前に判断しやすいこと、配信者やYouTuberが作品の認知を広げたことを挙げています（80 Level、2024-01-22）。</p>
+  <p><strong>独自分析：</strong>トレーラーでは、暗い汚れに水を走らせると鮮やかな面が現れます。最初の操作ですぐ同じ変化が起きるため、宣伝で見た約束を自分の手で確かめられます。</p>
+
+  <h3 class="h-sub">続けたくなる仕組み：小さな完了と大きな仕事を重ねる</h3>
+  <p>一回の噴射は狭い範囲をきれいにし、部品単位の完了音が短い区切りを作ります。その手応えを積むと仕事の達成へ近づき、報酬でノズルや洗浄機を強化して別の洗い方を試せます。</p>
+  <p>後日戻る動機としては、新しい仕事や無料更新、SpongeBob・Back to the Futureなどの有料コラボDLCがあります。FuturLabは2024年4月、700万人から1,200万人へプレイヤーが増えたことと、DLC・VR展開を同じ発表で伝えています。</p>
+
+  <h3 class="h-sub">離れる理由：同じ作業の長さが、魅力を反転させる</h3>
+  <p>GameSpotは、作品を心地よい「作業ゲーム」と評する一方、長い時間を要し、プレイの流れが時折途切れる点を指摘しました（2022-07-26）。同じ動きを落ち着く反復と感じる人も、変化が少ない作業と感じる人もいます。</p>
+  <p>Push Squareも、汚れを落とす手応えを高く評価しつつ、仕事の反復と遅いテンポを認めています（2023-02-14）。全体レビューの好評率から離脱率は分かりません。細部探しの負担や長い仕事の区切りは、離れる可能性のある摩擦として扱います。</p>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">作品ならではの面白さ｜独自分析</p>
+    <p class="panel__title">「見るだけで気持ちいい洗浄動画」を、自分で一筋ずつ作る。</p>
+    <p class="mt-s">開発者によれば、着想はオンラインで人気だった高圧洗浄動画で、現実のホース管理など満足を妨げる作業は外しました。現実を忠実に再現するより、狙う・汚れが取れる・全体が変わるという視覚の約束を磨いた点が、一般的な仕事シムとの差です。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：気持ちよさ以外の選ばれた条件</h2>
+  <dl class="facts">
+    <div><dt>成果指標</dt><dd>FuturLab公表：2024-04-22時点で1,200万人がプレイ（販売数ではない）</dd></div>
+    <div><dt>Steam英語レビュー</dt><dd>全38,605件の97%好評／直近30日176件の94%好評（2026-10-26確認）</dd></div>
+    <div><dt>価格</dt><dd>Steam米国表示 $24.99（2026-10-26確認、地域・セールで変動）</dd></div>
+    <div><dt>配信・協力</dt><dd>Careerは2人、Freeplayは最大6人（Xbox Wire、2022-07-05）</dd></div>
+  </dl>
+
+  <h3 class="h-sub">どんな意見がある？</h3>
+  <ul class="bullets mt-m">
+    <li><span><strong>批評家：</strong>GameSpotは7/10。小さな汚れが取れる達成感と落ち着いた設計を評価しつつ、長い作業や流れを中断する要素を批評しました（2022-07-26）。</span></li>
+    <li><span><strong>批評家：</strong>Push Squareは反復と遅いテンポを認めながら、汚れがはがれて色が戻る視覚変化、完了音、長いCareerにプレイ継続の力を見ています（2023-02-14）。</span></li>
+    <li><span><strong>プレイヤー集計：</strong>Steamの英語レビュー38,605件中97%が好評、直近30日176件中94%が好評でした。これは投稿者の評価で、満足理由ごとの内訳や全購入者の継続率ではありません。</span></li>
+    <li><span><strong>声の読み方：</strong>Steam個別レビューには「反復が落ち着く」という声と「一人だと長く単調」という声が並びます。ここではレビュー例を代表標本として数えず、批評家の具体的な指摘と大規模集計を分けて読みます。</span></li>
+  </ul>
+
+  <h3 class="h-sub">なぜ選ばれた？ 要因を分けて考える</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">見せ方</span><span class="list__body"><strong>開発者の見解：</strong>ゲーム名が「何をするか」をすぐ伝え、配信・動画で洗浄の変化を見せやすかった。</span></div>
+    <div class="list__row"><span class="list__key">入口</span><span class="list__body"><strong>事実：</strong>Early Accessで約14か月育てた後、2022年7月に正式版を発売し、同日Xbox / PC Game Passに登場。購入前に遊べる接点があった。</span></div>
+    <div class="list__row"><span class="list__key">対象</span><span class="list__body"><strong>独自分析：</strong>反射神経を強く求めず、短い作業を整然と進めたい人に届きやすい。Game Passや協力プレイは、友人の誘いで試すハードルも下げたと考えられます。</span></div>
+    <div class="list__row"><span class="list__key">拡張</span><span class="list__body"><strong>事実：</strong>無料更新、有料コラボDLC、VR版が続き、作品の遊びに既存IPの場所・題材を追加した。開発元はこの間プレイヤー数を公表したが、各施策の売上寄与は不明。</span></div>
+  </div>
+  <p class="note mt-s">1,200万人はプレイヤー数で、Game Pass等を含み得ます。公表された販売本数・売上額はここで確認できないため記載しません。高い評価は需要と整合しますが、価格、サブスクリプション、配信、更新、コラボのどれが何人を動かしたかは公開資料から断定できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：ひと拭きの手応え</h2>
+  <p>汚れたタイルを指でなぞって洗い、3つの作業台を仕上げてください。色の変化は一手の結果、部位表示は小目標、仕事ゲージは長期進捗です。</p>
+  <div class="chips mt-s"><span class="chip">噴射範囲</span><span class="chip">完了目標</span><span class="chip">部位フィードバック</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">範囲と完了表示を変えたとき、「一手の気持ちよさ」と「次にすることの分かりやすさ」はどう変わる？</p>
+    <p class="mt-s">デモで分かるのは1回のセッション内の行動と結果です。日をまたいで戻る意欲や、実際の購入・継続率は測っていません。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門｜一つ変えて比べる</p>
+      <p class="panel__title">噴射範囲を1段階変える</p>
+      <p class="mt-s">始める前に、作業完了までの時間と「一手で進んだ感覚」を予想します。範囲以外は固定し、終わったら予想との差を書きます。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用｜小目標を設計する</p>
+      <p class="panel__title">部位ごとの完了ルールを変更する</p>
+      <p class="mt-s">完了音を出す区切りを「毎回」から「一面を仕上げたとき」へ変えてみます。すぐ返す反応が減る代わりに、一面完了の重みは増えるでしょうか。音だけでなく視覚表示も設計してください。</p>
+    </div>
+  </div>
+  <p class="note mt-s">デモの変更箇所には「改造ポイント」とコメントを付けています。噴射範囲・目標割合・音の頻度を変え、同じ盤面で結果を比べられます。</p>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの中心行動に、どの反応が返っていますか？ 数字、動き、音、状態変化から二案を作り、視認性と演出過多の短所を比べてください。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">長い目標を小さな完了へ分けるなら、何を区切りにしますか？ 毎回知らせる案と、節目だけ知らせる案を作り、どちらが次の行動を選びやすいかテストしましょう。</span></div>
+  </div>
+</section>

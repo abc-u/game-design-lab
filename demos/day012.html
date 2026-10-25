@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#f4f3ee">
+<title>ひと拭きの手応え｜Game Design Lab DAY12</title>
+<style>
+:root{--ink:#16161a;--bg:#f4f3ee;--paper:#fff;--purple:#5b3df5;--mint:#d5f2e5;--dirt:#74726f;--line:rgba(22,22,26,.2);--font:system-ui,-apple-system,"Noto Sans JP",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--font)}button,input{font:inherit}button{color:inherit}
+.app{max-width:680px;margin:0 auto;padding:18px 16px 22px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:10px}.brand{font-weight:800;letter-spacing:.02em}.day{font-size:12px;font-weight:700;color:#555}.intro{padding:12px 0 10px}.intro h1{font-size:23px;line-height:1.25;margin:0 0 5px}.intro p{margin:0;color:#494950;font-size:14px}
+.stats{display:flex;justify-content:space-between;gap:10px;margin:8px 0}.stat{font-size:12px;color:#555}.stat strong{font-size:18px;color:var(--ink);padding-left:3px}
+.job{border:2px solid var(--ink);background:#fff;box-shadow:3px 3px 0 var(--ink);padding:12px;margin:8px 0 14px}.jobhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.jobtitle{font-size:17px;font-weight:800}.badge{font-size:11px;font-weight:800;background:#ece8ff;padding:3px 7px}.progress{height:9px;border:1px solid var(--ink);background:#eee;margin:8px 0 10px}.bar{height:100%;width:0;background:var(--purple);transition:width .16s}
+.grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;touch-action:none;user-select:none;-webkit-user-select:none}.tile{aspect-ratio:1/1;border:1px solid rgba(22,22,26,.35);background:linear-gradient(145deg,#8a8984,#62615e);border-radius:2px;transition:background .1s,transform .12s;position:relative}.tile::after{content:"";position:absolute;inset:3px;background:repeating-linear-gradient(135deg,transparent 0 4px,rgba(0,0,0,.08) 4px 6px);opacity:.5}.tile[data-tone="1"]{background:linear-gradient(145deg,#859aa7,#5e6d79)}.tile[data-tone="2"]{background:linear-gradient(145deg,#a28d78,#8a7663)}.tile.clean{background:linear-gradient(145deg,#a5e1c6,#65bb91);transform:scale(.97)}.tile.clean::after{opacity:0}
+.jobfoot{display:flex;justify-content:space-between;font-size:12px;color:#555;margin-top:8px}.message{min-height:25px;font-weight:700;color:var(--purple);font-size:13px;padding-top:3px}
+.controls{border-top:1px solid var(--line);padding-top:11px;margin-top:12px}.controlrow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;margin:8px 0}.controlrow label{font-size:13px;font-weight:700}.controlrow output{font-variant-numeric:tabular-nums;font-size:13px;color:#555}.range{width:100%;accent-color:var(--purple);height:26px;touch-action:pan-y}
+.buttons{display:flex;gap:8px;margin-top:10px}.btn{flex:1;min-height:44px;padding:9px 12px;border:2px solid var(--ink);background:#fff;font-weight:800;cursor:pointer}.btn.primary{background:var(--purple);color:#fff;border-color:var(--purple)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.result{display:none;margin-top:10px;padding:10px;border:1px solid var(--line);background:#fff}.result.show{display:block}.result strong{font-size:17px}.footnote{font-size:11px;color:#666;margin:10px 0 0}
+@media(max-width:420px){.app{padding:13px 12px 18px}.intro h1{font-size:21px}.job{padding:9px}.grid{gap:2px}.controlrow{margin:6px 0}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top"><span class="brand">GAME DESIGN LAB</span><span class="day">DAY 12｜FEEDBACK</span></header>
+  <section class="intro"><h1>ひと拭きの手応え</h1><p>汚れをなぞって3つの作業を終えよう。色の変化は一手、進捗バーは全体の結果。</p></section>
+  <div class="stats" aria-live="polite"><span class="stat">完了した仕事<strong id="jobs">0/3</strong></span><span class="stat">全体の清掃<strong id="allProgress">0%</strong></span></div>
+  <section class="job" aria-label="洗浄ゲーム">
+    <div class="jobhead"><span class="jobtitle" id="jobTitle">作業台 1｜看板</span><span class="badge" id="goalBadge">目標 70%</span></div>
+    <div class="progress" role="progressbar" aria-label="現在の仕事の進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" id="bar"></div></div>
+    <div class="grid" id="grid" role="application" aria-label="汚れをなぞって洗う盤面"></div>
+    <div class="jobfoot"><span id="partStatus">部位 1 / 6</span><span id="cleanCount">0 / 48 タイル</span></div>
+    <div class="message" id="message" aria-live="polite">指でなぞって洗浄。タップでもOK。</div>
+    <div class="buttons"><button class="btn primary" id="startBtn">作業を始める</button><button class="btn" id="replayBtn" type="button">最初から</button></div>
+    <div class="result" id="result" role="status"></div>
+  </section>
+  <section class="controls" aria-label="ゲームデザイン実験室">
+    <strong>改造ラボ</strong>
+    <div class="controlrow"><label for="spray">次の仕事の噴射範囲：一度になぞる広さ</label><output id="sprayOut">1</output></div>
+    <input class="range" id="spray" type="range" min="1" max="3" step="1" value="1">
+    <div class="controlrow"><label for="goal">仕事の完了目標</label><output id="goalOut">72%</output></div>
+    <input class="range" id="goal" type="range" min="60" max="90" step="5" value="70">
+    <div class="controlrow"><label for="cue">完了音：何タイルごと</label><output id="cueOut">4</output></div>
+    <input class="range" id="cue" type="range" min="1" max="12" step="1" value="4">
+    <p class="footnote">範囲と目標はプレイ中に変えても、次の仕事から反映。音の頻度は即時反映。音は端末の設定とブラウザに依存します。</p>
+  </section>
+  <p class="footnote">このオリジナルデモは行動・短期進捗を試すものです。長期の継続意欲を測定するものではありません。</p>
+</main>
+<script>
+(function(){
+  "use strict";
+  var W=8,H=6,TOTAL=W*H,PART=8;
+  var grid=document.getElementById("grid"), bar=document.getElementById("bar");
+  var jobsEl=document.getElementById("jobs"), allEl=document.getElementById("allProgress");
+  var titleEl=document.getElementById("jobTitle"), goalBadge=document.getElementById("goalBadge");
+  var partEl=document.getElementById("partStatus"), countEl=document.getElementById("cleanCount");
+  var msg=document.getElementById("message"), result=document.getElementById("result");
+  var tiles=[],cleaned=0,job=0,started=false,finished=false,drawing=false,lastTile=-1,cueAt=4,cleanedTotal=0,jobGoal=.70,jobRadius=0;
+  var names=["看板","自転車","小さな噴水"];
+  var colorSets=["#725f56","#5e6d79","#8a7663"];
+  // 改造ポイント1：手の届く範囲。数値を広げると一操作の進捗が増える。
+  function radius(){return Math.max(0,Number(document.getElementById("spray").value)-1);}
+  function goal(){return Number(document.getElementById("goal").value)/100;}
+  function cueEvery(){return Number(document.getElementById("cue").value);}
+  function build(){
+    grid.innerHTML="";tiles=[];cleaned=0;lastTile=-1;jobGoal=goal();jobRadius=radius();
+    var base=colorSets[job%colorSets.length];
+    for(var i=0;i<TOTAL;i++){
+      var b=document.createElement("button");b.type="button";b.className="tile";
+      b.setAttribute("aria-label","汚れ "+(i+1));b.dataset.index=String(i);
+      b.setAttribute("data-tone",String(job%colorSets.length));
+      grid.appendChild(b);tiles.push(b);
+    }
+    update();
+  }
+  function update(){
+    var pct=Math.floor(cleaned/TOTAL*100),goalPct=Math.round(jobGoal*100);
+    bar.style.width=Math.min(100,pct/jobGoal*100)+"%";
+    bar.parentElement.setAttribute("aria-valuenow",String(pct));
+    jobsEl.textContent=job+"/3";allEl.textContent=Math.floor(cleanedTotal/(TOTAL*3)*100)+"%";
+    titleEl.textContent=job<3?"作業台 "+(job+1)+"｜"+names[job]:"清掃完了";
+    goalBadge.textContent="目標 "+goalPct+"%";partEl.textContent="部位 "+Math.min(6,Math.floor(cleaned/PART)+1)+" / 6";
+    countEl.textContent=cleaned+" / "+TOTAL+" タイル";
+  }
+  function ding(){
+    msg.textContent="チン！ 部位がきれいになった";
+    if(!document.getElementById("soundOn")||document.getElementById("soundOn").checked===false)return;
+    try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var c=new C(),o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=740;g.gain.setValueAtTime(.08,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.14);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.15);o.onended=function(){c.close();};}catch(e){}
+  }
+  function spray(index){
+    if(!started||finished||index===lastTile)return;
+    lastTile=index;var x=index%W,y=Math.floor(index/W),r=jobRadius,before=cleaned;
+    for(var yy=Math.max(0,y-r);yy<=Math.min(H-1,y+r);yy++){
+      for(var xx=Math.max(0,x-r);xx<=Math.min(W-1,x+r);xx++){
+        var j=yy*W+xx;if(!tiles[j].classList.contains("clean")){tiles[j].classList.add("clean");tiles[j].setAttribute("aria-label","洗浄済み "+(j+1));cleaned++;cleanedTotal++;}
+      }
+    }
+    if(cleaned!==before){
+      update();
+      if(Math.floor(cleaned/cueEvery())>Math.floor(before/cueEvery()))ding();
+      else msg.textContent="汚れが落ちた。次の面を探そう。";
+      // 改造ポイント2：仕事の完了閾値。低くすると短く終わるが、汚れを残しても完了する。
+      if(cleaned/TOTAL>=jobGoal)completeJob();
+    }
+  }
+  function completeJob(){
+    if(finished)return;msg.textContent="仕事完了！次の作業が開いた。";job++;update();
+    if(job>=3){
+      finished=true;started=false;document.getElementById("startBtn").disabled=false;
+      result.classList.add("show");
+      result.innerHTML="<strong>3つの作業が完了！</strong><br>洗浄したタイル："+cleanedTotal+" / "+(TOTAL*3)+"。<br>次は改造ラボで、範囲や目標を変えて比べよう。";
+      document.getElementById("startBtn").textContent="もう一度遊ぶ";
+      return;
+    }
+    build();
+  }
+  function begin(){
+    if(finished){reset();return;}
+    started=true;result.classList.remove("show");msg.textContent="指でなぞって洗浄。色の変化を見てみよう。";
+    document.getElementById("startBtn").textContent="洗浄中";document.getElementById("startBtn").disabled=true;
+    build();
+  }
+  function reset(){
+    job=0;cleanedTotal=0;started=true;finished=false;result.classList.remove("show");
+    document.getElementById("startBtn").textContent="洗浄中";document.getElementById("startBtn").disabled=true;
+    msg.textContent="指でなぞって洗浄。色の変化を見てみよう。";build();
+  }
+  grid.addEventListener("pointerdown",function(e){var t=e.target.closest(".tile");if(!t||!started)return;drawing=true;lastTile=-1;try{grid.setPointerCapture(e.pointerId);}catch(_){}spray(Number(t.dataset.index));});
+  grid.addEventListener("pointermove",function(e){if(!drawing)return;var t=document.elementFromPoint(e.clientX,e.clientY);if(t&&t.classList.contains("tile"))spray(Number(t.dataset.index));});
+  grid.addEventListener("pointerup",function(){drawing=false;lastTile=-1;});
+  grid.addEventListener("pointercancel",function(){drawing=false;lastTile=-1;});
+  document.getElementById("startBtn").addEventListener("click",function(){if(finished){reset();return;}begin();});
+  document.getElementById("replayBtn").addEventListener("click",reset);
+  document.getElementById("spray").addEventListener("input",function(){document.getElementById("sprayOut").textContent=this.value;});
+  document.getElementById("goal").addEventListener("input",function(){document.getElementById("goalOut").textContent=this.value+"%";goalBadge.textContent="次の仕事 "+this.value+"%";});
+  document.getElementById("cue").addEventListener("input",function(){document.getElementById("cueOut").textContent=this.value;});
+  document.getElementById("spray").insertAdjacentHTML("beforebegin",'<label class="controlrow" style="margin-top:4px;font-weight:600"><input id="soundOn" type="checkbox" checked> 完了音を鳴らす</label>');
+  document.getElementById("startBtn").disabled=false;
+  build();
+})();
+</script>
+</body>
+</html>
