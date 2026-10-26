@@ -1,0 +1,182 @@
+---
+day: 13
+date: 2026-10-27
+title: 知ったことが、次の行き先になる『Outer Wilds』
+theme: 知識を進行度にする探索設計
+game: Outer Wilds
+level: 中級
+minutes: 10
+summary: 能力値ではなく発見した知識で道が開く設計を、探索デモで試す。
+question: プレイヤーが「次はここを確かめたい」と自分で決めるには、知識をどう進行に結びつければよい？
+goals:
+  - 知識が新しい選択肢を開く仕組みを説明できる
+  - 『Outer Wilds』の入口・継続・離脱要因を、具体的なルールと評価から分析できる
+  - 自作企画で手がかりの見せ方を変え、プレイヤーの次の行動を比較できる
+video:
+  id: ZKJUMMCJvGM
+  title: OUTER WILDS｜Launch Trailer
+  caption: Annapurna Interactive公式ローンチトレーラー。謎の提示、惑星ごとの景色、時間制限の気配に注目。
+demo:
+  src: /demos/day013.html
+  title: 星図に残る手がかり
+  height: 920
+sources:
+  - title: Mobius Digital「Press」
+    url: https://www.mobiusdigitalgames.com/press.html
+    note: 開発スタジオの紹介と発売時期（確認：2026-10-27）
+  - title: Annapurna Interactive「Outer Wilds」
+    url: https://annapurnainteractive.com/games/outer-wilds
+    note: 公式作品紹介・ゲームの概要（確認：2026-10-27）
+  - title: Steam「Outer Wilds」
+    url: https://store.steampowered.com/app/753640/Outer_Wilds/
+    note: 発売日・価格・説明・受賞歴（確認：2026-10-27。価格・評価は変動）
+  - title: Steam「Outer Wilds Reviews」
+    url: https://store.steampowered.com/app/753640/reviews/?l=english
+    note: 英語レビュー件数と評価比率（2026-10-27確認時、53,597件中95%好評。表示は変動）
+  - title: Metacritic「Outer Wilds」
+    url: https://www.metacritic.com/game/outer-wilds/
+    note: PC版の批評家レビュー集計。確認時は33件・85点（2026-10-27確認。更新あり）
+  - title: "Game Developer: Live, die, repeat — How Outer Wilds piques curiosity"
+    url: https://www.gamedeveloper.com/design/live-die-repeat-how-i-outer-wilds-i-piques-curiosity-in-an-ambivalent-solar-system
+    note: Alex Beachumの設計意図と時間ループ（2019年公開、2026-10-27確認）
+  - title: "Game Informer: Outer Wilds Review — Wonder And Frustration Intertwined"
+    url: https://gameinformer.com/review/outer-wilds/wonder-and-frustration-intertwined
+    note: 操船の難しさとパズル場面への批評（2019年5月28日公開、2026-10-27確認）
+  - title: "PC Gamer: Outer Wilds review"
+    url: https://www.pcgamer.com/outer-wilds-review/
+    note: 惑星の表現、音楽、探索の雰囲気を評価（2019年5月29日公開、2026-10-27確認）
+  - title: "BAFTA: Winners Announced — British Academy Games Awards 2020"
+    url: https://www.bafta.org/media-centre/press-releases/winners-announced-british-academy-games-awards-2020/
+    note: Best Game・Game Design・Original Property受賞（2020年4月2日公開）
+  - title: "Hello Games: About No Man’s Sky"
+    url: https://www.nomanssky.com/about/
+    note: 比較作品の公式紹介。手続き生成の広大な銀河を探索する作品（2026-10-27確認）
+  - title: Steam Community「Negative Reviews」
+    url: https://steamcommunity.com/app/753640/negativereviews/?browsefilter=toprated&l=english
+    note: Steam否定的レビューから役立った順に2件を確認（確認日2026-10-27）。2021-10-26は操船・時間制限・再訪の負担、2023-06-07は謎に関心を持てなかった点。少数例で全体傾向を代表しない。
+sources_note: 事実、開発者の見解、批評家・プレイヤーの意見、教材制作者の分析を区別しています。販売本数の公式公表は確認できず、推定値は記載していません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：知識を「進行度」にする</h2>
+  <p>多くのゲームは経験値や鍵を集めると、新しい能力や場所が解放されます。探索ゲームでは、プレイヤーが仕組みを理解したこと自体を進行にできます。知る前は通れなかった道を、知った後は自分の判断で進める設計です。</p>
+  <p>設計するときは、手がかりを見つける→意味を仮説にする→別の場所で試す→移動や選択が変わる、の順に組み立てます。作品分析では、何を知ると次の行動が変わるのか、答えを見つけた後にも操作する余地が残るかを確かめます。</p>
+  <ol class="flow mt-m">
+    <li><b>発見</b><span>手がかりを見つける</span></li>
+    <li><b>理解</b><span>世界のルールを仮説にする</span></li>
+    <li><b>応用</b><span>別の場所で試し、進路を選ぶ</span></li>
+  </ol>
+  <h3 class="h-sub">企画で決めること</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">手がかりの具体性</p><p class="list__text">答えを直接示すか、複数の説明が成り立つ観察を置くか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">試せる場所</p><p class="list__text">理解した直後に、仮説を確かめられる行動を用意する。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">失敗の扱い</p><p class="list__text">失敗しても知識が残るなら、再挑戦を単なるやり直しにしない。</p></div></div>
+  </div>
+  <p class="note mt-s">この見方を使い、次は『Outer Wilds』で「情報が進行になる」具体的な場面を分解します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：知識が宇宙の地図を書き換える</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2019年5月（PC・Xbox One）／Steam版は2020年6月</dd></div>
+    <div><dt>開発・販売</dt><dd>Mobius Digital／Annapurna Interactive</dd></div>
+    <div><dt>ジャンル</dt><dd>一人用の宇宙探索・ミステリー</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から次の行動まで</h3>
+  <p>プレイヤーは小さな宇宙船で惑星を訪れ、古代文明の記録や環境の変化を調べます。約22分で太陽系がリセットされても、集めた知識と船のログは残るため、次の周回では「何を知ったか」をもとに行き先を選び直せます。</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールの反応</th><th>次に生まれる判断</th></tr></thead>
+      <tbody>
+        <tr><th>記録を読む</th><td>別の場所や時刻に関する手がかりを得る</td><td>今すぐ行くか、別の謎を追うか</td></tr>
+        <tr><th>危険な場所を調べる</th><td>時間切れや事故で周回が終わる</td><td>得た知識で次の探索を短縮する</td></tr>
+        <tr><th>船のログを見返す</th><td>手がかりのつながりが整理される</td><td>未解決の問いから目標を選ぶ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>公式紹介は「時間ループに閉じ込められた太陽系のミステリー」と約束し、トレーラーは奇妙な惑星と宇宙船の映像で未知を見せます。開始直後に飛行・着陸・調査を自分で行うので、宣伝で見た「探索」を最初の数分で試せます。</p>
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>一つの記録が別の場所の謎を示し、そこでの発見がさらに別の仮説につながります。装備を強くするのではなく、プレイヤー自身が航路や危険な時間帯を学ぶため、「今なら前より早く確かめられる」という上達と、未解決の問いが次の探索を生みます。</p>
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>一般的なオープンワールドは能力や装備で行ける範囲を広げますが、本作では多くの謎が最初から世界に存在し、知識があれば早い段階でも解けます。重力や時間で変わる惑星を歩き、読んだ情報を実際の移動に使うため、物語を読むことと世界を操作することが一つの探索になります。</p>
+  <h3 class="h-sub">離れる理由</h3>
+  <p>批評家・プレイヤーの一部は、慣性のある操船や、限られた時間内に目的地へ着く難しさを指摘しています。さらに船のログを読む・文章を照合する遊びに興味が薄い人には、行き先の自由が「何をすればいいか分からない」に変わり得ます。これは全員の評価ではなく、レビューで確認できる不満の種類です。</p>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">周回のリセットは進捗の消去ではなく、プレイヤーが得た知識を使うための再出発として働く。</p>
+    <p class="mt-s">開発者のAlex Beachumは、好奇心で探索させ、巨大な目的地マーカーに頼らない設計を語っています（Game Developer、2019年）。本教材の分析では、船のログが方向を完全指定せず、次の仮説を選ぶ余白を残す点が継続を支えると考えます。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：誰に届き、何が障壁になる？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>批評家集計：Metacritic PC版は確認時85点／33レビュー（2026-10-27）。発見・世界構築・物語の結びつきが高く評価されています。</span></li>
+        <li><span>Steam英語レビュー：確認時53,597件中95%が好評（2026-10-27確認時の表示）。全言語や購入者全体を示す数字ではありません。</span></li>
+        <li><span>2020年BAFTA Games AwardsでBest Game受賞。Steam掲載の受賞実績です。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判・障壁</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Game Informer（2019-05-28）は操船の複雑さが危険な場所のパズルを難しくすると評しました。</span></li>
+        <li><span>Steamの「役に立った」順の否定的レビューから2件を確認（2026-10-27）。2021-10-26の投稿は操船・時間制限・再訪の負担を、2023-06-07の投稿はミステリーに関心を持てなかった点を挙げています。少数の選択例で、全体傾向ではありません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">自由な探索は好奇心を刺激する一方、次の一手を自分で立てる負荷もプレイヤーに渡す。</p>
+  </div>
+  <h3 class="h-sub">成果と市場要因</h3>
+  <dl class="facts">
+    <div><dt>発売価格</dt><dd>米国ストア表示は$24.99（2026-10-27確認。地域・割引で変動）</dd></div>
+    <div><dt>販売本数</dt><dd>確認できる公式累計販売本数は見つからず、記載しない</dd></div>
+    <div><dt>プラットフォーム</dt><dd>PC（Epic先行、後にSteam）、Xbox・PlayStation・Nintendo Switch系にも展開</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>対象と訴求（事実）</strong>　公式ストアは一人用の探索ミステリーとして紹介。宇宙・謎解き・物語探索に関心のある層に内容を伝えやすい。</span></li>
+    <li><span><strong>発売と流通（事実）</strong>　PC版はEpic Games Storeで2019年5月発売、Steamでは2020年6月発売。後年に複数機種へ広がり、触れられる販路が増えた。</span></li>
+    <li><span><strong>口コミとブランド（事実）</strong>　批評家の高評価、複数媒体の年間ベスト選出に加え、BAFTAでBest Game・Game Design・Original Propertyを受賞（2020-04-02）したことが推薦の材料となった。ネタバレが体験を損なう構造は、映像で謎を説明しすぎにくい一方、口コミで勧める言葉を選ぶ必要もある。</span></li>
+    <li><span><strong>競合と差別化（分析）</strong>　競合する宇宙探索作の一例『No Man’s Sky』は、公式に手続き生成の広大な銀河と探索・生存を掲げます。本作は一つの小さな太陽系に謎を凝縮し、能力や資源を集めるより知識で進む設計に焦点を絞る、という比較ができます。</span></li>
+  </ul>
+  <p class="note mt-s">評価や賞は作品が選ばれた証拠の一部ですが、販売本数や売上の公表がない以上、商業的成功の規模や要因別の寄与は断定できません。面白さに加え、価格、販路、受賞、口コミ、プラットフォーム展開が選択に影響した可能性があります。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：星図に残る手がかり</h2>
+  <p>小さな宇宙で信号を調べ、見つけた知識を次の周回へ持ち越しましょう。ヒントの強さと時間を変え、手がかりが自分の目標づくりを助けるか比べます。</p>
+  <div class="chips mt-s"><span class="chip">ヒントの強さ</span><span class="chip">探索できる時間</span><span class="chip">知識の持ち越し</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">次の行動は、ゲームから指示された？それとも得た知識から自分で選んだ？</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">ヒントの強さを一段階変える</p><p class="mt-s">開始前に「正解を見つけるまでの探索回数」と「自分で目標を選べた感覚」を予想し、結果と比べる。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">手がかりを二つの場所に分ける</p><p class="mt-s">一方は移動のヒント、もう一方は時間のヒントにする。両方集めないと解けない設計と、片方から試せる設計の違いを比べる。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの次の目標を、目的地マーカー以外で伝えるなら、環境・会話・音・ログのどれを使う？迷いやすさをどこまで許容する？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">能力強化の代わりに、プレイヤーが知ったことで解ける問題を一つ作るとしたら何か。答えを見つける喜びと、見つけられない停滞をどう両立させる？</span></div>
+  </div>
+</section>
