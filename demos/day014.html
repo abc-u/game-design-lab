@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>帰還のたびに、何が残る？｜Game Design Lab DAY14</title>
+<style>
+:root{--ink:#16161a;--paper:#fff;--bg:#f4f3ee;--purple:#5b3df5;--line:#d8d6ce;--muted:#57565d;--good:#276a48;--bad:#9d3b2d}
+*{box-sizing:border-box}body{margin:0;padding:15px;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Noto Sans JP",sans-serif}
+.wrap{max-width:680px;margin:auto}.box{background:var(--paper);border:2px solid var(--ink);padding:17px;box-shadow:4px 4px 0 var(--ink)}
+h1{font-size:clamp(21px,5vw,28px);line-height:1.3;margin:0 0 7px}.lead{color:var(--muted);margin:0 0 13px}
+.stats{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.pill{border:1px solid var(--line);padding:5px 9px;font-size:14px}
+.panel{border:1px solid var(--line);padding:12px;margin:10px 0}.panel strong{font-size:17px}.arena{background:#211d35;color:#fff;border-color:#211d35}.arena p{margin:4px 0}.bar{height:9px;background:#e8e6ee;margin:5px 0 9px}.bar i{display:block;height:100%;background:#9d8aff;width:100%}
+button{font:inherit;touch-action:manipulation;cursor:pointer}.primary{width:100%;padding:11px 14px;border:2px solid var(--purple);background:var(--purple);color:white;font-weight:700}.secondary{border:1px solid var(--ink);background:#fff;color:var(--ink);padding:9px 10px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0}.actions button{min-height:46px}.secondary:disabled,.primary:disabled{opacity:.45;cursor:not-allowed}
+.msg{background:#f1efff;border-left:4px solid var(--purple);padding:10px 11px;margin:10px 0;min-height:52px}.muted{color:var(--muted);font-size:14px}.settings{border-top:1px solid var(--line);margin-top:13px;padding-top:10px}.control{margin:8px 0}.control label{display:flex;justify-content:space-between;gap:10px;font-size:14px}.control input[type=range]{width:100%;min-height:28px;accent-color:var(--purple)}.checks{font-size:14px}.checks input{width:18px;height:18px;vertical-align:middle;accent-color:var(--purple)}.choice{display:flex;gap:8px;margin-top:9px}.choice button{flex:1}.record{font-size:14px;padding:6px 0;border-bottom:1px solid var(--line)}[hidden]{display:none!important}
+@media(max-width:420px){body{padding:10px}.box{padding:13px}.pill{font-size:12px}.actions button{font-size:14px;padding:8px 4px}}
+</style>
+</head>
+<body><main class="wrap"><section class="box" aria-label="ラン型ゲームデモ">
+<h1>帰還のたびに、何が残る？</h1><p class="lead">部屋を抜けて恩恵を選ぶ。倒れても、館で得たものは次の挑戦へ。</p>
+<div class="stats"><span class="pill">ラン <b id="runNo">0</b></span><span class="pill">部屋 <b id="roomNo">—</b>/3</span><span class="pill">体力 <b id="hp">—</b></span><span class="pill">館の資源 <b id="ash">0</b></span><span class="pill">恒久攻撃 <b id="perm">0</b></span></div>
+<div class="panel arena"><strong id="foeName">冥界への入口</strong><div class="bar"><i id="foeBar"></i></div><p id="foeHp">ランを開始し、帰還後に残るものを確かめよう。</p></div>
+<div class="msg" id="msg" role="status">一回の挑戦で手に入る強化と、館に持ち帰れる進捗は別です。</div>
+<div id="boons" class="panel" hidden><strong>部屋を突破。次の恩恵を選ぶ</strong><div class="choice"><button class="secondary" id="boonPower">攻撃力 +1（今回のラン）</button><button class="secondary" id="boonHeal">体力を2回復（今回のラン）</button></div></div>
+<div class="actions"><button class="secondary" id="attack" disabled>⚔ 攻撃する</button><button class="secondary" id="dash" disabled>↗ 一度だけ回避して備える</button></div>
+<button class="primary" id="start">ランを開始</button>
+<div class="panel" id="hub"><strong>帰還後の館</strong><p id="dialogue" class="muted">挑戦の後、ここで強化と物語の変化を確認できます。</p><p class="muted">恒久攻撃 +1：資源4個 <button class="secondary" id="upgrade" disabled>強化する</button></p><div id="records"></div></div>
+<div class="settings">
+<div class="control"><label for="difficulty">敵の耐久 <b id="diffVal">2</b></label><input id="difficulty" type="range" min="1" max="3" value="2"></div>
+<div class="control"><label for="reward">帰還時の追加資源 <b id="rewardVal">1</b></label><input id="reward" type="range" min="0" max="3" value="1"></div>
+<label class="checks"><input id="story" type="checkbox" checked> 帰還のたびに会話を進める</label>
+<p class="muted">設定は次のラン開始時に反映。回避は1ランに1回使えます。</p>
+</div>
+<div class="actions"><button class="secondary" id="replay">もう一度遊ぶ</button><button class="secondary" id="download">デモHTMLをダウンロード</button></div>
+<p class="muted">操作：攻撃か回避をタップ。部屋を抜けたら恩恵を選択。全3部屋突破か体力0で帰還します。</p>
+</section></main>
+<script>
+(()=>{const names=["見張りの影","骨の番人","門の守り手"];// 改造ポイント：hard は設定スライダー、rewardBonus は帰還時資源の実験値。
+let run=0,room=0,hp=0,maxHp=6,power=2,permanent=0,ash=0,foeHp=0,foeMax=0,hard=2,rewardBonus=1,active=false,between=false,dashReady=false,dashUsed=false,returns=0,records=[];const $=id=>document.getElementById(id);
+function update(){ $("runNo").textContent=run;$("roomNo").textContent=active?room+1:"—";$("hp").textContent=active?hp+"/"+maxHp:"—";$("ash").textContent=ash;$("perm").textContent=permanent;$("foeName").textContent=active?names[room]:"冥界への入口";$("foeHp").textContent=active?"敵の体力 "+Math.max(0,foeHp)+"/"+foeMax+(dashReady?"　次の攻撃 +2":""):"ランを開始し、帰還後に残るものを確かめよう。";$("foeBar").style.width=active?Math.max(0,foeHp/foeMax*100)+"%":"0%";$("attack").disabled=!active||between;$("dash").disabled=!active||between||dashUsed;$("boons").hidden=!between;$("start").hidden=active;$("upgrade").disabled=active||ash<4;$("records").innerHTML=records.slice(-2).reverse().map(x=>'<div class="record">'+x+'</div>').join("")||""}
+function say(t){$("msg").textContent=t}
+function setFoe(){foeMax=3+room+hard-2;foeHp=foeMax}
+function begin(){run++;room=0;maxHp=6;hp=maxHp;power=2+permanent;hard=+$("difficulty").value;rewardBonus=+$("reward").value;active=true;between=false;dashReady=false;dashUsed=false;setFoe();say("挑戦開始。部屋ごとの恩恵を選び、館へ持ち帰るものを作ろう。");update()}
+function end(won){active=false;between=false;returns++;const earned=Math.max(1,room)+rewardBonus;ash+=earned;const result=won?"突破":"敗北";records.push("ラン"+run+"："+result+"・突破 "+room+"/3部屋・資源 +"+earned);const tales=["「次は、さっきより奥まで行けるかしら。」","「あの番人に負けたのか。次は別の武器を試すといい。」","「戦い方が変わってきたな。今度は最後まで行けるかもしれない。」","「帰ってくるたび、ここでの話も少し変わっていく。」"];const line=$("story").checked?tales[(returns-1)%tales.length]:"「また挑戦するのか。準備はできている。」";$("dialogue").textContent=line+"　今回の挑戦から資源を"+earned+"個持ち帰った。";say(won?"脱出成功。ラン内の恩恵は消えたが、資源と館の会話が残った。":"倒れて館へ帰還。ラン内の恩恵は消えたが、資源と館の会話が残った。");update()}
+function attack(){if(!active||between)return;const damage=power+(dashReady?2:0);dashReady=false;foeHp-=damage;if(foeHp<=0){room++;if(room>=3){end(true);return}between=true;say(names[room-1]+"を突破。次の部屋に向けて、今回だけの恩恵を選ぶ。");update();return}const blow=Math.max(1,hard-1);hp-=blow;say("攻撃は届いたが、敵が残った。反撃を受け、体力を"+blow+"失った。");if(hp<=0){hp=0;end(false);return}update()}
+function dash(){if(!active||between||dashUsed)return;dashUsed=true;dashReady=true;say("攻撃をかわした。次の一撃が強くなる。");update()}
+$("start").onclick=begin;$("replay").onclick=begin;$("attack").onclick=attack;$("dash").onclick=dash;
+$("boonPower").onclick=()=>{power++;between=false;room=room;setFoe();say("今回の攻撃力が上がった。ランが終わるとこの恩恵は消える。");update()};
+$("boonHeal").onclick=()=>{hp=Math.min(maxHp,hp+2);between=false;setFoe();say("体力を回復した。ランが終わるとこの恩恵は消える。");update()};
+$("upgrade").onclick=()=>{if(ash<4)return;ash-=4;permanent++;$("dialogue").textContent="館の鏡を強化した。攻撃力の恒久強化は次のランにも残る。";say("恒久攻撃力 +1。次のランから適用されます。");update()};
+$("difficulty").oninput=()=>{$("diffVal").textContent=$("difficulty").value};
+$("reward").oninput=()=>{$("rewardVal").textContent=$("reward").value};
+$("download").onclick=()=>{const blob=new Blob(["<!doctype html>\n"+document.documentElement.outerHTML],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="GameDesignLab_Day014_2026-10-28.html";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$("diffVal").textContent=$("difficulty").value;$("rewardVal").textContent=$("reward").value;update()})();
+</script></body></html>

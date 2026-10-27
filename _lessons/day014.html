@@ -1,0 +1,176 @@
+---
+day: 14
+date: 2026-10-28
+title: 負けても「次は試せる」理由｜『Hades』のラン外進行
+theme: 失敗に意味を残すメタ進行
+game: Hades
+level: 中級
+minutes: 10
+summary: ランで失ったものと残るものを分け、敗北を次の挑戦へつなぐ設計を学ぶ。
+question: 挑戦に失敗したとき、プレイヤーに何が残れば「もう一度やろう」と思える？
+goals:
+  - 一回のプレイ中に消える成長と、次回へ残る成長を設計上区別できる
+  - 『Hades』で敗北が物語・資源・次の挑戦へつながる因果を説明できる
+  - 自作ゲームの敗北後報酬を一つ変え、再挑戦への影響を比べられる
+video:
+  id: Bz8l935Bv0Y
+  title: Hades - v1.0 Launch Trailer
+  caption: Supergiant Games公式ローンチトレーラー。攻撃のテンポ、神々の恩恵、帰還後の会話がどう一つの体験になるかに注目。
+demo:
+  src: /demos/day014.html
+  title: 帰還のたびに、何が残る？
+  height: 980
+sources:
+  - title: "Supergiant Games: Hades: Now Out of Early Access!"
+    url: https://www.supergiantgames.com/blog/hades-now-out-of-early-access/
+    note: v1.0発売日・対応機種・早期アクセス参加者数・追加内容（2020年9月17日公開）
+  - title: "Supergiant Games: Hades FAQ"
+    url: https://www.supergiantgames.com/blog/hades-faq/
+    note: Epic Games Store先行早期アクセス（2018年12月6日）、Steam早期アクセス開始（2019年12月10日）の記録
+  - title: "Supergiant Games: Hades Pricing and the Epic Mega Sale"
+    url: https://www.supergiantgames.com/blog/hades-pricing-and-the-epic-mega-sale/
+    note: 米国価格を19.99ドルから24.99ドルへ変更する告知（2019年5月16日公開）
+  - title: "Game Developer: Hades has sold over 1 million copies in under two years"
+    url: https://www.gamedeveloper.com/business/-i-hades-i-has-sold-over-1-million-copies-in-under-two-years
+    note: Supergiantの2020年9月20日発表を報道。累計100万本超、早期アクセス70万本・v1.0後約30万本
+  - title: "Steam: Hades"
+    url: https://store.steampowered.com/app/1145360/Hades/
+    note: 英語レビュー143,173件中98%好評（2026-10-28確認時。レビュー数・比率は変動）
+  - title: "Metacritic: Hades Critic Reviews"
+    url: https://www.metacritic.com/game/hades/critic-reviews/
+    note: PC版スコア93（2026-10-28確認。集計は更新される）
+  - title: "RPG Site: Hades Review"
+    url: https://www.rpgsite.net/review/10265-hades-review
+    note: キャラクター、戦闘、進行を評価しつつ、環境の反復と一部の作業感を指摘（2020年10月6日公開）
+  - title: "Tom’s Guide: Hades exclusive: Supergiant explains why we love (and hate) roguelikes"
+    url: https://www.tomsguide.com/features/hades-exclusive-interview-supergiant
+    note: Greg Kasavinへのインタビュー。死亡後も面白くする設計意図（2021年9月5日公開）
+  - title: "Steam Community: Hades Negative Reviews"
+    url: https://steamcommunity.com/app/1145360/negativereviews/
+    note: 英語・否定レビューの例を2026-10-28確認。33.3時間プレイの投稿は周回の反復・エンディングまでの作業感を指摘（投稿日はページ表示の10月12日、年表示なし）。選択例1件で全体傾向を代表しない
+sources_note: 事実、開発者の見解、批評家・プレイヤーの意見、教材制作者の分析を区別しています。売上発表は2020年9月の時点に限り、現在の累計とは扱いません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：プレイ中の成長と、次回に残る成長</h2>
+  <p>ラン制ゲームでは、プレイ中に集めた能力やアイテムが、敗北とともに消えることがあります。一方で、恒久強化・新しい選択肢・物語の変化など、次のランにも残る進捗を「メタ進行」と呼びます。</p>
+  <p>失敗を次の挑戦につなげるには、何もかも残す必要はありません。今回の選択で得た強さは失われても、別の報酬や理解が残ると、プレイヤーは「負けただけ」ではなく「次は違う手を試せる」と判断できます。</p>
+  <ol class="flow mt-m">
+    <li><b>挑戦</b><span>ラン内で選び、強くなる</span></li>
+    <li><b>帰還</b><span>一時的な強化は失う</span></li>
+    <li><b>継続</b><span>資源・関係・知識から次を選ぶ</span></li>
+  </ol>
+  <h3 class="h-sub">設計で分けて考える</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">何を失うか</p><p class="list__text">強化、進行位置、時間など。失敗の重さを決める。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">何が残るか</p><p class="list__text">恒久能力、通貨、関係の変化、プレイヤー自身の知識。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">残ったものが何を選ばせるか</p><p class="list__text">次の挑戦で新しい行動を試せるか。数値だけ増えて選択が変わらない状態になっていないか。</p></div></div>
+  </div>
+  <p class="note mt-s">この三点を使い、『Hades』で敗北後に何が消え、何が次のプレイを生むのか見ていきます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：帰還が「物語の次の場面」になる</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>早期アクセス：2018年12月（Epic）／正式版：2020年9月17日（PC・Nintendo Switch）</dd></div>
+    <div><dt>開発・販売</dt><dd>Supergiant Games</dd></div>
+    <div><dt>ジャンル</dt><dd>アクション・ローグライト</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から次の挑戦まで</h3>
+  <p>一つの部屋を越えると、プレイヤーは武器や神々の恩恵を選び、そのランだけの戦い方を組み立てます。倒されると強化は失いますが、冥界の館へ戻り、資源を恒久強化に使ったり、登場人物と新しい会話をしたりできます。</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールの反応</th><th>次の判断</th></tr></thead>
+      <tbody>
+        <tr><th>部屋を突破し、恩恵を選ぶ</th><td>攻撃や移動がラン内で変化する</td><td>今の構成を伸ばすか、弱点を補うか</td></tr>
+        <tr><th>ボスに敗れ、館へ戻る</th><td>今回の恩恵は消えるが、資源と会話の進展は残る</td><td>恒久強化を買うか、別武器を試すか</td></tr>
+        <tr><th>同じ人物に再会する</th><td>以前の挑戦や関係に応じて反応が変わる</td><td>会話を追うため、もう一度潜る</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>ギリシャ神話の神々、鮮やかな画面、短い部屋単位の戦闘が、アクションと物語の両方を期待させます。既に『Bastion』『Transistor』『Pyre』を出していたSupergiantの作品であることも、スタジオを知る人には入口になります。</p>
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>戦闘では恩恵が操作や攻撃の組み合わせを変え、ランごとに別のビルドを試せます。敗北後も館の会話・関係・恒久強化が進むので、戦いの上達を試す動機と、人物や物語の続きを知る動機が並行します。</p>
+  <p>開発者Greg Kasavinは、死亡と再出発を面白くし、進捗を消した感覚にさせないため「毎回のランに意味を持たせる」方針を語っています（Tom’s Guide、2021-09-05）。これは意図の説明であり、実際の継続率を示すデータではありません。</p>
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>『Dead Cells』や『Spelunky』のようなラン型作品と比べた特徴は、帰還を物語の外に置かず、冥界の館そのものを会話・関係・強化の場にしたことです。敵に倒された事実が登場人物の反応に入り、失敗がプレイヤーの体験だけでなく物語内の出来事にもなります。</p>
+  <h3 class="h-sub">離れる理由</h3>
+  <p>同じ部屋や敵を何度も遊ぶことが、ビルドを試す余地ではなく反復作業に感じられる人もいます。RPG Siteのレビューは会話や戦闘を評価しつつ、環境・敵の反復や一部の作業感も指摘しました。物語の続きが周回数に結びつくため、戦闘の再挑戦自体が楽しくない人には進行条件が負担になり得ます。</p>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">敗北のあとに「進捗」と「人物の反応」を別々に返し、プレイヤーが次の挑戦理由を選べる。</p>
+    <p class="mt-s">能力強化は戦い方を変え、会話は物語への関心を支えます。二つの進捗を同じ報酬にまとめないため、戦闘だけを目的にする人も、登場人物に会うために戻る人も生まれ得ます。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：面白さに、どう選ばれる条件が重なった？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>批評家：Metacritic PC版は93点（2026-10-28確認）。RPG Siteは戦闘、人物、敗北後の新しい会話を評価し、死亡と勝利の双方に楽しみを作ると分析しました（2020-10-06）。</span></li>
+        <li><span>プレイヤー：Steam英語レビューは143,173件中98%好評（2026-10-28確認時）。累積評価の高さは確認できますが、個々の理由や全購入者の満足度をそのまま示すものではありません。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判・離脱の声</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>批評家の指摘：ランを重ねても環境・敵の反復を感じる場面があり、任意の収集要素には作業感が出る（RPG Site、2020-10-06）。</span></li>
+        <li><span>プレイヤーの例を1件確認：Steam否定レビューの33.3時間プレイ投稿は、初回クリア後も結末まで同じ周回を重ねることを負担に感じたと述べています（投稿日はページに10月12日のみ表示。2026-10-28確認）。選択例で、レビュー全体の傾向ではありません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">継続を助ける複数の報酬は、同時に「物語を見るための周回」を負担に変える可能性もある。</p>
+  </div>
+  <h3 class="h-sub">成果と市場要因</h3>
+  <dl class="facts">
+    <div><dt>販売本数</dt><dd>2020年9月20日、累計100万本超と発表。うち早期アクセス期70万本、正式版発売後の週末に約30万本（当時の累計）</dd></div>
+    <div><dt>価格</dt><dd>米国価格は2019年6月に19.99ドルから24.99ドルへ変更と告知。現在の割引・地域価格とは別</dd></div>
+    <div><dt>展開</dt><dd>Epicで早期アクセス開始、後にSteam、正式版はPC・Switchで同時発売</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>開発・販売方法（事実）</strong>　正式版まで約2年の早期アクセスを行い、開発者はプレイヤーの参加がより良い作品づくりにつながると説明しました。累計の多くが正式版前に生まれ、発売時にも約30万本が加わったと報道されています。</span></li>
+    <li><span><strong>ブランド・対象（事実＋分析）</strong>　Supergiantの過去作を知る層と、神話・アクション・周回型作品を好む層に内容を伝えやすい。評価の高い既存ブランドは購入前の不安を下げた可能性があります。</span></li>
+    <li><span><strong>競合（比較）</strong>　周回と恒久成長は『Dead Cells』『Spelunky』などにも見られます。本作はそれに人物との会話や関係の進行を重ね、戦闘以外の継続理由を増やしました。</span></li>
+    <li><span><strong>口コミ・配信（限界）</strong>　恩恵によるビルド変化はプレイごとの見どころを作り、動画や配信で伝えやすい可能性があります。ただし、販売発表だけでは配信や口コミが何本を生んだか分けられません。</span></li>
+  </ul>
+  <p class="note mt-s">100万本は2020年9月時点の発表で、現在の累計ではありません。高評価や売上を物語・戦闘の面白さだけで説明せず、早期アクセスの長さ、価格、複数プラットフォーム、既存ブランドも合わせて考えます。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：帰還のたびに、何が残る？</h2>
+  <p>短いランで敵と戦い、倒れた後に資源と会話が残るか確かめます。敵の強さと帰還時の報酬を変え、敗北が「やり直し」だけになるか、次の選択を増やすか比べましょう。</p>
+  <div class="chips mt-s"><span class="chip">敵の強さ</span><span class="chip">帰還時の資源</span><span class="chip">会話の継続</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">ランで失ったものと、次のプレイのために残ったものを分けて記録する。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">帰還時報酬を一段階変える</p><p class="mt-s">挑戦前に「次のランで恒久強化を買えるまで何回かかるか」と、再挑戦したい理由を予想する。遊んだ後、予想・結果・気持ちの変化を比べる。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">敗北後の会話に前回の選択を反映する</p><p class="mt-s">どの敵に倒されたかで帰還後の一言を変える。資源報酬だけの場合と比べ、次の挑戦理由がどう変わるかを考える。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームでプレイヤーが負けたとき、数値強化・新しい手がかり・登場人物の反応のどれを残す？それぞれが生む再挑戦の動機と、失敗を軽くしすぎる短所は？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">物語の結末を見る条件を繰り返しプレイに置くなら、周回そのものが楽しい必要がある。繰り返しを減らす案と、周回ごとの判断を変える案では、誰にどんな利点・負担がある？</span></div>
+  </div>
+</section>
