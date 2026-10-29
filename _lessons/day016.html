@@ -1,0 +1,176 @@
+---
+day: 16
+date: 2026-10-30
+title: 限られた資源で路線を育てる｜『Mini Metro』の制約設計
+theme: 資源制約とボトルネックの見つけ方
+game: Mini Metro
+level: 初級
+minutes: 10
+summary: 限られた線路資源をどこへ使うか分析し、判断の手応えを自作ゲームへ移す。
+question: 限られた資源をどこへ使うと、プレイヤーに「自分の判断で立て直した」手応えが生まれる？
+goals:
+  - 資源制約が選択と機会費用を生む仕組みを説明できる
+  - 『Mini Metro』で需要・路線・待ち客が判断をどう変えるか分析できる
+  - 予算や情報公開を変えたデモを遊び、予想と結果を比べられる
+demo:
+  src: /demos/day016.html
+  title: 線路をつなぐ判断
+  height: 1250
+sources:
+  - title: "Dinosaur Polo Club: Mini Metro"
+    url: https://dinopoloclub.com/games/mini-metro/
+    note: 作品概要・対応ストア（2026-10-30確認）
+  - title: "Steam: Mini Metro"
+    url: https://store.steampowered.com/app/287980/
+    note: Windows/macOS/Linux版の発売日2015-11-06、ゲーム説明・機能・ユーザー評価（2026-10-30確認）。レビュー全言語16,829件中16,156件が好評、Steam利用者に限る。地域別の現在価格は確認画面に表示されず、数値を記載しない。
+  - title: "Game Developer: Postmortem: Dinosaur Polo Club's Mini Metro"
+    url: https://www.gamedeveloper.com/audio/postmortem-dinosaur-polo-club-s-i-mini-metro-i-
+    note: 開発者による制作制約、Ludum Dare試作、無料ブラウザ版、Steam Greenlight、早期アクセスの振り返り（2016-06-15公開）
+  - title: "PC Games Insider: Mini Metro has actually sold close to 1.4m copies"
+    url: https://www.pcgamesinsider.biz/news/67489/mini-metro-has-actually-sold-close-to-14m-copies/
+    note: Dinosaur Polo Club共同創業者Robert Curryが、2017年7月に100万本、2018年7月時点で130万〜140万本と説明（2018-07-25公開。全プラットフォーム合算として報道）
+  - title: "Metacritic: Mini Metro PC Critic Reviews"
+    url: https://www.metacritic.com/game/mini-metro/critic-reviews/?platform=pc
+    note: PC批評家レビュー8件・77点（2026-10-30確認。集計は更新される）
+  - title: "EGM: Mini Metro Review"
+    url: https://egmnow.com/mini-metro-review/
+    note: Switch移植のレビュー。管理・再挑戦を評価し、操作移植ではタッチの滑りやカーソル移動の摩擦を指摘（2018年公開）
+  - title: "Metacritic: Mini Metro User Reviews"
+    url: https://www.metacritic.com/game/mini-metro/
+    note: Switchユーザーレビュー一覧。2026-06-21の1件は短時間のパズルとして評価しつつ、反復が早く気になると記述。全117件中の単一例で、代表性はない（2026-10-30確認）
+sources_note: 事実・開発者の振り返り・批評家評価・プラットフォーム内の集計・単一ユーザー意見・独自分析を区別しています。販売数は2018年の開発者説明を報道した値で、現在の累計や成功要因の寄与率は示しません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：資源制約は「何を諦めるか」を選択にする</h2>
+  <p>ゲームの資源は、お金や体力だけではありません。使える手数、時間、道具、情報も資源です。供給を需要より少なくすると、プレイヤーは「どこへ使えば一番困りごとが減るか」を考えます。</p>
+  <p>このとき、ある選択が別の選択をできなくする損失を<strong>機会費用</strong>と呼びます。何を選んでも正解に見えるなら判断は軽く、何を選んでも少し困るなら、その人の優先順位がゲーム上に表れます。</p>
+  <ol class="flow mt-m">
+    <li><b>圧力</b><span>需要や危険が少しずつ増える</span></li>
+    <li><b>制約</b><span>使える資源に上限がある</span></li>
+    <li><b>結果</b><span>選んだ場所の問題が変わる</span></li>
+  </ol>
+  <h3 class="h-sub">自分の企画で使う手順</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">先に「困りごと」を見えるようにする</p><p class="list__text">待ち時間、危険、失われる機会など、放置した結果をプレイヤーが読める形にする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">使える資源と用途を並べる</p><p class="list__text">一つの資源が複数の問題に使えるか、使い切ると何が難しくなるかを確認する。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">決断の結果を短い間隔で返す</p><p class="list__text">選んだ場所が改善したか、別の問題が残ったかをすぐ見せ、次の判断へつなぐ。</p></div></div>
+  </div>
+  <p class="note mt-s">この見方を使い、次は『Mini Metro』で限られた線路をどこへ足すかが、プレイ中の選択と感情をどう作るかを確かめます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：駅が増えるのに、資源は無限ではない</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>PC版：2015年11月6日／iOS・Android・Nintendo Switchなどにも展開</dd></div>
+    <div><dt>開発・販売</dt><dd>Dinosaur Polo Club</dd></div>
+    <div><dt>ジャンル</dt><dd>交通ネットワーク設計パズル</dd></div>
+  </dl>
+  <p>プレイヤーは駅を線路でつなぎ、駅ごとに行き先が異なる乗客を運びます。都市が成長すると駅と乗客が増え、限られた路線・列車・車両などを組み替えないと、一つの駅に乗客が滞留して運行が終わります。</p>
+  <h3 class="h-sub">行動から感情までの因果</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの判断</th><th>ルールが返す変化</th><th>生まれやすい体験</th></tr></thead>
+      <tbody>
+        <tr><th>近い駅を結ぶ</th><td>乗客を運べるが、別方向の駅は孤立したまま</td><td>目の前を解決した安心と、次の問題への予告</td></tr>
+        <tr><th>路線を延長・変更する</th><td>複数の需要へ届く一方、路線が長くなり列車の移動も増える</td><td>広く救える期待と、混雑を見落とす不安</td></tr>
+        <tr><th>週ごとの設備を選ぶ</th><td>線路・列車・車両など、異なる弱点を補える</td><td>今困る箇所と、先の成長への備えを比べる戦略感</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>「駅を結び、乗客を運ぶ」という題材と、線で描かれる路線図は、画面を見ただけで行動を想像しやすい入口です。開発者によると、作品は2013年のゲームジャム作品から始まり、無料ブラウザ版、Steam Greenlight、早期アクセスを経て広がりました。無料で触れる試作は、購入前に遊びの核を試せる接点になったと考えられます。</p>
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>一駅へ乗客が集まると、路線の変更や車両追加が必要になります。変更すると混雑が解消したかが画面ですぐ分かるため、問題発見→手当て→結果確認の短い循環が生まれます。</p>
+  <p>一回の運行が終わっても、より長く運ぶ、別の都市やモードに挑む、過去の記録を超えるという目標が残ります。日替わりチャレンジやランキングは、同じ条件で自己記録や他者の記録に挑むきっかけになりますが、公開資料から実際の継続率や後日再訪率は分かりません。</p>
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>一般的な都市建設ゲームでは、道路・予算・住宅や公共サービスなど都市全体を管理します。『Mini Metro』は都市運営の多くを省き、「乗客を駅から駅へ運ぶ線」を引き直す行為へ焦点を絞るため、路線図がそのままプレイヤーの解決策であり、プレイ記録にもなります。</p>
+  <p>線を引く操作は簡単でも、乗客の行き先と駅の配置は変化します。今の詰まりを解くための延長が、別の駅を遠回りにすることもあり、プレイヤーは完成図ではなく、崩れかけたネットワークを読み直す。独自分析では、この「整った図を作る快感」と「需要に追われて直す緊張」の同居が固有の魅力です。</p>
+  <h3 class="h-sub">離れる理由</h3>
+  <p>短時間の高得点更新を中心にするため、長い物語や明確な終点を求める人には、同じ路線管理の繰り返しに見える可能性があります。Switch版の批評では、ゲームの核は評価しつつ、タッチ操作やカーソル移動に摩擦があると指摘されました。移植先では、設計の面白さだけでなく、線を引く操作の精度も体験を左右します。</p>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">限られた資源が面白いのは、選択の結果で「どの問題が軽くなり、どの問題が残ったか」を読み取れるとき。</p>
+    <p class="mt-s">予算だけを減らすと、ただ不便になることもあります。問題の予告、対処の選択肢、対処後の変化を一緒に設計する必要があります。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：遊びの核を、試しやすい形で届けた</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s">
+        <li><span>MetacriticのPC批評家集計は8レビュー・77点（2026-10-30確認）。</span></li>
+        <li><span>EGMのSwitch版レビューは、資源管理と再挑戦の魅力を評価。一方、タッチ操作の滑りや、緊急時のカーソル移動が遅れる摩擦を指摘（2018年）。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの評価</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Steam全言語レビューは16,829件、16,156件が好評（約96%）。Steam上の評価であり、全機種の購入者を代表しません（2026-10-30確認）。</span></li>
+        <li><span>反復を懸念する例として、Switchユーザーレビュー117件中1件を確認。2026-06-21付の投稿は短時間の遊びには向く一方、同じ遊びの反復が早く気になると述べています。1件だけの選択例で、全体傾向ではありません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">高評価の集計と、反復・操作の不満は両立する。前者は作品全体、後者は遊ぶ人や機種が出会う特定の摩擦を示す。</p>
+  </div>
+  <h3 class="h-sub">確認できる市場要因</h3>
+  <dl class="facts">
+    <div><dt>販売実績</dt><dd>共同創業者の説明を報じた記事では、2017年7月に100万本、2018年7月時点で130万〜140万本。現在の累計値ではありません。</dd></div>
+    <div><dt>価格</dt><dd>PC・モバイル・家庭用機向けに販売。地域・ストア・セールで変わるため、比較可能な現行価格は記載しません。</dd></div>
+    <div><dt>入口と展開</dt><dd>2013年のゲームジャム、無料ブラウザ版、Steam Greenlight・早期アクセスを経てPC版を発売し、後にモバイルやSwitchへ展開。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>開発者の見解：</strong>無料ブラウザ版が注目を集めた可能性を、開発者は「確証はない」と断ったうえで大きく評価。試作公開とコミュニティの反応が改善を促したと振り返っています。</span></li>
+    <li><span><strong>独自仮説：</strong>実在の都市図を思わせる表現、触れば分かる短い操作、短時間で終わるスコア型の遊びが、配信映像や口コミで魅力を説明しやすくした可能性があります。販売数だけから、どの要因が何本を生んだかは分かりません。</span></li>
+    <li><span><strong>競合・ブランド：</strong>都市建設・交通管理の作品群に対して、Dinosaur Polo Clubは交通ネットワークだけに焦点を絞りました。後発作『Mini Motorways』は道路網を扱う近接作品で、同じブランドから次の遊びを探す手掛かりになりますが、ブランド連続性の売上寄与は公表資料から確認できません。2016年のIGF受賞・ノミネートも、作品を紹介する広報上の接点になった可能性があります。</span></li>
+  </ul>
+  <p class="note mt-s">数字は確認できた時点・プラットフォームの範囲に限定しています。面白さ、市場露出、価格、移植先の広がりの個別寄与は断定できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：どの線を先に引く？</h2>
+  <p>6件の乗客需要を、限られた線路で運ぶデモです。まず「予算5区間・次の需要ON」で遊び、目の前の需要を解く線と、あとで役立つ線のどちらを選んだか記録してください。</p>
+  <div class="chips mt-s"><span class="chip">線路予算：3〜7区間</span><span class="chip">次の需要：表示／非表示</span><span class="chip">6ターン</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">改変前後を比べる</p>
+    <p class="panel__title">予算を3区間に減らすと、どの需要を捨て、どんな共通ルートを探した？予告を隠すと、線の選び方はどう変わった？</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">予算を1項目だけ変える</p>
+      <p class="mt-s">予算を5から3へ変え、成功件数・待ち客・選んだ接続を記録。予想と結果が違った箇所を一つ説明する。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">需要に「急行」を追加する</p>
+      <p class="mt-s">コードの <code>DEMANDS</code> に新しい駅ペアを加えるか、特定の駅を通る需要を2件分として扱う。優先順位や路線の形がどう変わるか試す。</p>
+    </div>
+  </div>
+  <p class="note mt-s">ダウンロードできるのは、解説ページではなく単体で動くデモHTMLです。処理を改造する場合は、ファイル内の「改造ポイント」コメントを探してください。</p>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 5</p>
+  <h2 class="h-section">自分の企画へ持ち帰る</h2>
+  <p>あなたのゲームで、プレイヤーが限られた道具や手数を使うとき、どの困りごとを解決し、どの問題を後回しにするでしょうか。</p>
+  <p>手数を増やせば計画しやすくなりますが、選択の重みは下がるかもしれません。逆に減らせば緊張は高まりますが、対処できない理不尽さも生まれます。どのプレイヤーにどの感情を届けたいかを決め、資源量と結果の見えやすさを一緒に試してください。</p>
+  <div class="panel mt-m">
+    <p class="panel__label">今日の持ち帰り</p>
+    <p class="panel__title">プレイヤーが困る理由を先に見せ、限られた資源の使い道に差を作り、選択の結果を短い間隔で返す。</p>
+  </div>
+</section>
