@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12111a">
+<title>音の手掛かりを動きに変える｜Game Design Lab DAY15</title>
+<style>
+:root{color-scheme:dark;--bg:#12111a;--panel:#1d1b29;--line:#39364c;--ink:#f8f7ff;--muted:#c4bfd6;--purple:#a897ff;--pink:#ff5fa2;--cyan:#5fe6e4;--lime:#c0f36c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#343050 0,transparent 55%),var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+main{max-width:760px;margin:auto;padding:clamp(14px,4vw,28px);padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+header{padding:8px 2px 18px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--purple);font-size:.78rem;font-weight:800;letter-spacing:.12em}h1{font-size:clamp(1.35rem,5vw,2rem);line-height:1.2;margin:.45rem 0}header p{color:var(--muted);margin:.45rem 0 0}
+section,.card{background:linear-gradient(145deg,#211f30,#191824);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px;box-shadow:0 12px 30px #0002}
+h2{font-size:1rem;margin:0 0 10px}.small{font-size:.86rem;color:var(--muted)}.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.map div{background:#12111a;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:.83rem}.map b{color:var(--purple)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.stat{background:#12111a;border:1px solid var(--line);border-radius:12px;text-align:center;padding:8px 4px}.stat span{display:block;color:var(--muted);font-size:.72rem}.stat strong{font-size:1.1rem}
+.stage{min-height:236px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at center,#342c56,#171520 68%);border:1px solid #514975;border-radius:16px;padding:16px;touch-action:none;user-select:none}
+.note-kind{font-size:.76rem;color:var(--muted);letter-spacing:.1em}.cue{font-size:clamp(3.1rem,15vw,5rem);line-height:1.08;margin:5px}.direction{font-size:1.3rem;color:var(--cyan);font-weight:800}.prompt{margin:8px 0 0;color:#eee9ff}.stage.ready{border-color:var(--purple)}.stage.hit{animation:hit .17s ease-out}@keyframes hit{50%{transform:scale(.985);filter:brightness(1.4)}}
+.feedback{min-height:28px;text-align:center;color:var(--lime);font-weight:750;margin:8px 0 2px}
+.actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+button{font:inherit;color:var(--ink);font-weight:750;border:1px solid #5b5576;background:#29263a;border-radius:12px;padding:12px 4px;min-height:50px;cursor:pointer;touch-action:manipulation}
+button:hover{border-color:var(--purple)}button:active{transform:translateY(1px)}button:disabled{opacity:.42;cursor:not-allowed}.start{width:100%;margin-top:12px;background:var(--purple);color:#171325;border:0;min-height:52px}.download{width:100%;margin-top:10px;background:transparent;border-color:var(--line);min-height:48px}.secondary{background:#171520}
+label.control{display:block;margin:13px 0 4px;font-weight:700;font-size:.9rem}input[type=range]{width:100%;accent-color:#a897ff;min-height:32px}select{width:100%;min-height:46px;padding:8px;background:#12111a;color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit}
+.toggle{display:flex;align-items:center;gap:10px;margin-top:12px}.toggle input{width:22px;height:22px;accent-color:#a897ff}
+.hidden{display:none!important}.result{font-size:1.22rem;font-weight:800;color:var(--lime)}.result p{font-size:.9rem;font-weight:500;color:var(--muted)}
+footer{color:var(--muted);font-size:.78rem;text-align:center;padding:16px 0 4px}
+@media(max-width:360px){.actions{gap:5px}.actions button{font-size:.9rem}.map{gap:6px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="eyebrow">GAME DESIGN LAB · DAY 15</div>
+  <h1>音の手掛かりを、動きに変える</h1>
+  <p>音の種類を見て、対応する方向へ斬ろう。正しい方向と、大きく明確な動作の手応えを比べます。</p>
+</header>
+<section aria-labelledby="mapTitle">
+  <h2 id="mapTitle">このデモのルール</h2>
+  <div class="map" id="mapping">
+    <div>🥁 ドラム <b>↓</b></div><div>🎸 ベース <b>←</b></div>
+    <div>🎹 上昇する音 <b>↑</b></div><div>🎤 ボーカル <b>→</b></div>
+  </div>
+  <p class="small">合図に合わせる方向を選びます。タイミングではなく、音の手掛かりと動作の対応を試すデモです。</p>
+</section>
+<section aria-labelledby="labTitle">
+  <h2 id="labTitle">改造ラボ｜始める前に条件を変える</h2>
+  <label class="control" for="length">フレーズの長さ：<span id="lengthVal">8</span>音</label>
+  <input id="length" type="range" min="6" max="14" step="2" value="8">
+  <label class="control" for="arc">大きな動作として数える距離：<span id="arcVal">中</span></label>
+  <input id="arc" type="range" min="35" max="100" step="5" value="65">
+  <label class="toggle"><input id="labels" type="checkbox" checked>音の名前も表示する（外すと記号だけ）</label>
+  <p class="small">予想：距離条件を上げると、正解数と「大きな動作」の数はどう変わる？</p>
+</section>
+<section aria-label="プレイ画面">
+  <div class="stats" aria-live="polite">
+    <div class="stat"><span>音</span><strong id="progress">—</strong></div>
+    <div class="stat"><span>正解</span><strong id="score">0</strong></div>
+    <div class="stat"><span>連続</span><strong id="combo">0</strong></div>
+  </div>
+  <div id="stage" class="stage" role="group" aria-label="音の合図。方向ボタンか画面スワイプで答える">
+    <div class="note-kind" id="kind">STARTして音を受け取ろう</div>
+    <div class="cue" id="symbol">♫</div>
+    <div class="direction" id="direction">—</div>
+    <p class="prompt" id="prompt">4つの合図をそれぞれの方向に変換します</p>
+  </div>
+  <div id="feedback" class="feedback" aria-live="polite"></div>
+  <div class="actions" aria-label="動かす方向">
+    <button type="button" data-dir="left" aria-label="左へ斬る">← 左</button>
+    <button type="button" data-dir="up" aria-label="上へ斬る">↑ 上</button>
+    <button type="button" data-dir="down" aria-label="下へ斬る">↓ 下</button>
+    <button type="button" data-dir="right" aria-label="右へ斬る">→ 右</button>
+  </div>
+  <button type="button" id="start" class="start">フレーズを始める</button>
+  <div id="result" class="result hidden" aria-live="polite"></div>
+  <button type="button" id="replay" class="start hidden">同じ条件でもう一度</button>
+</section>
+<section>
+  <h2>結果の見方</h2>
+  <p class="small">正解は音と動きの対応が伝わった回数、大きな動作はスワイプ距離が設定条件を超えた回数です。タップでも正解でき、長期的な継続意欲を測るものではありません。</p>
+</section>
+<button type="button" id="download" class="download">デモHTMLをダウンロード</button>
+<footer>オリジナルの学習用デモ。実在の楽曲・ゲーム素材は使用していません。</footer>
+</main>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const cues=[
+ {key:"drum",icon:"🥁",name:"ドラム",dir:"down"},
+ {key:"bass",icon:"🎸",name:"ベース",dir:"left"},
+ {key:"rise",icon:"🎹",name:"上昇する音",dir:"up"},
+ {key:"vocal",icon:"🎤",name:"ボーカル",dir:"right"}
+];
+// 改造ポイント：長さ、スワイプ距離、表示する手掛かりを調整して、動作選択の変化を比べる。
+let sequence=[],index=0,score=0,combo=0,wide=0,playing=false,finished=false,startPoint=null;
+const dirLabel={left:"← 左",right:"→ 右",up:"↑ 上",down:"↓ 下"};
+function config(){return {length:Number($("length").value),arc:Number($("arc").value),labels:$("labels").checked}}
+function updateSettings(){
+ $("lengthVal").textContent=$("length").value;
+ const n=Number($("arc").value);$("arcVal").textContent=n<50?"低":n<80?"中":"高";
+}
+function showCue(){
+ if(!playing)return;
+ const q=sequence[index];
+ $("progress").textContent=(index+1)+" / "+sequence.length;
+ $("symbol").textContent=q.icon;
+ $("kind").textContent=config().labels?q.name:"音の合図";
+ $("direction").textContent="動きを選ぶ";
+ $("prompt").textContent="合図の方向へタップ、またはスワイプ";
+ $("stage").classList.add("ready");
+}
+function begin(){
+ // 改造ポイント：同じルール条件で再試行し、結果の違いを観察する。
+ sequence=Array.from({length:config().length},(_,i)=>cues[(i*3+Math.floor(i/3))%cues.length]);
+ index=0;score=0;combo=0;wide=0;playing=true;finished=false;
+ $("score").textContent=score;$("combo").textContent=combo;
+ $("result").classList.add("hidden");$("replay").classList.add("hidden");
+ $("start").classList.add("hidden");$("feedback").textContent="";
+ showCue();
+}
+function end(){
+ playing=false;finished=true;$("stage").classList.remove("ready");
+ $("kind").textContent="フレーズ終了";$("symbol").textContent="✦";$("direction").textContent="";
+ $("prompt").textContent="同じ条件で再プレイするか、ラボの設定を変えよう";
+ $("progress").textContent=sequence.length+" / "+sequence.length;
+ $("result").innerHTML='<span class="result">結果：'+score+' / '+sequence.length+' 正解</span><p>最大連続 '+combo+'｜距離条件を超えた大きな動作 '+wide+' 回<br>結果はこのデモ内の記録です。利用者全体の傾向ではありません。</p>';
+ $("result").classList.remove("hidden");$("replay").classList.remove("hidden");
+}
+function answer(dir,dist=0){
+ if(!playing)return;
+ const q=sequence[index],correct=dir===q.dir;
+ $("feedback").textContent=correct?(dist>=config().arc?"正解！大きな動きが届いた":"正解！音の特徴を動きに変えた"):"方向が違う。次の合図で対応を試そう";
+ if(correct){score++;combo++;if(dist>=config().arc)wide++}else combo=0;
+ $("score").textContent=score;$("combo").textContent=combo;
+ $("stage").classList.remove("hit");void $("stage").offsetWidth;$("stage").classList.add("hit");
+ index++;
+ if(index>=sequence.length){end();return}
+ showCue();
+}
+document.querySelectorAll("[data-dir]").forEach(b=>b.addEventListener("click",()=>answer(b.dataset.dir)));
+$("stage").addEventListener("pointerdown",e=>{if(!playing)return;startPoint={x:e.clientX,y:e.clientY};$("stage").setPointerCapture?.(e.pointerId)});
+$("stage").addEventListener("pointerup",e=>{
+ if(!playing||!startPoint)return;
+ const dx=e.clientX-startPoint.x,dy=e.clientY-startPoint.y,dist=Math.hypot(dx,dy);startPoint=null;
+ if(dist<18){$("feedback").textContent="画面をスワイプするか、下の方向ボタンを押そう";return}
+ const dir=Math.abs(dx)>Math.abs(dy)?(dx<0?"left":"right"):(dy<0?"up":"down");
+ answer(dir,dist);
+});
+$("start").addEventListener("click",begin);$("replay").addEventListener("click",begin);
+$("length").addEventListener("input",updateSettings);$("arc").addEventListener("input",updateSettings);
+$("download").addEventListener("click",()=>{
+ const html="<!doctype html>\n"+document.documentElement.outerHTML;
+ const blob=new Blob([html],{type:"text/html;charset=utf-8"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="GameDesignLab_Day015_2026-10-29.html";a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+updateSettings();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+---
+day: 15
+date: 2026-10-29
+title: 音を動きに置き換える｜『Beat Saber』の譜面設計
+theme: 音の特徴を身体動作へマッピングする
+game: Beat Saber
+level: 初級
+minutes: 10
+summary: 音の手掛かりと動作の対応を分析し、始める・続ける・離れる理由まで考える。
+question: 音のどの特徴を、どんな動きに置き換えるとプレイヤーは曲を「演奏した」と感じる？
+goals:
+  - 音の特徴をプレイヤーの行動へ対応させる「マッピング」の設計手順を使える
+  - 『Beat Saber』の譜面が音・歌詞・振付を動きへ変える仕組みを説明できる
+  - 対応の分かりやすさと動作の幅を変え、結果を比べられる
+video:
+  id: pa4vrynwkwY
+  title: Beat Saber - E3 2018 Announce Trailer | PS VR
+  caption: PlayStation公式トレーラー（2018-06-10公開）。キューブの色・矢印、障害物、斬撃の光と音が、プレイヤーの動きにどう結びつくかを見る。
+demo:
+  src: /demos/day015.html
+  title: 音の手掛かりを、動きに変える
+  height: 1150
+sources:
+  - title: "PlayStation Blog: How the Beat Saber Devs Make Their Game Feel so Fun"
+    url: https://blog.playstation.com/2019/06/27/how-the-beat-saber-devs-make-their-game-feel-so-fun/
+    note: 譜面制作者Josh Joynesの制作方法、歌詞・楽器・曲調・振付と動きの対応、難易度別の身体的テスト（2019-06-27公開）
+  - title: "PlayStation: Beat Saber"
+    url: https://www.playstation.com/en-us/games/beat-saber/
+    note: PS4/PS5、現行掲載価格19.99ドル、発売日2018-11-20、基本収録40曲超、追加楽曲パック、VRと立位・ルームスケール要件（2026-10-28確認。地域・価格は変動）
+  - title: "Steam: Beat Saber"
+    url: https://store.steampowered.com/app/620980/
+    note: 英語レビュー53,054件中95%好評、全言語69,783件（2026-10-28確認。件数・割合は変動）
+  - title: "Steam News: Goodbye Early Access, Hello New Challenges"
+    url: https://store.steampowered.com/news/posts/?appids=620980&enddate=1560959616
+    note: PC版の正式リリースとQuest発売を2019-05-21に合わせ、正式版の米国価格を29.99ドルにすると告知（2019-05-14公開）
+  - title: "PC Gamer: Beat Saber slashes VR sales records after shipping 4 million copies"
+    url: https://www.pcgamer.com/beat-saber-slashes-vr-sales-records-after-shipping-4-million-copies/
+    note: 公式投稿を引用し、累計400万本超・有料楽曲パック4,000万曲超を報道（2021-02-04公開。発表対象は2021-02-02時点、全プラットフォーム）
+  - title: "Metacritic: Beat Saber"
+    url: https://www.metacritic.com/game/beat-saber/
+    note: 批評家24件の総合86点、ユーザー評価338件中79%好評・14%賛否両論・7%否定、8.2点（2026-10-28確認。集計は更新される）。IGNは95点で初期曲数の少なさも指摘（2019-05-28公開）
+  - title: "GameSpot: Beat Saber Review – Bass-Boosted"
+    url: https://www.gamespot.com/reviews/beat-saber-review-bass-boosted/1900-6417044/
+    note: VRでの身体的な没入を評価しつつ、初期収録曲の少なさと、PC非公式カスタム曲をPS4では使えない点を指摘（2018年公開）
+sources_note: 発売・価格・販売・レビュー数は出典の対象時点を限定しています。開発者の制作意図、批評家の評価、ユーザー集計、独自分析を区別し、販売の理由を面白さだけには帰していません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：音の特徴を、プレイヤーの行動に対応させる</h2>
+  <p>ゲームデザインの「マッピング」は、入力・画面の合図・ゲーム内の結果を対応させることです。音楽ゲームなら、音の変化をボタンや身体動作に置き換えることで、聴くだけの曲を「自分が演奏した」体験にできます。</p>
+  <p>対応が伝わらなければ、プレイヤーは何をすべきか迷います。反対に、毎回同じ合図と動作だけでは、慣れた後に予測する面白さが弱くなるため、分かりやすさと変化の両方を調整します。</p>
+  <ol class="flow mt-m">
+    <li><b>聴く</b><span>拍・音色・高さ・歌詞を選ぶ</span></li>
+    <li><b>割り当てる</b><span>方向・距離・避ける動きに置く</span></li>
+    <li><b>確かめる</b><span>見て理解でき、無理なく動けるか試す</span></li>
+  </ol>
+  <h3 class="h-sub">譜面を設計するときの手順</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">曲の「何」を使うか決める</p><p class="list__text">拍だけか、歌詞・楽器・音の上昇まで使うかを選ぶ。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">合図と動作を対応させる</p><p class="list__text">色・位置・矢印で、使う手と切る方向を事前に読めるようにする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">実際に動いてテストする</p><p class="list__text">曲の速さ、腕の通り道、避ける動き、初心者から上級者までの負担を見る。</p></div></div>
+  </div>
+  <p class="note mt-s">次はこの見方で、『Beat Saber』が音のどの層を動きへ翻訳し、プレイヤーを始めさせ、繰り返し遊ばせるかを追います。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：曲を「斬る・避ける」振付にする</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>PC早期アクセス：2018年5月／PS4：2018年11月20日／PC正式版・Quest：2019年5月21日</dd></div>
+    <div><dt>開発</dt><dd>Beat Games</dd></div>
+    <div><dt>ジャンル</dt><dd>VRリズムアクション</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から感情までの流れ</h3>
+  <p>プレイヤーは左右のライトセーバーで、色と矢印が示すキューブを切り、爆弾や壁を避けます。視線の先に合図が現れ、手を振ると斬撃の光・音とスコアが返るため、見た曲が自分の動作で進む感覚が生まれます。</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>音・合図</th><th>プレイヤーの行動</th><th>結果と次の判断</th></tr></thead>
+      <tbody>
+        <tr><th>色と矢印つきキューブ</th><td>指定された手で方向に沿って斬る</td><td>光・音・点数が返る。次の合図を先読みする</td></tr>
+        <tr><th>歌詞や音の上昇</th><td>大きな上向きの動きなどで表現する</td><td>曲の展開を身体でなぞり、次のフレーズを待つ</td></tr>
+        <tr><th>爆弾・壁</th><td>切らずに避ける、身体を横へずらす</td><td>腕だけでなく全身の位置取りが必要になる</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>トレーラーでは、ネオンの空間で左右の剣を振り、迫るブロックを切る様子がすぐ見えます。好きな曲や「剣で音を斬る」という一文で体験を想像でき、最初の操作も色と矢印に従うだけなので、VRに詳しくない人にも入口が伝わりやすい設計です。</p>
+  <p>一方、専用のVRヘッドセットと両手コントローラー、腕を振れる場所が必要です。作品への興味があっても、機材価格や遊ぶ場所が初回購入・試遊の障壁になります。</p>
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>短い曲を終えるたびスコアが出て、精度や振り抜きを上げる余地が残ります。難易度を上げる、別の曲を選ぶ、同じ譜面の精度を詰めるという目標があり、曲中の没入と曲後の上達確認が同じ操作ループを支えます。</p>
+  <p>後日戻る動機には、新しい楽曲パックやマルチプレイのような追加要素があります。ただし、公開資料から個々のプレイヤーの継続率や再訪率は確認できません。</p>
+  <h3 class="h-sub">この作品ならではの特徴的な面白さ</h3>
+  <p>『Guitar Hero』のボタン入力や『Just Dance』の振付と比べ、『Beat Saber』はVR空間で音の手掛かりを剣の軌道と回避に結びつけ、手の位置・腕の振り・身体の移動を一つの譜面にまとめます。譜面制作者Josh Joynesは、歌詞や振付を動きに写し、上昇するシンセには大きな上振り、カニの横移動が印象的な曲には左右のパターンを使う例を説明しています（PlayStation Blog、2019-06-27）。</p>
+  <p>これは開発者の制作意図です。独自分析では、聞こえた音が次の腕の軌道を予告し、成功時に光・音・身体感覚が重なることで「曲に合わせた」以上に「曲を動かした」手応えを作る、と考えられます。</p>
+  <h3 class="h-sub">離れる理由</h3>
+  <p>初期の収録曲が少ない、好きな楽曲がない、繰り返す譜面に飽きる、腕を振る運動が疲れる、といった理由が考えられます。批評家も発売時の曲数を課題として挙げ、PCの非公式カスタム曲に慣れた人は、PS4で追加できない仕様に不満を示しました（GameSpot、2018）。</p>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">音を動きに対応させると、上達は「点数を上げる」だけでなく、次のフレーズを身体で先読みする力にもなる。</p>
+    <p class="mt-s">ただし、VR機材・設置空間・運動負荷が必要です。体験の強さと、触れられる人の範囲は同時に設計する必要があります。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：体験の新しさを、どう広げた？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s">
+        <li><span>Metacriticの批評家集計は86点／24レビュー（2026-10-28確認）。IGNは95点を付け、体を動かす爽快さと譜面の再プレイ性を評価しつつ、初期収録曲の少なさも指摘（2019-05-28）。</span></li>
+        <li><span>GameSpotは運動を伴う没入感を評価しましたが、初期ライブラリの少なさと、非公式曲追加がPS4版でできない点を批判（2018年）。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの評価</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Steam英語レビューは53,054件中95%好評。全言語では69,783件（2026-10-28確認）。この集計はSteam利用者に限り、全VRユーザーを代表しません。</span></li>
+        <li><span>Metacriticユーザー評価338件は8.2点、79%好評・14%賛否両論・7%否定（確認日：2026-10-28）。件数の小さい別プラットフォーム集計で、Steamと母集団が異なります。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">「動くと気持ちいい」という評価と、曲の少なさ・追加曲への期待は両立する。</p>
+  </div>
+  <h3 class="h-sub">成果と市場要因</h3>
+  <dl class="facts">
+    <div><dt>販売・追加購入</dt><dd>2021-02-02時点で全プラットフォーム累計400万本超、有料楽曲パック4,000万曲超と公式発表。PC Gamerが2021-02-04に報道</dd></div>
+    <div><dt>価格・機種</dt><dd>正式版時の米国価格は29.99ドル（2019年5月告知）。現在のPlayStation Store掲載価格は19.99ドル（2026-10-28確認、地域・時期で変動）</dd></div>
+    <div><dt>発売・追加販売</dt><dd>PC版正式版とMeta Quest発売を2019-05-21に合わせた。基本ゲームの後に、アーティスト別の有料楽曲パックを追加</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>対象と入口：</strong>音楽ゲーム・VR・ライトセーバー表現に関心がある人に、動画だけで操作の核が伝わる。Quest版はPC接続なしで遊べるVR機種へ広げたが、VRヘッドセットと遊ぶ空間は依然必要。</span></li>
+    <li><span><strong>市場・継続：</strong>正式版とQuestの同日展開、複数VR機種への対応、有料曲パックは購入機会を増やす条件だった可能性がある。販売増の各要因の寄与率は公表資料から分からない。</span></li>
+    <li><span><strong>口コミ・配信：</strong>剣を振る姿と派手な光は、プレイを見た人にも内容が伝わりやすい。これは動画向きと考えられる特徴だが、配信が売上に与えた効果を示すデータは確認できない。</span></li>
+  </ul>
+  <p class="note mt-s">成功要因は、身体的な体験、見て分かる操作、VR機種の拡大、楽曲追加が重なった可能性があります。400万本という結果だけから、面白さ一つが売上を生んだとは断定できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：音の合図を、身体の方向へ翻訳する</h2>
+  <p>実曲は使わず、4種類の音の手掛かりを方向へ割り当てたオリジナルデモです。方向ボタンをタップするか、デモ画面をスワイプしてください。</p>
+  <div class="chips mt-s">
+    <span class="chip">フレーズの長さ</span>
+    <span class="chip">大きな動作の距離条件</span>
+    <span class="chip">手掛かりの文字表示</span>
+  </div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">合図を見た瞬間に動きが予想できたか。距離条件を変えると、正解数と動きの大きさはどう変わったか。</p>
+    <p class="mt-s">このデモは音楽との同期精度やVRの臨場感を再現しません。音の特徴と動作の対応、即時フィードバックだけを取り出しています。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">動作距離の条件を変える</p>
+      <p class="mt-s">距離条件を「低」と「高」にして各1回遊びます。正解数・大きな動作の回数・腕の動かしやすさを予想と比べて記録してください。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">音と動きの対応ルールを追加する</p>
+      <p class="mt-s">「低音は左右へ大きく振る」など、既存の対応を1つ変えます。説明を先に見せる版と、プレイ中に発見させる版を作り、どちらが初回に分かりやすく、慣れた後も面白いかを比べます。</p>
+    </div>
+  </div>
+  <p class="note mt-s">デモの調整箇所には「改造ポイント」コメントがあります。ダウンロードできるのは解説記事ではなく、ゲーム本体だけの単一HTMLです。</p>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの「音・画面・操作」のどれを対応させると、プレイヤーが自分で操作した手応えを得られる？直接対応させる案と、予想を少し裏切る案の利点・難点は？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">動作を派手にするほど体験は伝わる一方、疲れやすくなる。短時間の強い体験と、長く遊びやすい体験を、どんな設定・難易度で両立する？</span></div>
+  </div>
+</section>
