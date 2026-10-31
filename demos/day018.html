@@ -29,7 +29,7 @@
 <h2 style="font-size:1rem;margin:12px 0 5px">皿の上</h2><div id="plate" class="trayrow" aria-label="受け取った材料"></div>
 <p id="message" class="log" aria-live="polite">開始を押すと注文が始まります。</p>
 <p id="result" class="result" aria-live="assertive"></p>
-<div class="toolbar"><button id="replay" class="btn" type="button" disabled>同じ設定でもう一度</button><button id="download" class="btn" type="button">デモHTMLを保存</button></div>
+<div class="toolbar"><button id="replay" class="btn" type="button" disabled>設定を適用して再挑戦</button><button id="download" class="btn" type="button">デモHTMLを保存</button></div>
 </section>
 <section class="box" aria-label="役割ごとの操作">
 <div class="roles">
@@ -43,6 +43,7 @@
 <script>
 (()=>{
 // 改造ポイント1：受け渡し台の容量。1枠は細かな交代、3枠はまとめ作業がしやすい。
+// 改造ポイント2：作業回数の上限。少ないほど、失敗の余裕と作戦の自由度が下がる。
 const $=id=>document.getElementById(id), ingredients=[{id:'tomato',name:'トマト',icon:'🍅'},{id:'fish',name:'魚',icon:'🐟'},{id:'rice',name:'ごはん',icon:'🍚'},{id:'nori',name:'のり',icon:'◼️'}];
 const menu=[[0,1],[2,3],[0,2]], state={active:false,cap:1,limit:18,left:18,served:0,index:0,tray:[],plate:[],switches:0,lastRole:'',wasted:0};
 function ingredient(id){return ingredients[id]}
@@ -50,6 +51,7 @@ function announce(s){$('message').textContent=s}
 function updateLabels(){$('capVal').textContent=$('capacity').value;$('actionVal').textContent=$('actions').value}
 $('capacity').addEventListener('input',updateLabels);$('actions').addEventListener('input',updateLabels);updateLabels();
 function render(){
+ $('capacity').disabled=state.active;$('actions').disabled=state.active;
  $('remaining').textContent=state.active?state.left:'—';$('served').textContent=state.served;$('switches').textContent=state.switches;
  $('tray').innerHTML='';for(let i=0;i<state.cap;i++){let s=document.createElement('span');s.className='slot'+(state.tray[i]!==undefined?' filled':'');s.textContent=state.tray[i]!==undefined?ingredient(state.tray[i]).icon+' '+ingredient(state.tray[i]).name:'空き';$('tray').appendChild(s)}
  $('plate').innerHTML=state.plate.map(id=>`<span class="slot filled">${ingredient(id).icon} ${ingredient(id).name}</span>`).join('')||'<span class="small">まだ材料はありません</span>';
