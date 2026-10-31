@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>DAY18｜キッチン受け渡し実験</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--green:#178760;--line:#cbc9bf;--soft:#e9e7de;--red:#c84b4b}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}.wrap{max-width:760px;margin:0 auto;padding:18px 16px 28px}.eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.12em;color:var(--purple);margin:0 0 4px}.title{font-size:clamp(1.35rem,5vw,2rem);line-height:1.2;margin:0 0 8px}.intro{margin:0 0 16px;color:#4b4a50;font-size:.93rem}.box{border:2px solid var(--ink);background:#fff;padding:14px;margin:14px 0;box-shadow:3px 3px 0 var(--ink)}.controls label{display:block;font-weight:750;margin:8px 0 4px}.controls input{width:100%;accent-color:var(--purple);min-height:32px}.controlrow{display:flex;justify-content:space-between;gap:12px;align-items:center}.value{font-weight:800;color:var(--purple);white-space:nowrap}.btn{border:2px solid var(--ink);background:#fff;color:var(--ink);font:inherit;font-weight:750;min-height:46px;padding:9px 12px;border-radius:0;cursor:pointer;touch-action:manipulation}.btn:active{transform:translate(1px,1px)}.btn.primary{background:var(--purple);color:#fff}.btn.green{background:var(--green);color:#fff}.btn:disabled{opacity:.42;cursor:not-allowed}.toolbar{display:flex;flex-wrap:wrap;gap:8px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.stat{border:1px solid var(--line);padding:8px 10px;background:var(--paper)}.stat b{display:block;font-size:1.1rem}.stat small{color:#57565b}.order{border-left:5px solid var(--purple);padding:9px 10px;margin:8px 0;background:#f5f3ff}.order.done{border-color:var(--green);background:#edf7f2}.order.current{outline:2px solid var(--purple)}.roles{display:grid;grid-template-columns:1fr;gap:10px}.role{border:1px solid var(--line);padding:10px}.role h3{font-size:1rem;margin:0 0 8px}.role-buttons{display:flex;flex-wrap:wrap;gap:7px}.role-buttons .btn{flex:1 1 118px}.small{font-size:.84rem;color:#53525a}.trayrow{display:flex;gap:6px;flex-wrap:wrap;min-height:40px;align-items:center}.slot{border:1px dashed #928f98;min-width:54px;text-align:center;padding:5px;background:#faf9f6;font-weight:700}.slot.filled{border-style:solid;border-color:var(--purple);background:#f0edff}.log{min-height:50px;font-size:.9rem;margin:0}.result{font-weight:800;font-size:1.06rem;margin:8px 0}.note{font-size:.8rem;color:#65636a;margin:8px 0 0}.sr{position:absolute;left:-9999px}@media(min-width:600px){.wrap{padding:24px}.roles{grid-template-columns:1fr 1fr}.box{padding:18px}}@media(max-width:370px){.wrap{padding:12px}.stats{gap:5px}.stat{padding:7px 6px}.btn{font-size:.93rem;padding:8px}.role-buttons .btn{flex-basis:100px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<p class="eyebrow">GAME DESIGN LAB · DAY 18</p>
+<h1 class="title">キッチン受け渡し実験</h1>
+<p class="intro">Aは材料を切って台へ。Bは受け取って皿を出す。台の広さで、交代の段取りと完成数がどう変わるか試そう。</p>
+<section class="box controls" aria-label="ゲーム設定">
+<div class="controlrow"><label for="capacity">受け渡し台の容量</label><span class="value"><span id="capVal">1</span>枠</span></div>
+<input id="capacity" type="range" min="1" max="3" value="1">
+<div class="controlrow"><label for="actions">作業回数</label><span class="value"><span id="actionVal">18</span>回</span></div>
+<input id="actions" type="range" min="13" max="22" value="18">
+<p class="small">設定を変えたら「設定を適用して開始」。プレイ中はルールを固定します。</p>
+<button id="start" class="btn primary" type="button">設定を適用して開始</button>
+</section>
+<section class="box" aria-label="プレイ状況">
+<div class="stats"><div class="stat"><small>残り手数</small><b id="remaining">—</b></div><div class="stat"><small>完成</small><b><span id="served">0</span> / 3</b></div><div class="stat"><small>役割交代</small><b id="switches">0</b></div></div>
+<div id="orders" aria-live="polite"></div>
+<h2 style="font-size:1rem;margin:14px 0 5px">受け渡し台</h2><div id="tray" class="trayrow" aria-label="台にある材料"></div>
+<h2 style="font-size:1rem;margin:12px 0 5px">皿の上</h2><div id="plate" class="trayrow" aria-label="受け取った材料"></div>
+<p id="message" class="log" aria-live="polite">開始を押すと注文が始まります。</p>
+<p id="result" class="result" aria-live="assertive"></p>
+<div class="toolbar"><button id="replay" class="btn" type="button" disabled>同じ設定でもう一度</button><button id="download" class="btn" type="button">デモHTMLを保存</button></div>
+</section>
+<section class="box" aria-label="役割ごとの操作">
+<div class="roles">
+<div class="role"><h3>シェフA｜切って台に置く</h3><div id="prepButtons" class="role-buttons"></div></div>
+<div class="role"><h3>シェフB｜受け取って提供</h3><div class="role-buttons"><button id="receive" class="btn" type="button" disabled>台から受け取る</button><button id="serve" class="btn green" type="button" disabled>注文を提供</button></div></div>
+</div>
+<p class="note">同じ端末で二人が担当を分けても、一人で両方の役割を操作しても遊べます。誤操作・満杯の台への追加も1手を使います。</p>
+</section>
+<section class="box"><h2 style="font-size:1rem;margin:0 0 6px">観察メモ</h2><p class="small" style="margin:0">容量1では A→B→A→B と動くと詰まりません。容量3ならまとめて準備できます。誰が何をしたか、相手の一手がどう楽になったかに注目。</p></section>
+</main>
+<script>
+(()=>{
+// 改造ポイント1：受け渡し台の容量。1枠は細かな交代、3枠はまとめ作業がしやすい。
+const $=id=>document.getElementById(id), ingredients=[{id:'tomato',name:'トマト',icon:'🍅'},{id:'fish',name:'魚',icon:'🐟'},{id:'rice',name:'ごはん',icon:'🍚'},{id:'nori',name:'のり',icon:'◼️'}];
+const menu=[[0,1],[2,3],[0,2]], state={active:false,cap:1,limit:18,left:18,served:0,index:0,tray:[],plate:[],switches:0,lastRole:'',wasted:0};
+function ingredient(id){return ingredients[id]}
+function announce(s){$('message').textContent=s}
+function updateLabels(){$('capVal').textContent=$('capacity').value;$('actionVal').textContent=$('actions').value}
+$('capacity').addEventListener('input',updateLabels);$('actions').addEventListener('input',updateLabels);updateLabels();
+function render(){
+ $('remaining').textContent=state.active?state.left:'—';$('served').textContent=state.served;$('switches').textContent=state.switches;
+ $('tray').innerHTML='';for(let i=0;i<state.cap;i++){let s=document.createElement('span');s.className='slot'+(state.tray[i]!==undefined?' filled':'');s.textContent=state.tray[i]!==undefined?ingredient(state.tray[i]).icon+' '+ingredient(state.tray[i]).name:'空き';$('tray').appendChild(s)}
+ $('plate').innerHTML=state.plate.map(id=>`<span class="slot filled">${ingredient(id).icon} ${ingredient(id).name}</span>`).join('')||'<span class="small">まだ材料はありません</span>';
+ $('orders').innerHTML=menu.map((m,i)=>`<div class="order ${i<state.served?'done':''} ${i===state.index&&state.active?'current':''}"><b>注文 ${i+1}：</b>${m.map(x=>ingredient(x).icon+' '+ingredient(x).name).join(' ＋ ')} ${i<state.served?'✓ 完成':i===state.index?'← いま作る':''}</div>`).join('');
+ document.querySelectorAll('[data-action]').forEach(b=>b.disabled=!state.active);
+ $('receive').disabled=!state.active||state.tray.length===0;$('serve').disabled=!state.active;
+ $('start').disabled=state.active;$('replay').disabled=state.active||!state.limit;
+}
+function end(){state.active=false;const won=state.served===menu.length;$('result').textContent=won?`全品完成！ ${state.switches}回の役割交代で連携できました。`:`${state.served}品完成。${state.left===0?'手数切れです。':'終了しました。'} 満杯・材料違いなどの無駄手は${state.wasted}回。`;announce(won?'ゲーム終了。全品完成です。':'ゲーム終了。手順を変えて再挑戦できます。');render()}
+function consume(role){if(!state.active)return false;if(state.lastRole&&state.lastRole!==role)state.switches++;state.lastRole=role;state.left--;return true}
+function finishIfOutOfActions(){if(state.left<=0&&state.active){state.left=0;end();return true}return false}
+function startGame(){state.cap=Number($('capacity').value);state.limit=Number($('actions').value);state.left=state.limit;state.served=0;state.index=0;state.tray=[];state.plate=[];state.switches=0;state.lastRole='';state.wasted=0;state.active=true;$('result').textContent='';announce('注文1。Aが材料を準備し、Bへ渡そう。');render()}
+$('start').addEventListener('click',startGame);$('replay').addEventListener('click',startGame);
+$('prepButtons').innerHTML=ingredients.map(x=>`<button class="btn" data-action="${x.id}" type="button">切る ${x.icon}<br>${x.name}</button>`).join('');
+document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{if(!state.active)return;if(!consume('A'))return;let id=ingredients.findIndex(x=>x.id===b.dataset.action),need=menu[state.index];if(state.tray.length>=state.cap){state.wasted++;announce('台が満杯！Bが受け取るまで置けません。1手消費。')}else if(!need.includes(id)||state.tray.includes(id)||state.plate.includes(id)){state.wasted++;announce('この注文に不要か重複した材料です。1手消費。')}else{state.tray.push(id);announce(`${ingredient(id).name}を台に置いた。Bへ声をかけよう。`)}if(finishIfOutOfActions())return;render()}));
+$('receive').addEventListener('click',()=>{if(!state.active)return;if(!consume('B'))return;let id=state.tray.shift(),need=menu[state.index];if(!need.includes(id)||state.plate.includes(id)){state.wasted++;announce('材料が注文と合いません。1手消費。')}else{state.plate.push(id);announce(`${ingredient(id).name}を受け取った。必要な材料がそろったら提供！`)}if(finishIfOutOfActions())return;render()});
+$('serve').addEventListener('click',()=>{if(!state.active)return;if(!consume('B'))return;let need=menu[state.index],ok=need.every(id=>state.plate.includes(id));if(!ok){state.wasted++;announce('まだ材料が足りません。注文を確認しよう。')}else{state.served++;state.index++;state.tray=[];state.plate=[];if(state.served===menu.length){end();return}announce(`提供成功！次は注文${state.index+1}。役割を相談しよう。`)}if(finishIfOutOfActions())return;render()});
+$('download').addEventListener('click',()=>{let html='<!doctype html>\n'+document.documentElement.outerHTML;let blob=new Blob([html],{type:'text/html;charset=utf-8'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='GameDesignLab_Day018_2026-11-01.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);announce('デモHTMLの保存を開始しました。')});
+render();
+})();
+</script>
+</body>
+</html>
