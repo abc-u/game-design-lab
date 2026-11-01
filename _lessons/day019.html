@@ -1,0 +1,196 @@
+---
+day: 19
+date: 2026-11-02
+title: 攻撃を待つ時間が、読み合いを生む
+theme: 攻撃予告と反応の設計
+game: ELDEN RING
+level: 中級
+minutes: 10
+summary: 敵の予告・ため・攻撃後の隙が、回避を読み合いに変える仕組みを学ぶ。
+question: 攻撃前の動作は、どうすれば反射神経だけでなく「読んで対処する」判断になる？
+goals:
+  - 予告の分かりやすさと反応時間を分けて設計できる
+  - 攻撃を待つ・避ける・反撃する判断が、手応えと不公平感をどう生むか説明できる
+video:
+  id: UhD0_MM4fnU
+  title: ELDEN RING 公式ローンチトレーラー
+  caption: Bandai Namco公式映像。敵の構えが見える時間、攻撃の速さ、攻撃後の隙を見比べる。
+demo:
+  src: /demos/day019.html
+  title: 合図を読んで、攻撃を返せ
+  height: 1020
+sources:
+  - title: FromSoftware「ELDEN RING 製品情報」
+    url: https://www.fromsoftware.jp/jp/detail.html?csm=105
+    note: 発売日・対応機種・ジャンル（2026-11-02確認）
+  - title: Bandai Namco Europe「Elden Ring launch trailer is out」
+    url: https://en.bandainamcoent.eu/elden-ring/news/elden-ring-launch-trailer-out-are-you-ready-adventure
+    note: 2022-02-22。PS5・PS4・Xbox Series X|S・Xbox One・Steamで2月25日発売
+  - title: Xbox Wire「From Software’s Hidetaka Miyazaki on the Secrets of Elden Ring’s Development」
+    url: https://news.xbox.com/en-us/2022/05/27/from-softwares-hidetaka-miyazaki-on-the-secrets-of-elden-rings-development/
+    note: 2022-05-27。宮崎英高氏が語る「冒険感」「自由」と、ボスの遊びを踏まえたエリア設計
+  - title: KADOKAWA Group「ELDEN RING exceeds 30 million units shipped」
+    url: https://group.kadokawa.co.jp/global/information/news_release/2025072401_en.html
+    note: 2025-07-24。出荷3,000万本超。デジタル版とSteamダウンロードを含む
+  - title: Steam「ELDEN RING」
+    url: https://store.steampowered.com/app/1245620/ELDEN_RING/?cc=jp&l=japanese
+    note: 2026-11-02確認。日本語レビュー5,656件の75%が好評。通常版9,240円（価格・件数は変動）
+  - title: Metacritic「Elden Ring」
+    url: https://www.metacritic.com/game/elden-ring/
+    note: 2026-11-02確認。批評家スコア96（86件）、ユーザー8.4/10（24,244評価）。集計値は更新される
+  - title: Ars Technica「Elden Ring review: Come see the softer side of punishing difficulty」
+    url: https://arstechnica.com/gaming/2022/02/elden-ring-review-come-see-the-softer-side-of-punishing-difficulty/
+    note: 2022-02-23。探索の自由と、ボス戦で完全な実行を求められる不満
+  - title: Video Games Chronicle「Elden Ring review」
+    url: https://www.videogameschronicle.com/review/elden-ring/
+    note: 2022-02-23。手掛かりの乏しい一撃を「安っぽい」と感じる場合を批判
+  - title: Steam Community「Why do bosses have so many delayed attacks why」
+    url: https://steamcommunity.com/app/1245620/discussions/0/4337599680247222437/
+    note: 2024-02-24の議論。敵の動きを納得できるという投稿と、遅延攻撃を理不尽と見る投稿を確認。選択した議論例で全体傾向ではない
+  - title: Bandai Namco「ELDEN RING Tarnished Edition and New Content」
+    url: https://www.bandainamcoent.com/news/elden-ring-tarnished-edition-now-available-on-nintendo-switch-2
+    note: 2026-08-28。本編が3,000万本超販売されたと記載。
+  - title: Steam Community「ELDEN RING user reviews」
+    url: https://steamcommunity.com/app/1245620/reviews/?browsefilter=trendyear&l=english&p=1
+    note: 2026-11-02閲覧。おすすめレビューの一例で、攻撃パターンの学習と高難度を肯定。代表的な標本ではない
+sources_note: 発売・価格・販売実績・集計値は各公式または集計ページの事実。開発者の説明、批評家の解釈、選択した利用者の意見、教材制作者の独自分析を区別しています。販売実績は出荷発表の対象範囲を併記し、継続率は公表値を確認できないため推測していません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：攻撃の「予告」と「反応時間」を分ける</h2>
+  <p>敵が攻撃する前に見せる動きや音を、ここでは<strong>予告</strong>と呼びます。予告から攻撃が当たるまでに考えて行動できる時間が<strong>反応時間</strong>です。</p>
+  <p>予告が読めても反応時間が短すぎれば、プレイヤーは判断を実行できません。逆に、予告も猶予も大きすぎると危険が薄れ、同じ対処を繰り返すだけになります。</p>
+
+  <ol class="flow mt-m">
+    <li><b>予告を見せる</b><span>形・向き・音で次を伝える</span></li>
+    <li><b>反応を選ばせる</b><span>避ける・待つ・守る</span></li>
+    <li><b>結果を返す</b><span>命中・回避・反撃の隙</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計時に分けて調整する</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">予告の識別性</p><p class="list__text">攻撃ごとに構え・軌道・音を変え、見分ける手掛かりを置く。</p></div></div>
+    <div class="list__row"><span class="num-box">B</span><div><p class="list__title">反応猶予</p><p class="list__text">構えから攻撃までの時間を決める。猶予を短くする前に、何を見ればよいか伝わっているか確かめる。</p></div></div>
+    <div class="list__row"><span class="num-box">C</span><div><p class="list__title">結果の手応え</p><p class="list__text">正しい対処だけでなく、誤った対処がなぜ失敗したかを、被弾・音・攻撃後の隙で返す。</p></div></div>
+  </div>
+  <p class="note mt-s">次はこの三つを『ELDEN RING』のボス戦で確かめます。注目するのは難しさの高さではなく、プレイヤーが攻撃を読めたと思える根拠です。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：待たせる構えが、回避の癖を揺さぶる</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2022年2月25日（PS5・PS4・Xbox Series X|S・Xbox One・PC）</dd></div>
+    <div><dt>開発</dt><dd>FromSoftware</dd></div>
+    <div><dt>ジャンル</dt><dd>オープンワールド・アクションRPG</dd></div>
+  </dl>
+  {% include video.html %}
+
+  <h3 class="h-sub">行動から感情まで：構えを見て、すぐ転がるか待つか</h3>
+  <p>敵が剣を高く掲げ、しばらく振り下ろさない。プレイヤーが構えを見てすぐ回避すると、攻撃が遅れて回避後の隙に当たることがあります。</p>
+  <p>次の挑戦で一拍待ち、剣が動き始めてから避けると、攻撃を外した敵に反撃できる。プレイヤーの行動が「反射」から「観察してタイミングを変える」へ変わり、成功が自分の学習の結果として返ります。</p>
+
+  <figure class="panel mt-m" aria-label="攻撃予告から反撃までの流れ">
+    <p class="panel__label">見るポイント</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>構え</th><th>ため</th><th>攻撃</th><th>隙</th></tr></thead>
+        <tbody><tr><td>武器を振り上げる</td><td>すぐ回避せず待つ</td><td>振り下ろしを避ける</td><td>反撃を入れる</td></tr></tbody>
+      </table>
+    </div>
+    <figcaption class="note mt-s">独自に整理した図。見るべきなのは攻撃の派手さより、「ため」が回避のタイミングを変えること。</figcaption>
+  </figure>
+
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>公式ローンチ映像は巨大な敵や広い景色を見せ、さらに『DARK SOULS』を作ったFromSoftwareと、世界設定に参加したGeorge R. R. Martinの名前も入口になります。既存ファンは戦闘への期待から、新規の人は未知の世界への興味から最初の探索へ進みやすい、というのが独自分析です。</p>
+  <p>開始後は、序盤に強敵が見える一方で、すぐ戦い続ける必要はありません。探索・装備強化・召喚など別の手段へ移れるため、「倒せるまで同じ場所で反復する」以外の最初の選択肢が生まれます。</p>
+
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>戦闘中は、敵の構えを観察し、攻撃の速さや遅れを覚え、回避後の反撃機会を探します。宮崎英高氏は、達成感を過去作から続く軸としつつ、自由に脅威へ向き合う「冒険感」を重視したと説明しています（Xbox Wire、2022-05-27）。</p>
+  <p>同じ戦闘に戻る動機は、学んだことを使い直して勝てるか試すことです。日をまたいだ継続率やプレイヤー全体の再訪率は公表値を確認できていません。</p>
+
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>『DARK SOULS』系の慎重な近接戦闘に、開かれたフィールドと複数の育成・探索ルートが結び付いています。ボスの攻撃を読み切れなければ、一度離れて別の場所を進み、武器や能力を整えてから戻れる。</p>
+  <p>つまり固有の体験は「敵の予告を読む」だけではありません。読み違いが起きたときも、次の一手を戦闘内の反撃にするか、探索へ移るかを選べるため、挑戦の主導権を取り戻しやすい点にあります。宮崎氏は、エリア設計の早い段階でボスを決め、その遊びに合わせて場所を調整すると話しています。</p>
+
+  <h3 class="h-sub">離れる理由</h3>
+  <p>予告が長い攻撃は、早く避ける癖を崩し、反撃の機会にもなります。一方、構えが攻撃の種類を十分に伝えない、または回避後の連続攻撃が続くと、「自分が読めなかった」のか「手掛かりが足りない」のか分からず、不公平感につながります。</p>
+  <p>VGCは一撃で倒す予告の乏しい攻撃を批判し、Ars Technicaは完全な実行を求めるボスで苛立ちやすいと論じました（両記事とも2022-02-23）。ここが調整の焦点です。難度を下げるだけでなく、予告・猶予・失敗理由のどれが読みづらいのか切り分けます。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：達成感を求める層と、厳しさに疲れる層</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>Metacriticは総合96点／批評家86件。ユーザー評価は8.4／24,244評価（2026-11-02確認）。探索と戦闘の両立が高く支持されています。</span></li>
+        <li><span>Steamの日本語レビューは5,656件中75%が好評で「やや好評」。英語レビューの集計とは母集団が異なり、日本人全体の評価とは言えません（2026-11-02確認）。</span></li>
+        <li><span>Steam Communityの英語おすすめレビュー一覧から1件を目的選択すると（2025-08-27投稿）、高難度を「不公平」と感じながら作品を強く推す声が見られます。個人の声で、全体傾向ではありません。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判・不満の声</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>批評家レビューでは、予告が乏しい一撃や完全な実行を求めるボスが、理不尽さ・疲労につながるという指摘があります（VGC、Ars Technica、2022-02-23）。</span></li>
+        <li><span>Steamの議論では、2024-02-24投稿者の一人が敵の攻撃を「学んで適応できる」と捉える一方、別の投稿者は難度を不当に上げる仕組みだと批判しています。2投稿の選択例で、意見の割合は推定できません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">独自の読み解き</p>
+    <p class="panel__title">攻撃の遅れは、待つ選択を作ると戦術になり、予告が曖昧なまま罰すると不公平に感じられる。鍵は難しさより、失敗の原因を学べる情報が返ることです。</p>
+  </div>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売実績</dt><dd>FromSoftware・Bandai Namcoは2025-07-24、世界累計出荷3,000万本超と発表。デジタル販売とSteamダウンロードを含むと説明しています。さらにBandai Namcoは2026-08-28、Switch 2版発売の告知で本編の販売3,000万本超を記載しました。</dd></div>
+    <div><dt>価格・機種</dt><dd>Steam日本通常版は9,240円（2026-11-02確認）。2022年2月にPS5・PS4・Xbox Series X|S・Xbox One・PCで発売。複数機種で同時期に遊べる入口を用意しました。</dd></div>
+    <div><dt>宣伝・ブランド</dt><dd>FromSoftwareの過去作で築いた期待と、George R. R. Martin参加の世界観を発売前から提示。海外ではBandai Namcoが販売・マーケティング網を担いました。</dd></div>
+    <div><dt>競争・口コミ</dt><dd>直接の販売競合を示す公開データは確認できていません。設計上は『DARK SOULS』系の戦闘を広いフィールドに移し、挑戦順を選べる点が比較軸になります。探索の発見やボス戦の失敗談は動画・配信でも共有されやすいという仮説がありますが、販売への寄与割合は公表されていません。</dd></div>
+  </dl>
+  <p class="note mt-s">販売数は発表時点の出荷・販売表現を区別してください。成功を面白さだけに帰さず、既存ブランド、著名作家との協業、複数機種、世界規模の宣伝、長く話題になる体験が重なった可能性として読むのが妥当です。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：合図を読んで、攻撃を返せ</h2>
+  <p>敵の構えを見て「すぐ避ける」「一拍待って避ける」「ガード」を選びます。予告猶予と合図の明瞭さを変え、読みやすさと失敗理由がどう変わるか比べます。</p>
+  <div class="chips mt-s"><span class="chip">予告の猶予</span><span class="chip">合図の明瞭さ</span><span class="chip">同一パターンで再戦</span></div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">攻撃の構えを見た直後、どの行動が浮かびましたか？ 失敗後、次に変えたのは反応の速さ・予告の読み方・選んだ行動のどれでしたか？</p>
+  </div>
+  <p class="note mt-s">このデモは攻撃の予告と判断を切り分けるための簡略版です。実際の『ELDEN RING』の操作速度・攻撃・難易度を再現したものではなく、反射神経の測定でもありません。</p>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題：予告の情報と猶予を別々に試す</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">予告猶予を1つだけ変える</p>
+      <p class="mt-s">「5秒から3秒にしたら、選択が緊張する」と予想してから再戦。命中数だけでなく、迷った攻撃と失敗理由が分かったかを記録します。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">音の合図を追加する</p>
+      <p class="mt-s">構えの種類ごとに異なる音を追加し、画面を見なくても攻撃を区別できるか試します。視覚合図と重複させる案、音だけにする案の長所・短所を比べます。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで「避けたのに当たる」と言われたら、当たり判定・予告の見え方・回避後の無敵時間のどれを先に確認しますか？ 選んだ要素を変える利点と副作用は何ですか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">音・色・攻撃後の隙をどう組み合わせれば、難しさを保ったまま「次は読めそう」と思わせられますか？ 手掛かりを増やす案と、反撃機会を増やす案の長所・短所を比べましょう。</span></div>
+  </div>
+</section>

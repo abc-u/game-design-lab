@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>合図を読んで、攻撃を返せ｜Game Design Lab DAY19</title>
+<style>
+:root{--ink:#16161a;--bg:#f4f3ee;--paper:#fff;--purple:#5b3df5;--muted:#57565f;--line:#d8d6ce;--red:#b74046;--green:#19734f}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+button,input,select{font:inherit}button{touch-action:manipulation;cursor:pointer;min-height:48px;border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);font-weight:750;padding:9px 12px;box-shadow:3px 3px 0 var(--ink)}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+main{max-width:700px;margin:0 auto;padding:12px 13px calc(22px + env(safe-area-inset-bottom))}
+header{padding:5px 2px 11px;border-bottom:2px solid var(--ink)}
+.kicker{margin:0;color:var(--purple);font-size:.74rem;font-weight:850;letter-spacing:.1em}
+h1{font-size:clamp(1.25rem,5vw,1.8rem);line-height:1.2;margin:4px 0}
+header p:last-child{margin:5px 0 0;color:var(--muted);font-size:.9rem}
+.panel{margin-top:12px;background:var(--paper);border:2px solid var(--ink);padding:12px;box-shadow:3px 3px 0 var(--ink)}
+h2{font-size:1rem;margin:0 0 6px}
+.small{font-size:.86rem;color:var(--muted)}
+.settings{display:grid;grid-template-columns:1fr;gap:10px}
+.setting label{display:flex;justify-content:space-between;gap:10px;font-weight:750}
+input[type=range]{width:100%;accent-color:var(--purple);min-height:34px}
+.value{color:var(--purple);font-variant-numeric:tabular-nums}
+select{width:100%;min-height:44px;border:1px solid var(--ink);background:white;padding:8px}
+.primary{width:100%;border-color:var(--purple);background:var(--purple);color:white}
+.meterlabel{display:flex;justify-content:space-between;gap:8px;font-size:.84rem;font-weight:700;margin-top:6px}
+.meter{height:10px;background:#ebe9e2;border:1px solid var(--line);margin-top:5px}
+.meter i{display:block;height:100%;width:100%;background:var(--purple);transform-origin:left}
+.status{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.pill{border:1px solid var(--line);padding:4px 8px;background:#faf9f6;font-size:.84rem}
+.foe{display:flex;align-items:center;gap:12px;min-height:94px;padding:10px;border:1px solid var(--line);background:#faf9f6}
+figure{margin:0}
+figure svg{width:72px;height:72px;flex:none}
+.foecopy{min-width:0}
+.foeName{font-weight:800}
+.cue{font-size:.91rem;margin-top:3px}
+.generic .shape{opacity:.72}\n#arm.pose-side{transform:rotate(55deg);transform-origin:36px 44px}\n#arm.pose-high{transform:rotate(-10deg);transform-origin:36px 44px}\n#arm.pose-thrust{transform:rotate(80deg);transform-origin:36px 44px}\n#arm.pose-feint{transform:rotate(35deg);transform-origin:36px 44px}\n#arm.pose-spin{transform:rotate(-70deg);transform-origin:36px 44px}\n#weapon.pose-side,#weapon.pose-high,#weapon.pose-thrust,#weapon.pose-feint,#weapon.pose-spin{transform:translateX(7px)}
+.actions{display:grid;gap:8px;margin-top:12px}
+.action{text-align:left;display:flex;align-items:center;gap:10px}
+.action b{display:inline-grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);background:#f4f3ee}
+.feedback{padding:9px 10px;margin-top:10px;background:#f4f3ee;border-left:4px solid var(--purple);font-size:.92rem}
+.feedback.good{border-color:var(--green)}
+.feedback.bad{border-color:var(--red)}
+.next{width:100%;margin-top:10px}
+.log{margin:10px 0 0;padding-left:22px;font-size:.82rem;color:var(--muted)}
+.log li+li{margin-top:3px}
+.result{font-weight:800;font-size:1.05rem}
+@media(max-width:370px){main{padding-left:10px;padding-right:10px}.panel{padding:10px}.foe{gap:8px}.actions{gap:7px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<p class="kicker">GAME DESIGN LAB · DAY 19</p>
+<h1>合図を読んで、攻撃を返せ</h1>
+<p>構えを見て、すぐ避ける？ 一拍待つ？ ガードする？ 5回の攻撃で読み合いを試します。</p>
+</header>
+
+<section class="panel" aria-labelledby="settingsTitle">
+<h2 id="settingsTitle">実験設定</h2>
+<div class="settings">
+<div class="setting">
+<label for="window">予告猶予 <span class="value"><span id="windowOut">6</span>秒</span></label>
+<input id="window" type="range" min="3" max="8" step="1" value="6">
+</div>
+<div class="setting">
+<label for="clarity">合図の明瞭さ</label>
+<select id="clarity">
+<option value="clear">姿勢と説明文を見せる</option>
+<option value="vague">説明文を隠して姿勢で判断</option>
+</select>
+</div>
+</div>
+<p class="small" style="margin:6px 0 0">設定を変えたら、下のボタンで新しい対戦を始めます。</p>
+<button id="start" class="primary" type="button" style="margin-top:10px">設定を適用して開始</button>
+</section>
+
+<section class="panel" id="arena" hidden aria-live="polite">
+<h2>ボス戦</h2>
+<div class="status">
+<span class="pill">あなた HP <b id="playerHp">3</b></span>
+<span class="pill">敵の残り <b id="bossHp">4</b></span>
+<span class="pill">攻撃 <b id="round">1</b>/5</span>
+</div>
+<div class="foe" id="foe">
+<figure aria-hidden="true">
+<svg viewBox="0 0 100 100" class="shape">
+<circle cx="50" cy="18" r="12" fill="#272535"/>
+<path d="M34 39 Q50 30 66 39 L72 74 Q50 85 28 74 Z" fill="#3c3850" stroke="#16161a" stroke-width="4"/>
+<path id="arm" d="M36 44 L20 22 L12 5" fill="none" stroke="#16161a" stroke-width="8" stroke-linecap="square"/>
+<path id="weapon" d="M12 12 L4 4" fill="none" stroke="#b74046" stroke-width="7" stroke-linecap="square"/>
+<path d="M65 45 L82 66" fill="none" stroke="#16161a" stroke-width="8" stroke-linecap="square"/>
+</svg>
+</figure>
+<div class="foecopy">
+<div class="foeName" id="foeName">敵が動きを読む……</div>
+<div class="cue" id="cue">構えから次の攻撃を考えよう。</div>
+</div>
+</div>
+<div class="meterlabel"><span>攻撃までの猶予</span><span id="timeOut">6秒</span></div>
+<div class="meter" role="progressbar" aria-label="攻撃までの時間" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i id="meterFill"></i></div>
+<div class="actions" id="actions">
+<button class="action" type="button" data-action="roll"><b>↗</b><span>すぐ避ける</span></button>
+<button class="action" type="button" data-action="wait"><b>…</b><span>一拍待って避ける</span></button>
+<button class="action" type="button" data-action="guard"><b>▣</b><span>ガードする</span></button>
+</div>
+<div id="feedback" class="feedback" hidden></div>
+<button id="next" class="next" type="button" hidden>次の攻撃へ</button>
+<ol class="log" id="log" aria-label="戦闘の記録"></ol>
+</section>
+
+<section class="panel" id="resultPanel" hidden aria-live="polite">
+<p class="kicker">RESULT</p>
+<p class="result" id="resultTitle"></p>
+<p id="resultText" class="small" style="margin-top:4px"></p>
+<button id="replay" class="primary" type="button" style="margin-top:10px">同じ条件でもう一度</button>
+</section>
+
+<script>
+(function(){
+'use strict';
+const moves=[
+ {name:'横なぎ',answer:'roll',answerText:'すぐ避ける',cue:'敵が武器を横へ引いた。振りが来る。',shape:'side',success:'横なぎをかわした！ 敵が通り過ぎた隙に一撃。',fail:'横なぎを受けた。横へ引く構えの直後は、すぐ避ける。'},
+ {name:'ため斬り',answer:'wait',answerText:'一拍待って避ける',cue:'敵が武器を高く掲げた。すぐには振り下ろさない。',shape:'high',success:'一拍待って回避。ための終わりを見て反撃！',fail:'早く避けてしまった。高く掲げた武器は、振り始めまで待つ。'},
+ {name:'突き',answer:'guard',answerText:'ガードする',cue:'敵の体が前を向き、刃先がこちらを指す。',shape:'thrust',success:'突きを受け止めた！ 敵の姿勢が崩れた。',fail:'突きが届いた。刃先をこちらへ向ける構えにはガード。'},
+ {name:'フェイント斬り',answer:'wait',answerText:'一拍待って避ける',cue:'敵が踏み込むように見せて、武器を止めた。',shape:'feint',success:'誘いに乗らず待てた。止まった構えのあとに回避！',fail:'フェイントに反応してしまった。動きが止まったら、もう一拍観察。'},
+ {name:'回転なぎ',answer:'roll',answerText:'すぐ避ける',cue:'敵が片足を軸に回り始めた。',shape:'spin',success:'回転の外へ抜けた！ 攻撃後の隙へ反撃。',fail:'回転攻撃に巻き込まれた。体が回り始めたらすぐ離れる。'}
+];
+const $=id=>document.getElementById(id);
+const start=$('start'), replay=$('replay'), arena=$('arena'), resultPanel=$('resultPanel');
+let hp=3,boss=4,turn=0,timer=null,startedAt=0,done=false,locked=false,settings={window:6,clarity:'clear'};
+const formatAction={roll:'すぐ避ける',wait:'一拍待って避ける',guard:'ガードする'};
+$('window').addEventListener('input',()=>{$('windowOut').textContent=$('window').value;});
+function readSettings(){settings={window:Number($('window').value),clarity:$('clarity').value};}
+function setInputs(disabled){$('window').disabled=disabled;$('clarity').disabled=disabled;start.disabled=disabled;start.textContent=disabled?'対戦中':'設定を適用して開始';}
+function startGame(){
+ if(timer)clearInterval(timer);
+ readSettings();hp=3;boss=4;turn=0;done=false;
+ $('playerHp').textContent=hp;$('bossHp').textContent=boss;$('round').textContent=1;
+ $('log').replaceChildren();$('feedback').hidden=true;$('next').hidden=true;
+ $('actions').hidden=false;resultPanel.hidden=true;arena.hidden=false;
+ setInputs(true);beginRound();
+}
+function beginRound(){
+ if(done)return;
+ if(turn>=moves.length){finish(false);return;}
+ const move=moves[turn];
+ $('round').textContent=turn+1;$('playerHp').textContent=hp;$('bossHp').textContent=boss;
+ $('foe').classList.toggle('generic',settings.clarity==='vague');
+ $('foeName').textContent=settings.clarity==='clear'?move.name:'敵が構えた';
+ $('cue').textContent=settings.clarity==='clear'?move.cue:'説明文は出ない。姿勢の形から判断しよう。';
+ $('arm').setAttribute('class','pose-'+move.shape);$('weapon').setAttribute('class','pose-'+move.shape);
+ $('feedback').hidden=true;$('next').hidden=true;$('actions').hidden=false;
+ document.querySelectorAll('[data-action]').forEach(b=>b.disabled=false);
+ startedAt=Date.now();$('timeOut').textContent=settings.window+'秒';
+ const fill=$('meterFill'),bar=fill.parentElement;
+ fill.style.transform='scaleX(1)';bar.setAttribute('aria-valuenow','100');
+ timer=setInterval(()=>{
+   const remain=Math.max(0,settings.window-(Date.now()-startedAt)/1000);
+   $('timeOut').textContent=remain.toFixed(1)+'秒';
+   const pct=remain/settings.window;
+   fill.style.transform='scaleX('+pct+')';bar.setAttribute('aria-valuenow',String(Math.round(pct*100)));
+   if(remain<=0)resolve(null);
+ },100);
+}
+function resolve(action){
+ if(done||$('actions').hidden)return;
+ clearInterval(timer);timer=null;
+ document.querySelectorAll('[data-action]').forEach(b=>b.disabled=true);
+ $('actions').hidden=true;
+ const move=moves[turn],ok=action===move.answer;
+ const feedback=$('feedback');feedback.hidden=false;feedback.className='feedback '+(ok?'good':'bad');
+ if(ok){boss=Math.max(0,boss-1);feedback.textContent='正解：'+move.success;}
+ else{hp=Math.max(0,hp-1);feedback.textContent=action===null?'時間切れ。':'不正解：'+move.fail+' 正解は「'+move.answerText+'」。';}
+ $('playerHp').textContent=hp;$('bossHp').textContent=boss;
+ const li=document.createElement('li');
+ li.textContent='攻撃'+(turn+1)+'「'+move.name+'」：'+(ok?'対処できた':'被弾（'+(action===null?'時間切れ':formatAction[action])+'）');
+ $('log').appendChild(li);
+ if(boss<=0){finish(true);return;}
+ if(hp<=0){finish(false);return;}
+ turn++;
+ if(turn>=moves.length){finish(boss<=0);return;}
+ $('next').hidden=false;
+}
+function finish(win){
+ done=true;clearInterval(timer);timer=null;setInputs(false);
+ arena.hidden=false;$('actions').hidden=true;$('next').hidden=true;
+ resultPanel.hidden=false;
+ $('resultTitle').textContent=win?'勝利！ 合図を読んで、隙を作れた。':'敗北。次は予告の違いを見よう。';
+ const correct=4-boss;
+ $('resultText').textContent='有効打 '+correct+'回／被弾 '+(3-hp)+'回。'+(win?'観察した手掛かりが、反撃の機会に変わりました。':'失敗した攻撃の構えと、表示された正解を比べてから再戦。');
+ replay.textContent='同じ条件でもう一度';
+}
+document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>resolve(b.dataset.action)));
+$('next').addEventListener('click',beginRound);
+start.addEventListener('click',startGame);
+replay.addEventListener('click',startGame);
+})();
+</script>
+</main>
+</body>
+</html>
