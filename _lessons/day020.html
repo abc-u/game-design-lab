@@ -1,0 +1,198 @@
+---
+day: 20
+date: 2026-11-02
+title: いたずらが笑いに変わる「予告と反応」
+theme: プレイヤーの行動から笑いを生む反応設計
+game: Untitled Goose Game
+level: 中級
+minutes: 10
+summary: いたずらの予告・人の反応・音楽が、プレイヤー自身のコメディを作る流れを分析する。
+question: プレイヤーの行動が、どうすれば「見て笑う」だけでなく「自分で笑いを起こした」体験になる？
+goals:
+  - プレイヤーの行動から反応・変化・次の選択へ進む設計を説明できる
+  - 作品の入口・継続・離脱を、プレイ場面と評価・市場の根拠から分析できる
+  - 反応のタイミングを変えたデモで、笑いの成立と失敗の理由を比較できる
+video:
+  id: wQknBJo4aBQ
+  title: Untitled Goose Game Pre-Alpha Gameplay Trailer
+  caption: House Houseの開発中映像（2017-10-03公開）。ガチョウの行動に町の人がどう反応するか、音楽の間が行動と合うかを見る。
+demo:
+  src: /demos/day020.html
+  title: 鈴で注意をそらし、いたずらを決めろ
+  height: 980
+sources:
+  - title: "Nintendo：Untitled Goose Game 公式ストア"
+    url: "https://www.nintendo.com/us/store/products/untitled-goose-game-switch/"
+    note: 2019-09-20発売、開発House House・販売Panic、製品紹介と二人協力モード（2026-11-02確認）。
+  - title: "House House：公式サポート"
+    url: "https://goose.game/support/"
+    note: 対応ストア、ローカル協力、配信許可など（2026-11-02確認）。
+  - title: "Game Developer：Behind the HONK: An Untitled Goose Game Q&A"
+    url: "https://www.gamedeveloper.com/design/behind-the-honk-an-i-untitled-goose-game-i-q-a"
+    note: 2019-10-09公開。開発者が語る「いたずらを許す目標」「無害な意地悪」「音とDebussyの音楽設計」。
+  - title: "Panic Podcast：Episode 1 - Untitled Goose Game"
+    url: "https://podcast.panic.com/episodes/s01e01/transcript/"
+    note: Panic側の開発・販売メンバーが語る予告動画の拡散、音楽の誤解と実際の適応音楽設計（ページに公開日の表示なし、2026-11-02確認）。
+  - title: "Nintendo Life：Untitled Goose Game 100万本突破"
+    url: "https://www.nintendolife.com/news/2019/12/honk_untitled_goose_game_has_now_sold_more_than_one_million_digital_copies"
+    note: 2019-12-31公開。Panic共同創業者の発表として、初回発売から約3か月で全機種合計デジタル販売100万本超。
+  - title: "Xbox Wire：Xbox One版発売・価格"
+    url: "https://news.xbox.com/en-us/2019/12/16/untitled-goose-game-is-now-available-for-xbox-one-and-included-with-xbox-game-pass/"
+    note: 2019-12-16公開。Xbox One版の価格19.99米ドル、Game Pass収録、二人協力対応を告知。
+  - title: "Steam：Untitled Goose Game"
+    url: "https://store.steampowered.com/app/837470/Untitled_Goose_Game/?l=english"
+    note: 英語レビュー10,385件の96%が好評、直近30日220件の92%が好評（ページ表示の取得日2026-11-02。変動するスナップショット）。
+  - title: "Metacritic：Untitled Goose Game"
+    url: "https://www.metacritic.com/game/untitled-goose-game/"
+    note: 批評家81点/44件、ユーザー7.7点/430評価。ページ確認日2026-11-02（集計は変動）。
+  - title: "PC Gamer：Untitled Goose Game review"
+    url: "https://www.pcgamer.com/untitled-goose-game-review/"
+    note: 2019-09-23公開、80点。操作の単純さといたずらの面白さを評価し、約6時間後の反復感にも言及。
+  - title: "GameSpot：Untitled Goose Game Review - Saved By The Bell"
+    url: "https://www.gamespot.com/reviews/untitled-goose-game-review-saved-by-the-bell/1900-6417308/"
+    note: 2019-10-02公開、8点。状況を利用するパズルと音楽を評価し、短さ・一部の収集課題の報酬不足を批判。
+  - title: "Steam：Untitled Goose Game reviews"
+    url: "https://store.steampowered.com/app/837470/_Untitled_Goose_Game/?l=english"
+    note: 閲覧日2026-11-02。表示レビューから肯定・短さへの不満を各1件選択。代表標本ではなく、一覧上で個別投稿年が確認できないものは年を補っていない。
+  - title: "Untitled Goose Game - Pre-Alpha Gameplay - House House"
+    url: "https://www.youtube.com/watch?v=wQknBJo4aBQ"
+    note: 2017-10-03公開。発売前の開発中ゲームプレイ映像。
+sources_note: "販売元・公式ストアの公表情報、批評家の評価、プラットフォーム上のレビュー表示、選択した利用者の声、教材制作者の分析を分けています。100万本は2019-12時点の全機種デジタル販売発表で、生涯累計ではありません。現在の総販売数や継続率は推測していません。"
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：笑いは「行動」と「反応」の間で作れる</h2>
+  <p>ゲームのコメディは、面白い台詞を見せるだけでなく、プレイヤーが何かをして、世界や登場人物が反応するところまで操作させる方法があります。予想できる手掛かりのあとに少し意外な反応が返ると、プレイヤーは「自分がこの場面を起こした」と感じやすくなります。</p>
+  <p>設計では、①何をしたいか分かる行動、②反応を起こす対象、③目で見て分かる結果、④次のいたずらや立て直し、の順に考えます。反応が読めなければ偶然に見え、失敗の損失が大きすぎれば、試す前にやめてしまいます。</p>
+  <ol class="flow mt-m">
+    <li><b>仕掛ける</b><span>鈴を鳴らす・物を動かす</span></li>
+    <li><b>反応を待つ</b><span>人の視線・動き・音を読む</span></li>
+    <li><b>結果を作る</b><span>驚き・追跡・笑い声が返る</span></li>
+  </ol>
+  <h3 class="h-sub">企画で決める三つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">行動の意味</p><p class="list__text">ボタンを押したとき、何が起きると思えばよいか。音・物・目標で手掛かりを出す。</p></div></div>
+    <div class="list__row"><span class="num-box">B</span><div><p class="list__title">反応の間</p><p class="list__text">すぐ返すか、少し待たせるか。待つ時間は期待を作るが、長すぎると操作の手応えが薄れる。</p></div></div>
+    <div class="list__row"><span class="num-box">C</span><div><p class="list__title">失敗の扱い</p><p class="list__text">見つかっても再度試せるか。損失を軽くし、次の行動を選べると実験が続きやすい。</p></div></div>
+  </div>
+  <p class="note mt-s">次はこの見方で『Untitled Goose Game』を見ます。注目するのは冗談の数ではなく、プレイヤーのいたずらが人の反応と演出を引き起こす順番です。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：ガチョウの行動が、プレイヤーのコメディになる</h2>
+  <dl class="facts">
+    <div><dt>初回発売</dt><dd>2019年9月20日（Nintendo Switch・PC/Epic。PS4・Xbox Oneは同年12月、Steam版は2020年）</dd></div>
+    <div><dt>開発・販売</dt><dd>House House／Panic</dd></div>
+    <div><dt>ジャンル</dt><dd>スラップスティック・ステルス・サンドボックス</dd></div>
+  </dl>
+  {% include video.html %}
+
+  <figure class="panel mt-m" aria-label="いたずらがコメディになる因果">
+    <p class="panel__label">行動から笑いが生まれる流れ</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>行動</th><th>ルールの反応</th><th>見える変化</th><th>次の手</th></tr></thead>
+        <tbody><tr><td>物を盗む</td><td>住人が追う</td><td>追跡・逃走</td><td>隠す・別の物を狙う</td></tr></tbody>
+      </table>
+    </div>
+    <figcaption class="note mt-s">独自に整理した図。反応が見えると、プレイヤーは結果を次のいたずらに使える。</figcaption>
+  </figure>
+
+  <h3 class="h-sub">具体例：鍵を盗み、湖へ逃げる</h3>
+  <p>PC Gamerのレビューでは、庭師のズボンから鍵を盗み、追いかけてきた庭師を湖へ誘い、鍵を手の届かない水の中へ落とす遊び方が紹介されています（2019-09-23）。盗む行動が追跡を生み、追跡が「どこへ逃げるか」という次の判断を作ります。</p>
+  <p>成功すると、鍵の位置と庭師の反応が変わるため、プレイヤーは単に課題を消すのではなく、場面を自分で演出したように感じます。操作は、移動・鳴く・つかむなど少数の動詞に限られ、その組み合わせを考える余地があります。</p>
+
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>2017年の開発中トレーラーは、タイトルが決まる前のガチョウのいたずらを短く見せました。Panicの開発・販売メンバーは、映像がすぐ理解され、何度も共有されるほど広がり、数秒で遊びの想像を伝えたと振り返っています（Panic Podcast、公開日表示なし）。</p>
+  <p>白い鳥が村人の平穏を崩す画だけで、「自分がいたずらをする側」という期待が伝わる。序盤も「鳴く」などの単純な操作から始まるので、トレーラーで見た役割をすぐ試せます。</p>
+
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>各場所の「やることリスト」は自由な悪ふざけに目標を与え、課題を終えると次の場所や行動が開きます。庭師の鍵を盗んだあと、隠し場所や別の道具を考えるように、反応を見た経験が次の計画に使えます。</p>
+  <p>音楽も行動に合わせて変わります。開発者は、静かな版・勢いのある版の音楽断片を切り替え、追跡など場面の熱に応じて変化させたと説明しています（Game Developer、2019-10-09）。同じ場所でも自分の行動が演出を動かす手応えになります。後日どれだけ再訪するかを示す継続率は公表されていません。</p>
+
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>ステルスゲームの「見つからないよう進む」緊張と、サンドボックスの「物を試しに動かす」自由を、無害ないたずらに結びつけています。GameSpotは『Hitman』のように環境や人の行動を利用するが、殺人でなく悪ふざけを目指す小さな版だと比較しました（2019-10-02）。</p>
+  <p>さらに、鳴き声・歩き方・物を盗んだ時の反応が、プレイヤーが仕掛ける無言のドタバタ劇を作ります。開発者によると、もともと人とガチョウが目を合わせるだけで面白く、その小さな反応を遊びの核にしました。</p>
+
+  <h3 class="h-sub">離れる理由</h3>
+  <p>PC Gamerは笑いと操作の分かりやすさを評価する一方、遊びが長くなると小さな村の反復が目立つと指摘しました（2019-09-23）。GameSpotも初回が約2時間で終わり、後半の収集課題には新しい場所や反応が少ないと批判しています（2019-10-02）。</p>
+  <p>短い遊びを求める人には区切りやすさが利点になり、長時間の成長や大量の新コンテンツを期待する人には価格とのずれになり得ます。Steamの選択した2件でも、「短いから気軽でよい」と「短すぎる・操作に合わない」が併存していました（閲覧2026-11-02、代表的な意見の割合ではありません）。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：短い映像で広がり、遊びの反応で記憶に残る</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家・プレイヤーが評価</p>
+      <ul class="bullets mt-s">
+        <li><span>Metacriticは批評家81点/44件、ユーザー7.7/430評価。媒体・機種をまとめた集計で、全ユーザーの満足度そのものではありません（2026-11-02確認）。</span></li>
+        <li><span>Steam英語レビューは10,385件の96%が好評。直近30日は220件中92%が好評で、評価の母集団と言語・期間が違います（2026-11-02確認）。</span></li>
+        <li><span>肯定例：PC Gamerはシンプルな操作といたずらを称賛（80点）。GameSpotは状況を使うパズルと音楽を評価（8点）。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批評家・プレイヤーの不満</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>PC Gamerは長く遊ぶと反復を感じると述べ、GameSpotは短さや一部の収集課題の報酬不足を指摘しました。</span></li>
+        <li><span>Steamレビューを選択して読むと、短さを「気軽でよい」とする声と、遊べる時間や操作環境に対して価格が高いとする声がありました。個別例2件で全体の割合は分かりません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">独自の読み解き</p>
+    <p class="panel__title">笑いの強さは、プレイヤーに「やってはいけないこと」をさせるだけではない。分かる行動、見える反応、軽い失敗が一続きになり、自分で場面を起こせる点にある。</p>
+  </div>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売実績</dt><dd>Panic共同創業者Cabel Sasserは2019-12-30、初回発売から約3か月で全機種合計のデジタル販売が100万本を超えたと発表。これ以後の累計販売数はここでは確認できていません。</dd></div>
+    <div><dt>価格・機種</dt><dd>米国の通常価格は19.99ドル、発売時の期間限定価格は14.99ドルと告知されました。SwitchとPC/Epicで2019-09-20に先行発売し、同年12月にPS4・Xbox Oneへ拡大、2020年9月にはSteamへ登場。地域や時期で価格は異なります。</dd></div>
+    <div><dt>宣伝・口コミ</dt><dd>発売約2年前の開発中映像が、ガチョウの役割と遊びを一目で伝えました。開発者の回想ではファンアートやミーム、ゲーム外の話題も広がりました。映像の拡散が販売をどれだけ増やしたかは分かりません。</dd></div>
+    <div><dt>競争・ブランド</dt><dd>既存の大作シリーズではなく、House Houseの2作目として登場。批評家は環境を利用する点を『Hitman』と比べつつ、非暴力のいたずらへ置き換えた差を指摘しました。Panicの販売網とプラットフォーム追加も入口を広げた可能性があります。</dd></div>
+  </dl>
+  <p class="note mt-s">100万本は当時の全機種デジタル販売発表であり、売上額や生涯販売数ではありません。面白さだけに成功を帰さず、予告映像の分かりやすさ、口コミ、期間限定価格、複数機種への展開が重なったケースとして読みます。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：鈴で注意をそらし、いたずらを決めろ</h2>
+  <p>町の人がこちらを見ている間は、いたずらをすると見つかります。鈴を鳴らし、注意がそれるまでの反応を見てから仕掛けましょう。反応までの拍数と合図の見え方を変えられます。</p>
+  <div class="chips mt-s"><span class="chip">反応までの拍数</span><span class="chip">人の様子の見え方</span><span class="chip">同じ条件で再戦</span></div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">鈴を鳴らしたあと、何を見て「今なら仕掛けられる」と判断しましたか？ 反応が見えない設定では、失敗を自分の選択のせいだと理解できましたか？</p>
+  </div>
+  <p class="note mt-s">これは反応の予告と、軽い失敗から再挑戦する流れを抽出したオリジナルデモです。『Untitled Goose Game』の人物・物語・マップ・操作を再現していません。</p>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題：反応の間を変えて比べる</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">反応までの拍数を一つ変える</p>
+      <p class="mt-s">開始前に「1拍から2拍にしたら、タイミングを読みやすくなる」と予想します。成功数だけでなく、鈴を鳴らした後に迷ったか、失敗の理由が分かったかも記録してください。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">いたずらに新しい反応を足す</p>
+      <p class="mt-s">「鈴を鳴らすと店員が振り向き、紙袋をかぶせると頭を振って近くの物を落とす」のような連鎖を追加します。大きなリアクション案と小さな反応案で、読みやすさ・驚き・調整コストの違いを比べましょう。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">プレイヤーが自分で起こす笑いを、アクション・音・世界観のどれから作りますか？ 反応を派手にする案と、次の行動を増やす案では、何が変わりますか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">あなたのゲームで一番気持ちよい瞬間を、プレイヤーの行動→ルールの反応→見える変化→次の選択で書くとどうなりますか？ 反応を弱くした場合に残る面白さも考えてみましょう。</span></div>
+  </div>
+</section>

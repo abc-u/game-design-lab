@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f3ee">
+<title>鈴で注意をそらし、いたずらを決めろ｜Game Design Lab DAY20</title>
+<style>
+:root{color-scheme:light;--ink:#16161a;--bg:#f4f3ee;--paper:#fff;--accent:#5b3df5;--muted:#64646d;--line:#d5d3cd}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;font-size:16px;line-height:1.55}
+main{width:min(100%,760px);margin:0 auto;padding:clamp(14px,4vw,28px)}
+h1{font-size:clamp(1.35rem,5vw,2rem);line-height:1.25;margin:.25rem 0 .55rem}
+h2{font-size:1.05rem;margin:0 0 .45rem}
+p{margin:.4rem 0}
+.eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.12em;color:var(--accent)}
+.intro{color:#42424b;margin-bottom:1rem}
+.panel{background:var(--paper);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:clamp(14px,3vw,20px);margin:1rem 0}
+.settings{display:grid;gap:1rem}
+label{font-weight:750;display:block;margin-bottom:.3rem}
+select,input{font:inherit}
+input[type=range]{width:100%;accent-color:var(--accent);min-height:38px}
+select{width:100%;min-height:46px;border:1px solid var(--ink);background:#fff;color:var(--ink);padding:9px;border-radius:2px}
+.help,.subtle{font-size:.9rem;color:var(--muted)}
+.download{min-height:42px;padding:8px 12px;font-size:.92rem;box-shadow:2px 2px 0 var(--ink);margin:.2rem 0}
+.statusbar{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;font-weight:750}
+.playfield{display:grid;grid-template-columns:1fr;gap:.75rem}
+.scene{min-height:132px;display:flex;align-items:center;justify-content:center;gap:1.15rem;background:linear-gradient(180deg,#f8f7f2 0 72%,#dddfd5 72%);border:1px solid var(--line);padding:14px}
+.character{text-align:center;min-width:90px}
+.face{font-size:2.6rem;line-height:1.1}
+.character small{display:block;font-weight:700;margin-top:.3rem}
+.bubble{max-width:290px;background:#fff;border:1px solid var(--line);padding:9px 11px;border-radius:3px}
+.bubble strong{display:block;color:var(--accent);margin-bottom:.15rem}
+.actions{display:grid;grid-template-columns:1fr;gap:.6rem;margin-top:.8rem}
+button{font:inherit;font-weight:750;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:2px;min-height:50px;padding:10px 14px;box-shadow:3px 3px 0 var(--ink);touch-action:manipulation;cursor:pointer}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:white;box-shadow:3px 3px 0 #2a1a8a}
+button:disabled{opacity:.48;cursor:not-allowed;box-shadow:none;transform:none}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #a59aff;outline-offset:2px}
+.feedback{padding:10px 12px;border-left:4px solid var(--accent);background:#f0edff;min-height:48px}
+.feedback.bad{border-color:#b94a3d;background:#fff0ec}
+.feedback.good{border-color:#26845f;background:#eaf7ef}
+.result{border:2px solid var(--ink);padding:14px;background:#fff;margin-top:12px}
+.result h2{font-size:1.3rem}
+.log{padding-left:1.2rem;margin:.5rem 0 0}
+.log li{margin:.2rem 0;font-size:.9rem}
+[hidden]{display:none!important}
+@media(min-width:560px){.settings{grid-template-columns:1fr 1fr}.actions{grid-template-columns:repeat(3,minmax(0,1fr))}.scene{min-height:150px}}
+@media(max-width:360px){body{font-size:15px}.scene{gap:.55rem;padding:10px}.character{min-width:70px}.face{font-size:2.2rem}.bubble{padding:8px}}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">GAME DESIGN LAB · DAY 20</p>
+  <h1>鈴で注意をそらし、いたずらを決めろ</h1>
+  <p class="intro">鈴を鳴らし、人が背を向けた瞬間に仕掛けます。3回成功するとクリア。見つかったら注意の予告を見直そう。</p>
+  <button id="download" type="button" class="download">デモHTMLをダウンロード</button>
+
+  <section class="panel" aria-labelledby="settingsHeading">
+    <h2 id="settingsHeading">実験設定</h2>
+    <div class="settings">
+      <div>
+        <label for="delay">人が振り向くまで</label>
+        <input id="delay" type="range" min="1" max="2" step="1" value="1">
+        <p class="help">現在：<output id="delayOut">1</output>拍</p>
+      </div>
+      <div>
+        <label for="clarity">合図の情報</label>
+        <select id="clarity">
+          <option value="clear">表情と状態を表示</option>
+          <option value="vague">表情だけで判断</option>
+        </select>
+        <p class="help">予告の詳しさと、判断の自信を比べます。</p>
+      </div>
+    </div>
+    <p class="help">設定は新しい対戦から反映されます。</p>
+    <button id="start" class="primary" type="button">設定を適用して開始</button>
+  </section>
+
+  <section id="game" class="panel" aria-live="polite">
+    <div class="statusbar">
+      <span>成功したいたずら <b id="score">0</b> / 3</span>
+      <span>見つかった <b id="caught">0</b> / 2</span>
+      <span>手数 <b id="turn">0</b> / 12</span>
+    </div>
+    <div class="playfield">
+      <div class="scene">
+        <div class="character" aria-label="いたずら好きのキツネ">
+          <div class="face" aria-hidden="true">🦊</div><small>あなた</small>
+        </div>
+        <div class="character">
+          <div id="personFace" class="face" aria-hidden="true">🙂</div><small>町の人</small>
+        </div>
+        <div class="bubble">
+          <strong id="stateTitle">準備中</strong>
+          <span id="stateText">鈴を鳴らすと、人が音の方を向きます。</span>
+        </div>
+      </div>
+      <p id="feedback" class="feedback" role="status">「鈴を鳴らす」→反応を見る→「いたずらする」の順で試そう。</p>
+      <div class="actions" aria-label="いたずらの行動">
+        <button id="bell" type="button" disabled>🔔 鈴を鳴らす</button>
+        <button id="wait" type="button" disabled>⏳ 一拍待つ</button>
+        <button id="prank" type="button" disabled>🎭 いたずらする</button>
+      </div>
+    </div>
+    <div id="result" class="result" hidden>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <button id="replay" class="primary" type="button">同じ条件でもう一度</button>
+    </div>
+    <ol id="log" class="log" aria-label="行動の記録"></ol>
+  </section>
+  <p class="subtle">観察するのは実際のプレイヤー全体の笑い声ではなく、この短い実験内の行動・判断・結果です。</p>
+</main>
+<script>
+(()=>{
+'use strict';
+/* 改造ポイント1：必要な成功数・手数・許容ミスをここで調整する */
+const GOAL=3, TURN_LIMIT=12, ALERT_LIMIT=2;
+const $=id=>document.getElementById(id);
+const els={delay:$('delay'),clarity:$('clarity'),start:$('start'),download:$('download'),bell:$('bell'),wait:$('wait'),prank:$('prank'),replay:$('replay'),face:$('personFace'),title:$('stateTitle'),text:$('stateText'),score:$('score'),caught:$('caught'),turn:$('turn'),feedback:$('feedback'),log:$('log'),result:$('result'),resultTitle:$('resultTitle'),resultText:$('resultText')};
+let playing=false,mode='watching',delay=1,remaining=0,score=0,caught=0,turn=0,clarity='clear';
+els.delay.addEventListener('input',()=>{$('delayOut').textContent=els.delay.value;});
+function setSettingsLocked(locked){els.delay.disabled=locked;els.clarity.disabled=locked;els.start.disabled=locked;els.start.textContent=locked?'対戦中':'設定を適用して開始';}
+function render(){
+ els.score.textContent=score;els.caught.textContent=caught;els.turn.textContent=turn;
+ const face={watching:'🙂',turning:'👂',away:'↩️'}[mode];
+ els.face.textContent=face;
+ if(clarity==='clear'){
+   const titles={watching:'こちらを見ている',turning:'鈴の音を追っている',away:'背中を向けた！'};
+   const desc={watching:'今いたずらすると見つかる。まず鈴で注意をそらそう。',turning:remaining>0?'人はまだ振り向いている。待つか、急いで仕掛けるか。':'人が背中を向けた。次の行動がいたずらのチャンス！',away:'今がチャンス。いたずらするか、見送るかを選ぼう。'};
+   els.title.textContent=titles[mode];
+   els.text.textContent=desc[mode];
+ }else{
+   const titles={watching:'人の様子を見る',turning:'反応を観察する',away:'反応が変わった'};
+   const desc={watching:'音に気づかれていない。',turning:'顔と動きの変化から次の手を考えよう。',away:'今の状態を見て、行動を選ぼう。'};
+   els.title.textContent=titles[mode];els.text.textContent=desc[mode];
+ }
+ els.bell.disabled=!playing||mode!=='watching';
+ els.wait.disabled=!playing||mode==='watching';
+ els.prank.disabled=!playing;
+}
+function startGame(){
+ delay=Number(els.delay.value);clarity=els.clarity.value;
+ score=0;caught=0;turn=0;mode='watching';remaining=0;playing=true;
+ els.log.replaceChildren();els.result.hidden=true;
+ els.feedback.className='feedback';els.feedback.textContent='鈴を鳴らし、町の人が背を向けるまで反応を見よう。';
+ setSettingsLocked(true);render();
+}
+function finish(win){
+ playing=false;mode='watching';setSettingsLocked(false);render();
+ els.result.hidden=false;
+ els.resultTitle.textContent=win?'成功！ 反応を読んでいたずらを決めた。':'ここでおしまい。次は合図の間を変えよう。';
+ els.resultText.textContent='成功 '+score+' 回／見つかった '+caught+' 回／手数 '+turn+' 回。'+(win?'同じ合図から、狙うタイミングを作れた。':'人の反応と行動の順番を見比べて再戦しよう。');
+}
+function addLog(label){const li=document.createElement('li');li.textContent=label;els.log.prepend(li);}
+function take(action){
+ if(!playing)return;
+ turn++;
+ if(action==='bell'){
+   mode='turning';remaining=delay;
+   els.feedback.className='feedback';els.feedback.textContent='鈴が鳴った。人が音の方を向く。反応を見てから決めよう。';
+   addLog('鈴を鳴らした：町の人が振り向く');
+ }else if(action==='wait'){
+   if(mode==='turning'){
+     remaining--;
+     if(remaining<=0){mode='away';remaining=1;els.feedback.className='feedback good';els.feedback.textContent='背中を向けた！次の行動でいたずらを仕掛けられる。';}
+     else{els.feedback.className='feedback';els.feedback.textContent='まだ鈴を追っている。もう一拍待つか、今仕掛けるか。';}
+   }else if(mode==='away'){
+     mode='watching';remaining=0;els.feedback.className='feedback';els.feedback.textContent='隙を見送った。人はこちらを向き直した。';addLog('待ちすぎた：チャンスが消えた');
+   }
+ }else if(action==='prank'){
+   if(mode==='away'){
+     score++;mode='watching';remaining=0;els.feedback.className='feedback good';els.feedback.textContent='いたずら成功！人が振り返って、思わず笑っている。';addLog('成功：人の反応を見てから仕掛けた');
+   }else{
+     caught++;mode='watching';remaining=0;els.feedback.className='feedback bad';els.feedback.textContent='見つかった！人の反応を待つか、合図を変えてみよう。';addLog('見つかった：いたずらが反応より先だった');
+   }
+ }
+ render();
+ if(score>=GOAL){finish(true);return;}
+ if(caught>=ALERT_LIMIT){finish(false);return;}
+ if(turn>=TURN_LIMIT){finish(false);}
+}
+els.start.addEventListener('click',startGame);
+els.download.addEventListener('click',()=>{
+ const html='<!doctype html>\\n'+document.documentElement.outerHTML;
+ const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');
+ a.href=url;a.download='GameDesignLab_Day020_2026-11-02.html';document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+els.replay.addEventListener('click',startGame);
+els.bell.addEventListener('click',()=>take('bell'));
+els.wait.addEventListener('click',()=>take('wait'));
+els.prank.addEventListener('click',()=>take('prank'));
+render();
+})();
+</script>
+</body>
+</html>
