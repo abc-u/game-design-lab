@@ -146,7 +146,7 @@ function drawTarget(){
 }
 function startGame(useActive=false){
  if(useActive){e.sensitivity.value=active.aimSensitivity;e.tolerance.value=active.tolerance;e.guidance.value=active.guidance;}
- else{active={aimSensitivity:Number(e.sensitivity.value),tolerance:Number(e.tolerance.value),guidance:e.guidance.value};}
+ else{active={...RULES,aimSensitivity:Number(e.sensitivity.value),tolerance:Number(e.tolerance.value),guidance:e.guidance.value};}
  score=0;turn=0;running=true;busy=false;e.results.hidden=true;e.history.replaceChildren();e.ball.style.left='50%';e.ball.style.bottom='10%';e.ball.classList.remove('throwing');
  e.feedback.className='feedback';e.feedback.textContent='レーンを見て狙いを決め、1投ずつ結果を確かめよう。';
  setSettingsLocked(true);drawTarget();e.aim.value='0';e.power.value='60';setAimLabel();setPowerLabel();
