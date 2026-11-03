@@ -1,0 +1,198 @@
+---
+day: 21
+date: 2026-11-03
+title: 振るだけで伝わる操作は、どう作る？
+theme: 身体動作とゲーム内結果の対応づけ
+game: Wii Sports
+level: 初級
+minutes: 10
+summary: なじみのある動きをゲームの結果へつなぎ、直感的な操作と練習の深さを両立する。
+question: プレイヤーが操作を覚える前から「こう動かせば、こうなる」と感じるには何が必要？
+goals:
+  - 現実の動作をゲーム操作へ移すとき、何を残し何を省くか説明できる
+  - 『Wii Sports』の入口・継続・離脱を、操作と市場の根拠から分けて分析できる
+  - スワイプの向き・強さ・予告の量を変え、操作の手応えを比較できる
+video:
+  id: zqaPFAZS1K8
+  title: Wii Sports Trailer
+  caption: 2006-11-16公開の紹介映像。5競技の動きが、画面上の結果へどうつながるかを見る。開発者の意図を示す一次資料ではなく、操作の読み取り用。
+demo:
+  src: /demos/day021.html
+  title: スワイプで投球、狙いを合わせろ
+  height: 900
+sources:
+  - title: "任天堂「社長が訊く Wii プロジェクト Vol.4 Wii Sports編」"
+    url: "https://www.nintendo.co.jp/wii/topics/interview/vol4/index.html"
+    note: Wiiリモコン試作からの開発経緯、振り方への反応、初心者向けと深さの両立、Wii伝言板との連動を語る開発者インタビュー（2026-11-03確認）。
+  - title: "任天堂「Wii Sports」公式製品情報"
+    url: "https://www.nintendo.co.jp/wii/rspj/index.html"
+    note: 日本での発売日2006-12-02、希望小売価格4,571円（税別）、1〜4人対応（2026-11-03確認）。
+  - title: "任天堂 IR：Wiiソフト販売本数"
+    url: "https://www.nintendo.co.jp/ir/en/sale/software/wii.html"
+    note: 2016-09-30時点のWii Sports累計82.79百万本。全世界合計で本体同梱分を含むと明記。
+  - title: "任天堂：Wii発売に関するお知らせ"
+    url: "https://www.nintendo.co.jp/corporate/release/2006/060914.html"
+    note: 2006-09-14公開。日本のWii発売日2006-12-02、メーカー希望小売価格25,000円（税込）を告知（2026-11-03確認）。
+  - title: "Nintendo of America発表の保存版：Wii launch details"
+    url: "https://www.nintendoworldreport.com/pr/12050/official-wii-launch-details"
+    note: 2006-09-14発表。米国ではWiiを249.99ドルで発売し、Wii SportsとWiiリモコンを同梱すると告知。
+  - title: "Nintendo Life：米国・日本のWii発売詳細"
+    url: "https://www.nintendolife.com/news/2006/09/us_and_japanese_wii_launch_details"
+    note: 2006-09-14公開。米国は本体同梱、日本ではWii Sportsを4,800円で別売りと報道（価格表記・為替は当時の報道）。
+  - title: "Metacritic：Wii Sports"
+    url: "https://www.metacritic.com/game/wii-sports/"
+    note: 批評家76点/51件、ユーザー8.1点/723評価。閲覧ページの表示値（2026-11-03確認、集計は変動）。
+  - title: "GameSpot：Wii Sports Review"
+    url: "https://www.gamespot.com/reviews/wii-sports-review/1900-6162054/"
+    note: Ryan Davis、2006-11-19公開、7.8点。簡単な身振りと家族・友人で遊ぶ手軽さを評価し、競技ごとの深さや一部操作の粗さにも言及。
+  - title: "Nintendo Life：Wii Sports Review"
+    url: "https://www.nintendolife.com/reviews/2006/11/wii_sports_wii"
+    note: Jason Joo、2006-11-24公開、8/10。動作と実競技の対応、非ゲーマーへの入りやすさを評価。野球の単純さ、ボクシングの粗さ、設定の少なさも指摘。
+  - title: "Metacritic：ユーザーレビュー"
+    url: "https://www.metacritic.com/game/wii-sports/user-reviews/"
+    note: 表示例2件を選定。7/10（2025-08-14）は種目とトレーニングを評価しつつ後続作との比較で簡素さに言及、4/10（2021-03-27）は同梱の広がりを認めつつ操作精度・反復を批判。全723評価の代表標本ではない（2026-11-03確認）。
+  - title: "Wii Sports Trailer"
+    url: "https://www.youtube.com/watch?v=zqaPFAZS1K8"
+    note: 2006-11-16公開。競技の動作と画面上の反応を確かめるための映像。公開者を一次資料とは扱わない。
+sources_note: "開発者の説明、公式発売・販売情報、批評家評価、少数のユーザーレビュー、独自分析を分けています。82.79百万本には同梱分が含まれ、単独購入数ではありません。"
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：動作を「意味の分かる入力」にする</h2>
+  <p>プレイヤーが操作を覚えなくても動けるのは、入力と結果の関係を予想しやすいときです。テニスラケットを振る、ボールを投げるなど、現実で知っている動きを入力に使うと、説明を読む前から「こうすれば返球できそう」と考えられます。</p>
+  <p>ただし、現実の動きをそのまま再現すれば遊びやすくなるわけではありません。動作の中で「何をしたいか」が伝わる部分を残し、複雑な移動や細かな技術は自動化・省略して、入力後に分かりやすい結果を返す必要があります。</p>
+
+  <ol class="flow mt-m">
+    <li><b>意図</b><span>ボールを打ち返したい</span></li>
+    <li><b>身体の動き</b><span>ラケットのように振る</span></li>
+    <li><b>画面の反応</b><span>球の速さ・方向が変わる</span></li>
+  </ol>
+
+  <h3 class="h-sub">設計時に確かめる三つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">動作の意味が共有されているか</p><p class="list__text">何をしたい操作か、プレイヤーが遊ぶ前から想像できるか。振る、押す、引くなど、既知の動作を候補にする。</p></div></div>
+    <div class="list__row"><span class="num-box">B</span><div><p class="list__title">動作の差を何に反映するか</p><p class="list__text">方向・速さ・タイミングのうち、どれが結果を変えるのか決める。動かし方を変えても結果が同じだと、自分の操作という手応えが薄れる。</p></div></div>
+    <div class="list__row"><span class="num-box">C</span><div><p class="list__title">操作の誤差をどこまで許すか</p><p class="list__text">最初の成功を支える幅と、練習で上達できる幅を分ける。厳しすぎる判定は不公平に感じられ、広すぎる判定は上達の違いを隠す。</p></div></div>
+  </div>
+  <p class="note mt-s">この考え方を使って『Wii Sports』を見ます。注目するのは「本当に競技を再現したか」ではなく、身振りを入力にしたことで、誰が何を理解し、どこで物足りなくなるかです。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：身振りが、競技の入口と上達の手掛かりになる</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>米国2006年11月19日、日本2006年12月2日（Wii）</dd></div>
+    <div><dt>開発・販売</dt><dd>Nintendo EAD／任天堂</dd></div>
+    <div><dt>内容</dt><dd>テニス・野球・ボウリング・ゴルフ・ボクシングの5競技</dd></div>
+  </dl>
+  {% include video.html %}
+
+  <figure class="panel mt-m" aria-label="身体動作から結果までの因果">
+    <p class="panel__label">振る → 画面が返す → 次の動きを変える</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>プレイヤーの動作</th><th>ゲーム内の変化</th><th>分かること</th><th>次の判断</th></tr></thead>
+        <tbody><tr><td>腕を振り、手首を返す</td><td>球の速さ・回転・方向が変わる</td><td>今の振り方が結果に影響した</td><td>次は強さや角度を調整する</td></tr></tbody>
+      </table>
+    </div>
+    <figcaption class="note mt-s">独自に整理した因果です。対応が見えると、プレイヤーは説明書より先に試行錯誤を始められます。</figcaption>
+  </figure>
+
+  <h3 class="h-sub">具体例：ボウリングの一投</h3>
+  <p>Wii Sportsのボウリングでは、ボールを構えて腕を後ろへ引き、前へ振ってリリースします。立ち位置や角度を決めたうえで手首を返すと、球筋に回転が加わり、ピンの倒れ方を見て次の投球を考えられます。</p>
+  <p>この一投は、ボタンを押して数値を選ぶ操作に比べ、プレイヤーの動作とボールの進行が同じ画面内で続きます。球が曲がる、ピンが倒れる、音が鳴るという結果が返るので、成功は身体で作った感覚として残り、失敗も「今の角度が違ったか」と次の仮説になります。</p>
+
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>5競技を一つのシミュレーションとして深く再現するのではなく、それぞれの「一番分かりやすい動作」を取り出したスポーツ・パックです。テニスはラケットを振る、野球は投げる・打つ、ボウリングは腕を振るという対応が、リモコンの使い方を競技ごとに説明します。</p>
+  <p>開発者インタビューによると、Wii Sportsはリモコンの開発に合わせた社内試作から始まりました。テニス担当者は、振り方やひねり方の違いを複数のボール反応に結びつけ、プレイヤーが試しながら上達できる幅を意識したと語っています（任天堂「社長が訊く」（公開日表示なし、2026-11-03確認））。</p>
+  <p>一般的なスポーツゲームが選手の移動・技・戦術を入力するのに対し、本作では多くの移動をAIに任せ、プレイヤーが「打つ・投げる」動作へ集中します。競技全体の操作を省いた分、腕を振って結果を起こす感覚と、隣の人の動作を見て笑う場面が中心になります。</p>
+
+  <h3 class="h-sub">始めたくなる仕組み</h3>
+  <p>米国ではWii本体の249.99ドルにWii Sportsとリモコンが含まれ、買ったその日に5競技を試せました。日本ではWii Sportsは別売りで4,571円（税別）だったため、「同梱だから触る」入口と「ソフトを選んで買う」入口は市場によって異なります。</p>
+  <p>見慣れたスポーツの動作は、コントローラー経験が少ない人にも遊び方を想像させます。実際の動きをまねると画面の人物が反応するため、「まず試してみる」までの説明や学習の負担が小さくなります。</p>
+
+  <h3 class="h-sub">続けたくなる仕組み</h3>
+  <p>一投・一打ごとに球筋や得点がすぐ返り、上手くいった時は同じ動きをもう一度試せます。トレーニングの課題、競技ごとの熟練度、1日1回のフィットネステストは、対戦以外にも練習・記録更新という次の目標を作ります。</p>
+  <p>開発者は、プレイ結果をWii伝言板のカレンダーへ残し、本体を翌日も起動するきっかけにしたと説明しています。これは設計意図の資料であり、実際の再訪率や継続率がどれほど上がったかを示す数値は公表されていません。</p>
+
+  <h3 class="h-sub">離れる理由</h3>
+  <p>身振りの単純さは入りやすさを生む一方、動作の反映が予想とずれると「自分の動きが正しく読まれない」と感じる可能性があります。期待する人が細かな守備・走塁・戦術を操作したい場合、AIに任せた部分が自分の判断を奪う制約になります。</p>
+  <p>GameSpotは手軽さと対戦の楽しさを評価しつつ、競技ごとの深さやゴルフの感度に不満を挙げました（2006-11-19）。Nintendo Lifeも、テニスは移動をAIに任せるため不満が残る場合があり、野球は単純すぎ、ボクシングは粗いと指摘しています（2006-11-24）。誰にでも合う操作ではなく、何を省いたかが評価の分かれ目です。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：82.79百万本を、そのまま人気の数とは読まない</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>Metacriticは批評家76点/51件。内訳は好評31件・賛否混合20件です（2026-11-03確認）。</span></li>
+        <li><span>GameSpotは「誰でも入りやすい」簡単な操作と、友人・家族での短い対戦を評価（7.8点）。Nintendo Lifeも身振りと実競技の対応、初心者の入りやすさを評価しました（8/10）。</span></li>
+        <li><span>Metacriticのユーザー表示は8.1点/723評価。選んだ投稿例では、後続作と比べても練習モードを楽しめたという声がありました（確認時の表示値、変動します）。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判された点</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>批評家は競技の種類や単純な操作を評価しつつ、試合の深さ、見た目、種目ごとの粗さを指摘しています。Metacriticの賛否混合20件も、魅力と不足が同居した評価の分かれ方を示します。</span></li>
+        <li><span>ユーザーレビューの選択例2件では、後続作を知ると初代が「技術デモ」のように感じるという声と、動きの不正確さ・反復への不満がありました。723評価全体の傾向や比率を代表する標本ではありません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">独自の読み解き</p>
+    <p class="panel__title">評価の中心は「本物の競技を再現したか」だけではない。動作が通じる驚きと、周囲の人とすぐ対戦できる価値が、深さや精度の不足と同じ作品の中に並んでいます。</p>
+  </div>
+
+  <h3 class="h-sub">なぜ選ばれた？</h3>
+  <dl class="facts">
+    <div><dt>販売指標</dt><dd>任天堂IRは2016-09-30時点の世界累計を82.79百万本と公表しています。この数字にはWii本体との同梱分が含まれます。ゲーム単体の購入本数ではありません。</dd></div>
+    <div><dt>価格と地域</dt><dd>米国は本体249.99ドルにソフト・リモコンを同梱、日本では本体25,000円（税込）とソフト4,571円（税別）を別々に販売。普及の入口が国ごとに違いました。</dd></div>
+    <div><dt>発売時期・対象</dt><dd>米国のWii発売日と同じ2006-11-19、日本も本体発売日の2006-12-02に発売。任天堂の発表は、ゲーム経験者だけでなく初めて遊ぶ人も対象に含め、動作だけで遊べる点を訴求しました。</dd></div>
+    <div><dt>競合・ブランド</dt><dd>競合は同時期の家庭用ゲーム機や既存のスポーツゲームです。任天堂の告知とレビューから読み取れる差別化は、細かな競技操作より「身振りで遊びを始められること」を前に出した点です。ソフト同梱はその新しい操作を購入後すぐ試させる販促になった、というのが教材側の分析です。</dd></div>
+  </dl>
+  <p class="note mt-s">82.79百万本は同梱数込みの2016年時点の公式値で、個別購入需要や現在の正確な累計を表しません。販売成果には、本体普及、同梱・価格、発売時期、操作の新しさ、友人や家族へ見せやすい遊び方が重なっていますが、それぞれの寄与を分ける販売データは確認できません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：スワイプで投球、狙いを合わせろ</h2>
+  <p>レーンのボールから上へスワイプして投げます。横方向が狙い、スワイプの長さが力に変わるので、5投の合計を競いながら、反応の幅と狙いの案内を変えてみましょう。</p>
+  <div class="chips mt-s"><span class="chip">スワイプの感度</span><span class="chip">判定の許容幅</span><span class="chip">狙いの案内</span></div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">スワイプの向きと長さは、画面の結果に予想どおり反映されましたか？ 案内を減らしたとき、失敗の理由を自分の動作から推測できましたか？</p>
+  </div>
+  <p class="note mt-s">これは動作と結果の対応を学ぶオリジナルデモです。Wii Sportsの映像・人物・ルール・データ・コードは使用していません。</p>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題：操作の幅と、上達の余地を比べる</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">判定の許容幅を変える</p>
+      <p class="mt-s">最初に「許容幅を狭めると、操作が上手い人と初めての人の差が見えやすくなる」と予想します。合計ピン数だけでなく、失敗に納得できたか、狙いを修正できたかも記録してください。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">動作と結果の対応を自分の競技へ移す</p>
+      <p class="mt-s">例えば「手を振る高さで球種を変える」ルールを足し、見た目の分かりやすさとプレイヤーが覚える負担を比べます。操作を増やす案と、今の操作の反応差を細かくする案では、どちらが上達の快感を残せるでしょうか。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">あなたの企画で、現実の動きを操作に使う案と、ボタンに置き換える案を比べると、誰にどんな利点・負担が出ますか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">一回の操作から返す結果を、音・画面・振動のどれで強めますか？ 反応をすぐ返す案と、少し待たせて期待を作る案の違いも考えてみましょう。</span></div>
+  </div>
+</section>

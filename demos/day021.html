@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>スワイプで投球、狙いを合わせろ｜Game Design Lab DAY21</title>
+<style>
+:root{color-scheme:light;--ink:#16161a;--bg:#f4f3ee;--paper:#fff;--accent:#5b3df5;--muted:#62626b;--line:#d7d5ce;--good:#26784f;--bad:#ae433b}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+main{width:min(100%,720px);margin:auto;padding:clamp(12px,3vw,22px)}
+.eyebrow{font-size:.75rem;font-weight:850;letter-spacing:.12em;color:var(--accent);margin:0 0 4px}
+h1{font-size:clamp(1.35rem,5vw,1.9rem);line-height:1.25;margin:0 0 7px}
+h2{font-size:1.05rem;margin:0 0 8px}
+p{margin:5px 0}
+.intro{color:#42424b;margin-bottom:12px}
+.download{font:inherit;font-weight:750;min-height:42px;padding:8px 12px;background:#fff;color:var(--ink);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);touch-action:manipulation}
+.panel{background:var(--paper);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:clamp(12px,3vw,18px);margin:12px 0}
+.settings{display:grid;grid-template-columns:1fr;gap:8px}
+.control{padding:8px;border:1px solid var(--line);background:#fff}
+label{font-weight:750;display:flex;justify-content:space-between;gap:8px}
+output{color:var(--accent);font-variant-numeric:tabular-nums}
+select,input,button{font:inherit}
+input[type=range]{display:block;width:100%;min-height:32px;accent-color:var(--accent);margin:5px 0 0}
+select{width:100%;min-height:42px;padding:7px;border:1px solid var(--ink);border-radius:2px;background:#fff;color:var(--ink)}
+.help,.subtle{font-size:.86rem;color:var(--muted)}
+button{font-weight:750;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:2px;min-height:46px;padding:8px 11px;box-shadow:2px 2px 0 var(--ink);touch-action:manipulation;cursor:pointer}
+button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:2px 2px 0 #30208b}
+button:disabled{opacity:.48;cursor:not-allowed;box-shadow:none;transform:none}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #aaa0ff;outline-offset:2px}
+.status{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;font-size:.92rem;font-weight:800}
+.stat{border:1px solid var(--line);background:#faf9f6;padding:5px 8px}
+.targetHint{min-height:42px;padding:8px 10px;margin:8px 0;background:#f0edff;border-left:4px solid var(--accent);font-weight:750}
+.lane{position:relative;height:230px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;border:1px solid var(--line);background:linear-gradient(90deg,#eeeae0 0 10%,#fbfaf7 10% 90%,#eeeae0 90%);cursor:crosshair;isolation:isolate}
+.lane:before,.lane:after{content:"";position:absolute;top:0;bottom:0;width:1px;background:#e2ded3;z-index:-1}
+.lane:before{left:33.33%}.lane:after{left:66.66%}
+.foul{position:absolute;left:0;right:0;top:18%;border-top:2px dashed #c6c2b7}
+.foul span{position:absolute;top:3px;left:8px;font-size:.68rem;color:var(--muted)}
+.target-mark{position:absolute;left:50%;top:24%;height:37%;border-left:4px dotted var(--accent);opacity:.18;transform:translateX(-50%);transition:left .2s,opacity .2s}
+.target-mark.clear{opacity:.9}
+.pins{position:absolute;left:50%;top:22%;transform:translateX(-50%);font-size:clamp(1.4rem,6vw,2rem);letter-spacing:.12em;white-space:nowrap;transition:left .2s}
+.ball{position:absolute;left:50%;bottom:10%;width:36px;height:36px;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle at 34% 28%,#777 0 8%,#282833 22%,#090910 72%);border:2px solid #fff;box-shadow:0 2px 4px #0005;transition:left .45s cubic-bezier(.2,.7,.4,1),bottom .45s}
+.ball:after{content:"";position:absolute;inset:9px 10px 12px 12px;border:1px dotted #ddd;border-radius:50%}
+.lane.dragging .ball{transition:none}
+.ball.throwing{bottom:24%}
+.lane-controls{display:grid;grid-template-columns:1fr;gap:8px;margin-top:9px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.feedback{min-height:44px;padding:9px 11px;border-left:4px solid var(--accent);background:#f0edff;margin-top:8px}
+.feedback.good{border-color:var(--good);background:#eaf6ef}
+.feedback.bad{border-color:var(--bad);background:#fff0ed}
+.results{border:2px solid var(--ink);padding:12px;background:#fff;margin-top:10px}
+.results h2{font-size:1.2rem}
+.result-detail{font-variant-numeric:tabular-nums}
+.previous{border-top:1px solid var(--line);margin-top:9px;padding-top:8px;color:var(--muted);font-size:.9rem}
+.history{padding-left:1.3rem;margin:6px 0 0;font-size:.85rem}
+.history li{margin:2px 0}
+[hidden]{display:none!important}
+@media(min-width:540px){.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.lane-controls{grid-template-columns:1fr 1fr}.lane{height:250px}}
+@media(max-width:360px){body{font-size:15px}.panel{padding:11px}.lane{height:205px}.actions{gap:6px}.actions button{padding:8px 5px;font-size:.9rem}}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">GAME DESIGN LAB · DAY 21</p>
+  <h1>スワイプで投球、狙いを合わせろ</h1>
+  <p class="intro">5投で15ピン以上を倒せばクリア。レーン中央のボールから指を置き、横の狙いと上へ払う強さを決めよう。</p>
+  <button id="download" class="download" type="button">デモHTMLをダウンロード</button>
+
+  <section class="panel" aria-labelledby="settingsTitle">
+    <h2 id="settingsTitle">実験設定</h2>
+    <div class="settings">
+      <div class="control"><label for="sensitivity">スワイプ感度 <output><span id="sensitivityOut">1.0</span>倍</output></label><input id="sensitivity" type="range" min="0.6" max="1.4" step="0.1" value="1"></div>
+      <div class="control"><label for="tolerance">判定の許容幅 <output><span id="toleranceOut">0.36</span></output></label><input id="tolerance" type="range" min="0.20" max="0.50" step="0.02" value="0.36"></div>
+      <div class="control"><label for="guidance">狙いの案内</label><select id="guidance"><option value="clear">目標位置と必要な強さを表示</option><option value="subtle">ピンの位置だけ表示</option></select></div>
+      <div class="control"><strong>比べるポイント</strong><p class="help">感度は同じ指の動きをどれだけ狙いへ反映するか、許容幅は成功判定の広さを変えます。</p></div>
+    </div>
+    <p class="help">設定は次のゲームから反映されます。前の結果は下に残ります。</p>
+    <button id="start" class="primary" type="button">設定を適用して開始</button>
+  </section>
+
+  <section class="panel" aria-live="polite">
+    <div class="status">
+      <span class="stat">投球 <b id="turn">0</b> / 5</span>
+      <span class="stat">倒したピン <b id="score">0</b> / 25</span>
+      <span class="stat">目標 15ピン</span>
+    </div>
+    <p id="targetHint" class="targetHint">ゲームを始めると狙いのヒントが表示されます。</p>
+    <div id="lane" class="lane" role="application" aria-label="ボウリングレーン。下部から上へスワイプして狙いと強さを決めます。">
+      <div class="foul"><span>ここより手前から投げる</span></div>
+      <div id="targetMark" class="target-mark" aria-hidden="true"></div>
+      <div id="pins" class="pins" aria-hidden="true">🎳</div>
+      <div id="ball" class="ball" aria-hidden="true"></div>
+    </div>
+    <p id="gestureHint" class="help">開始後、レーンの下半分から上へスワイプ。指を置いた位置が中央から離れるほど狙いが変わります。</p>
+    <div class="lane-controls">
+      <div class="control"><label for="aim">狙い <output><span id="aimOut">中央</span></output></label><input id="aim" type="range" min="-100" max="100" step="1" value="0"><p class="help">タップ操作ではスライダーで狙いを決めます。</p></div>
+      <div class="control"><label for="power">投球の強さ <output><span id="powerOut">60</span>%</output></label><input id="power" type="range" min="35" max="90" step="1" value="60"><p class="help">強さも結果へ反映されます。</p></div>
+    </div>
+    <div class="actions">
+      <button id="throw" type="button" disabled>選んだ狙いで投げる</button>
+      <button id="resetAim" type="button" disabled>狙いを中央へ戻す</button>
+    </div>
+    <p id="feedback" class="feedback" role="status">「設定を適用して開始」を押して1投目を始めよう。</p>
+    <ol id="history" class="history" aria-label="投球記録"></ol>
+    <div id="results" class="results" hidden>
+      <h2 id="resultTitle"></h2>
+      <p id="resultDetail" class="result-detail"></p>
+      <button id="replay" class="primary" type="button">同じ設定で再プレイ</button>
+      <p id="previous" class="previous">前回の結果：まだありません</p>
+    </div>
+  </section>
+  <p class="subtle">このゲームは動作と反応の関係を試すためのオリジナル作品です。実際の笑いや習熟度を測るものではありません。</p>
+</main>
+
+<script>
+(()=>{
+'use strict';
+/* 改造ポイント1：感度・判定幅は、動作が結果へ伝わる度合いを調整します。 */
+const $=id=>document.getElementById(id);
+const RULES={goal:15,turns:5,aimSensitivity:1,tolerance:0.36};
+/* 改造ポイント2：各投球の狙いと必要な強さを変えると、課題の並び方が変わります。 */
+const TARGETS=[{aim:0,power:0.60},{aim:-0.28,power:0.68},{aim:0.22,power:0.64},{aim:-0.34,power:0.76},{aim:0.12,power:0.56}];
+const e={sensitivity:$('sensitivity'),tolerance:$('tolerance'),guidance:$('guidance'),start:$('start'),turn:$('turn'),score:$('score'),hint:$('targetHint'),lane:$('lane'),mark:$('targetMark'),pins:$('pins'),aim:$('aim'),power:$('power'),aimOut:$('aimOut'),powerOut:$('powerOut'),throw:$('throw'),reset:$('resetAim'),feedback:$('feedback'),history:$('history'),results:$('results'),resultTitle:$('resultTitle'),resultDetail:$('resultDetail'),replay:$('replay'),previous:$('previous'),download:$('download'),ball:$('ball')};
+let running=false,busy=false,turn=0,score=0,active={...RULES,guidance:'clear'},lastRun=null,drag=null;
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function currentAim(){return clamp((Number(e.aim.value)/100)*active.aimSensitivity,-1,1)}
+function setAimLabel(){const v=Number(e.aim.value);e.aimOut.textContent=Math.abs(v)<8?'中央':v<0?'左寄り '+Math.abs(v)+'%':'右寄り '+v+'%';}
+function setPowerLabel(){e.powerOut.textContent=e.power.value;}
+function setSettingsLocked(locked){e.sensitivity.disabled=locked;e.tolerance.disabled=locked;e.guidance.disabled=locked;e.start.disabled=locked;e.start.textContent=locked?'プレイ中':'設定を適用して開始';}
+function drawTarget(){
+ const target=TARGETS[turn];
+ e.turn.textContent=turn;e.score.textContent=score;
+ if(!running||!target){e.hint.textContent='5投で15ピン以上を目指す。';e.throw.disabled=true;e.reset.disabled=true;return;}
+ const left=target.aim<-.12?'左':target.aim>.12?'右':'中央';
+ const power=target.power<.61?'やや弱く':target.power>.70?'強め':'中くらい';
+ e.mark.style.left=(50+target.aim*32)+'%';
+ e.mark.classList.toggle('clear',active.guidance==='clear');
+ e.pins.style.left=(50+target.aim*32)+'%';
+ e.hint.textContent=active.guidance==='clear'
+  ? '目標：'+left+'寄り ／ 力：'+power+'（5投中 '+(turn+1)+'投目）'
+  : (left==='中央'?'ピンはレーン中央':('ピンはレーン'+left+'寄り'))+'。球筋を見て、次の投げ方を考えよう（'+(turn+1)+'投目）';
+ e.throw.disabled=!running||busy;e.reset.disabled=!running||busy;
+}
+function startGame(useActive=false){
+ if(useActive){e.sensitivity.value=active.aimSensitivity;e.tolerance.value=active.tolerance;e.guidance.value=active.guidance;}
+ else{active={aimSensitivity:Number(e.sensitivity.value),tolerance:Number(e.tolerance.value),guidance:e.guidance.value};}
+ score=0;turn=0;running=true;busy=false;e.results.hidden=true;e.history.replaceChildren();e.ball.style.left='50%';e.ball.style.bottom='10%';e.ball.classList.remove('throwing');
+ e.feedback.className='feedback';e.feedback.textContent='レーンを見て狙いを決め、1投ずつ結果を確かめよう。';
+ setSettingsLocked(true);drawTarget();e.aim.value='0';e.power.value='60';setAimLabel();setPowerLabel();
+}
+function endGame(){
+ running=false;busy=false;setSettingsLocked(false);drawTarget();e.results.hidden=false;
+ const win=score>=active.goal;e.resultTitle.textContent=win?'クリア！狙いと力を調整できた。':'ゲーム終了。次は感度か許容幅を変えてみよう。';
+ e.resultDetail.textContent='合計 '+score+' / 25 ピン（目標 '+active.goal+'）。'+(win?'動作の差が得点に反映されました。':'失敗した投球を、狙い・強さ・反応の対応で見直そう。');
+ const c='感度 '+active.aimSensitivity.toFixed(1)+'倍／許容幅 '+active.tolerance.toFixed(2)+'／案内 '+(active.guidance==='clear'?'明確':'控えめ');
+ e.previous.textContent=lastRun?'前回：'+lastRun.score+'/25（'+lastRun.config+'）':'前回の結果：まだありません';
+ lastRun={score,config:c};
+}
+function pinCount(error,power){
+ if(power<0.35||power>0.91)return 0;
+ const t=active.tolerance;
+ if(error<t*0.42)return 5;
+ if(error<t*0.70)return 4;
+ if(error<t)return 3;
+ if(error<t*1.35)return 2;
+ if(error<t*1.8)return 1;
+ return 0;
+}
+function throwBall(rawAim,power){
+ if(!running||busy)return;
+ busy=true;e.throw.disabled=true;e.reset.disabled=true;
+ const target=TARGETS[turn],aim=clamp(rawAim*active.aimSensitivity,-1,1);
+ const error=Math.abs(aim-target.aim)+Math.abs(power-target.power)*0.58;
+ const pins=pinCount(error,power);
+ e.ball.style.left=(50+aim*32)+'%';e.ball.style.bottom='25%';e.ball.classList.add('throwing');
+ e.feedback.className='feedback';e.feedback.textContent='ボールが進んでいる……';
+ setTimeout(()=>{
+  score+=pins;turn++;busy=false;e.ball.classList.remove('throwing');
+  e.feedback.className='feedback '+(pins>=3?'good':pins===0?'bad':'');
+  e.feedback.textContent=pins>=4?'よく倒れた！同じ動きを再現できる？':pins>=2?'一部が倒れた。狙いか強さを少し調整しよう。':pins===1?'端のピンだけ。動作の差を見て次を試そう。':'ピンに届かない。強さと狙いを見直そう。';
+  const li=document.createElement('li');li.textContent=turn+'投目：'+pins+'本（狙い '+Math.round(aim*100)+'%、強さ '+Math.round(power*100)+'%）';e.history.prepend(li);
+  e.pins.textContent=pins===5?'🎳 5本！':pins===0?'🎳':'🎳 '+pins+'本';
+  e.score.textContent=score;e.turn.textContent=turn;
+  if(turn>=active.turns){endGame();return;}
+  e.ball.style.left='50%';e.ball.style.bottom='10%';drawTarget();
+ },380);
+}
+e.sensitivity.addEventListener('input',()=>{$('sensitivityOut').textContent=Number(e.sensitivity.value).toFixed(1);});
+e.tolerance.addEventListener('input',()=>{$('toleranceOut').textContent=Number(e.tolerance.value).toFixed(2);});
+e.aim.addEventListener('input',setAimLabel);e.power.addEventListener('input',setPowerLabel);
+e.start.addEventListener('click',()=>startGame(false));
+e.throw.addEventListener('click',()=>throwBall(Number(e.aim.value)/100,Number(e.power.value)/100));
+e.reset.addEventListener('click',()=>{e.aim.value='0';setAimLabel();});
+e.replay.addEventListener('click',()=>startGame(true));
+e.lane.addEventListener('pointerdown',ev=>{
+ if(!running||busy)return;const r=e.lane.getBoundingClientRect(),y=ev.clientY-r.top;
+ if(y<r.height*.55)return;
+ drag={x:ev.clientX,y:ev.clientY};e.lane.classList.add('dragging');e.lane.setPointerCapture(ev.pointerId);
+});
+e.lane.addEventListener('pointerup',ev=>{
+ if(!drag)return;const r=e.lane.getBoundingClientRect(),dx=ev.clientX-drag.x,dy=drag.y-ev.clientY;
+ const rawAim=clamp(dx/(r.width*.38),-1,1),power=clamp(dy/(r.height*.68),.35,.90);
+ drag=null;e.lane.classList.remove('dragging');e.aim.value=String(Math.round(rawAim*100));e.power.value=String(Math.round(power*100));setAimLabel();setPowerLabel();throwBall(rawAim,power);
+});
+e.lane.addEventListener('pointercancel',()=>{drag=null;e.lane.classList.remove('dragging');});
+e.download.addEventListener('click',()=>{
+ const html='<!doctype html>\n'+document.documentElement.outerHTML;
+ const blob=new Blob([html],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');a.href=url;a.download='GameDesignLab_Day021_2026-11-03.html';document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+setAimLabel();setPowerLabel();drawTarget();
+})();
+</script>
+</body>
+</html>
