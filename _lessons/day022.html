@@ -1,0 +1,208 @@
+---
+day: 22
+date: 2026-11-05
+title: プレイヤーが自分で目標を作るには？｜『Minecraft』の余白と足場
+theme: プレイヤーが自分で目標を作るサンドボックス設計
+game: Minecraft
+level: 初級
+minutes: 10
+summary: 目標が決まっていないゲームで、最初の行動と次の目的を生む設計を学ぶ。
+question: 「何をすればいいか分からない」を、どんな目標と行動の足場で防げる？
+goals:
+  - 自分で決める目標と、目標を支えるルールを区別できる
+  - Minecraftの最初の行動が次の行動を生む流れを説明できる
+  - 自作ゲームに「選べる目標」と「最初の一歩」を設計できる
+video:
+  id: MmB9b5njVbA
+  title: Vareide「Official Minecraft Trailer」（ファン制作）
+  caption: 2011年12月6日公開のユーザー制作動画。公式映像ではありません。建築や世界の見せ方が、遊ぶ前の期待をどう作るかに注目。
+demo:
+  src: /demos/day022.html
+  title: 小さな島の目標を、自分で選ぼう
+  height: 1180
+sources:
+  - title: Minecraft公式「About Minecraft」
+    url: https://www.minecraft.net/en-us/about-minecraft
+    note: サンドボックス、公式の終点がないこと、Ender Dragonを終点とするプレイヤー（2026-11-05確認）
+  - title: Minecraft公式「How to play Minecraft」
+    url: https://www.minecraft.net/en-us/article/how-minecraft
+    note: 木を切る、道具を作る、夜に備えて隠れ場所を作る基本行動（2026-11-05確認）
+  - title: Minecraft公式「Differences Between Creative & Survival」
+    url: https://help.minecraft.net/hc/en-us/articles/360058743992-Minecraft-Differences-Between-Creative-Survival
+    note: クリエイティブとサバイバルのルール差（2026-11-05確認）
+  - title: Wired「Changing the Game」
+    url: https://www.wired.com/story/changing-the-game/
+    note: 2013年の開発史・Notch発言・YouTubeと口コミの報道（2013年公開、2026-11-05確認）
+  - title: GameSpot「Minecraft Review」
+    url: https://www.gamespot.com/reviews/minecraft-review/1900-6346734/
+    note: Nathan MeunierによるPC版批評（2011-11-29公開、2026-11-05確認）
+  - title: The Guardian「Minecraft PC/Mac review」
+    url: https://www.theguardian.com/technology/gamesblog/2011/dec/09/minecraft-pc-mac-review
+    note: 説明・ミッションが少ない点とプレイヤー主導の遊び（2011-12-09公開、2026-11-05確認）
+  - title: Metacritic「Minecraft」
+    url: https://www.metacritic.com/game/minecraft/
+    note: PC版メタスコア93（批評家33件）、ユーザースコア8.4（評価11,645件）の表示を確認。変動する集計値（2026-11-05確認）
+  - title: Metacritic「Minecraft User Reviews」
+    url: https://www.metacritic.com/game/minecraft/user-reviews/
+    note: 表示されるユーザー投稿2,397件。2026-08-16の10点レビューと2026-07-29の4点レビューを各1件参照（2026-11-05確認）
+  - title: "Xbox Wire「Minecraft: Xbox 360 Edition Breaks Digital Sales Records」"
+    url: https://news.xbox.com/en-us/2012/05/10/minecraft-xbox-360-edition-breaks-digital-sales-records/
+    note: Xbox 360版は発売後1週間未満で100万本と2012-05-14に発表。PC等を含む累計ではない
+  - title: "Xbox Wire「Minecraft: Xbox 360 Edition hits 12 million」"
+    url: https://news.xbox.com/en-us/2014/04/04/games-minecraft-12m/
+    note: Xbox 360版が2014-04-04時点で1,200万本と発表。開発者Daniel Kaplanの当時の発言
+  - title: "Minecraft公式「Minecraft Live 2023: The Recap」"
+    url: https://www.minecraft.net/zh-hant/article/minecraft-live-2023--the-recap-
+    note: Minecraft Live 2023で累計3億本超と発表（2023年10月、対象範囲は発表表現に準拠）
+  - title: Xbox Japan「Minecraft: Java & Bedrock Edition for PC」
+    url: https://www.xbox.com/ja-JP/games/store/minecraft-java-bedrock-edition-for-pc/9NXP44L49SHJ/0010
+    note: 日本PC向け価格4,405円〜の表示を確認（2026-11-05、価格は変動し得る）
+sources_note: 事実・当時の開発者発言・批評・少数レビュー例・独自分析を分けています。レビュー集計は確認時点の表示で、ユーザー例2件は全体を代表しません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：目標を決める余白と、動き出す足場</h2>
+  <p>プレイヤーが自分で目標を作る設計では、ゲーム側が「これを達成せよ」と一つに決めません。ただし、目標を自由にするだけでは、最初の一歩が見つからず止まることがあります。</p>
+  <p>そこで設計者は、何を目指すかはプレイヤーに委ねながら、「試せる行動」「行動で変わるもの」「すぐ分かる結果」を用意します。自由は、選択肢の数よりも、行動から次の目標が生まれる流れで支えられます。</p>
+
+  <ol class="flow mt-m">
+    <li><b>目標</b><span>プレイヤーが「橋を作る」など目的を選ぶ</span></li>
+    <li><b>行動</b><span>素材を集め、置き、形を変える</span></li>
+    <li><b>結果</b><span>世界に成果が残り、次の案が見える</span></li>
+  </ol>
+
+  <h3 class="h-sub">企画で使う3つの確認</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">一手目の足場</p><p class="list__text">初回プレイで、説明を読まなくても試せる行動はあるか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">目標の選択</p><p class="list__text">行動後に、プレイヤー自身が選べる小さな目的が見えるか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">手応えの可視化</p><p class="list__text">行動の成果が世界や資源に残り、次の一手の材料になるか。</p></div></div>
+  </div>
+  <p>この見方を使い、次は「自由な世界」と「最初の目標」が同居するMinecraftを、プレイヤーの時間軸に沿って見ます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Minecraftは最初の目標をどう生む？</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>PC版は2009年に初版、正式版は2011-11-18（PC）</dd></div>
+    <div><dt>開発・販売</dt><dd>Mojang Studios／Microsoft</dd></div>
+    <div><dt>ジャンル</dt><dd>サンドボックス、サバイバル、建築</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">行動から次の目標まで</h3>
+  <p>公式の遊び方では、木を壊して木材を得る、作業台や道具を作る、夜に備えて隠れ場所を作る、という流れが紹介されています。どれも大きな物語目標ではありませんが、素材を加工すると「道具を作る」「夜までに家を作る」という近い目標が立ち上がります。</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールが返す変化</th><th>次の判断・感情</th></tr></thead>
+      <tbody>
+        <tr><th>木を壊す</th><td>木材が手に入る。世界の一部が変わる</td><td>何を作るか選べる。自分の手で始めた感覚</td></tr>
+        <tr><th>作業台・道具を作る</th><td>作れる物と採集効率が広がる</td><td>「次は石」「もっと大きな建物」と目標が伸びる</td></tr>
+        <tr><th>夜に備える</th><td>時間と敵が安全確保を促す</td><td>目標のない世界に短期の緊張が生まれる</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>ブロックを壊す操作は素材集めであり、同時に地形の編集です。集めた同じブロックを置き直すと、資源が建築の表現へ変わるため、「集める→形にする→眺める」がプレイヤー自身の計画でつながります。</p>
+  <p>サバイバルでは夜・体力・資源が足場となり、クリエイティブでは素材制約や危険がほぼ外れます。同じ世界の編集を、切迫した計画にも、自由な造形にも使える点が特徴です。Wiredは開発の着想元にInfiniminerやDwarf Fortressを挙げており、Minecraftの独自性は無から生まれた単一メカニクスよりも、ブロック編集・生成世界・生存圧・共有文化の組み合わせにあります。</p>
+
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">公式は「作る・探索する・生き残る」という入口を示します。ゲーム内では木を叩くところから始められ、素材がすぐ道具へ変わるため、最初の行動でサンドボックスの核に触れます。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">採集で作れる物が増え、建築案や探索先が生まれます。友人のワールドや配信・動画で他人の建築を見れば、新しい目標をまねたり共有したりできます。これは同一プレイ内の次の行動を支える仕組みです。</span></div>
+    <div class="list__row"><span class="list__key">戻る</span><span class="list__body">自分の建築計画、友人との約束、サーバーの共同作業、更新要素は後日戻る候補になります。ただし販売本数から個人の継続率や再訪率は分からず、長期継続の実数はここでは確認できません。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">明確なミッションが少ないため、目的を自分で考えることが苦手な人には「何をすればいいか分からない」状態になり得ます。GameSpotはレシピの分かりにくさや案内不足を批判し、自由さと学習の壁が同じ設計から生まれると指摘しました。</span></div>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">余白だけでなく、次の目標を見つける材料まで設計する。</p>
+    <p class="mt-s">Minecraftでは夜が短期目標を与え、素材変換が自分の計画を広げます。デモでは目標・行動数・採集量を変え、「自由度を上げる」と「一手目を支える」を別々に試します。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：面白さ以外に何が選ばれる理由？</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s">
+        <li><span>MetacriticのPC版表示は批評家93点・33件（確認日）。集計は更新される。</span></li>
+        <li><span>GameSpot（2011-11-29）は自由な建築と「もう一つ素材を集める」循環を評価。一方、レシピや説明不足は初心者の壁とした。</span></li>
+        <li><span>Guardian（2011-12-09）は明確なミッションがない点を、プレイヤーが目的を作る自由と難しさの両方として扱う。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの声</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Metacriticユーザー投稿のうち、2026-08-16の1件（10点）は可能性・創造性を高く評価し、慣れるまで時間がかかると述べた。</span></li>
+        <li><span>2026-07-29の別の1件（4点）は反復を批判しつつ、友人と遊ぶ面白さを評価した。</span></li>
+        <li><span>参照したのは表示2,397投稿から選んだ2例。全体の傾向を代表する標本ではない。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">「自由」は創作の入口になる一方、目標・学習を自分で補う負担にもなる。</p>
+  </div>
+
+  <h3 class="h-sub">確認できる成果と市場の条件</h3>
+  <dl class="facts">
+    <div><dt>販売指標</dt><dd>公式はMinecraft Live 2023（2023年10月）で累計3億本超を発表。売上金額や現在の累計とは別の指標。</dd></div>
+    <div><dt>機種別</dt><dd>Xbox WireはXbox 360版の100万本（2012-05-14発表）、1,200万本（2014-04-04発表）を報告。版・時点を限定した数字。</dd></div>
+    <div><dt>価格・機種</dt><dd>日本のPC版Java &amp; Bedrockセットは4,405円〜の表示（2026-11-05確認）。価格・販売条件は変動し得る。</dd></div>
+    <div><dt>対象</dt><dd>ESRB E10+。建築、探索、生存を軸に、一人でも友人とも遊べる設計。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>口コミと配信</strong>　Wired（2013年）は、開発者Notchが人々の会話やオンライン動画が広がりに寄与したと見ていたこと、プレイヤー動画が遊び方の紹介になったことを報道。</span></li>
+    <li><span><strong>販売の入口</strong>　初期はPCの有料開発版から始まり、コミュニティへの継続的な更新と口コミで広がった。後にXbox 360などへ展開し、家庭用機の利用者層にも届いた。</span></li>
+    <li><span><strong>競合と違い</strong>　既存の採掘・建築作品から着想を得つつ、生成世界、昼夜の生存、自由配置、共同制作を結び、プレイヤーの作品そのものが宣伝・遊び方の見本になる形を作った。</span></li>
+    <li><span><strong>独自仮説</strong>　動画共有は建築の完成物を見せるだけでなく、「自分も作れるかもしれない」という購入前の想像を支えた可能性がある。売上の要因別寄与を示す公開データは確認できず、面白さだけで成功を説明することはできない。</span></li>
+  </ul>
+  <p class="note mt-s">販売本数は異なる時点・版の発表を区別しました。ユーザー投稿例は各1件で、継続率・離脱率は未公表のため推測していません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：小さな島の目標を、自分で選ぼう</h2>
+  <p>見張り台・橋・庭から作るものを選び、素材を集めて島に置きます。採集量と使える行動数、夜の有無を変え、同じ目標でも計画がどう変わるか比べてください。</p>
+  <div class="chips mt-s">
+    <span class="chip">目標の種類</span><span class="chip">採集量</span><span class="chip">行動数・夜の圧力</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">目標は選びやすかったか。行動の結果が次の一手を教えてくれたか。</p>
+    <p class="mt-s">同じ設定で再プレイし、前回と違う手順を試すのは同一セッション内の比較です。数分のデモから、実作品の長期継続や翌日の再訪を測ったとは言えません。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">採集量だけを変える</p>
+      <p class="mt-s">2から4、または2から1へ変えて、目標を完成するまでの手数を予想します。結果と、素材集めの選び方が変わったかを記録してください。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">次の目標をルールに加える</p>
+      <p class="mt-s">たとえば「見張り台の後に橋も作る」「葉を置くと採集が増える」を追加します。自由を広げる効果と、何をするか迷わせる負担を比べてください。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで目標を指定する案と、プレイヤーに選んでもらう案は何が違う？一手目の分かりやすさと、遊び方の広がりの長所・短所を比べよう。</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">報酬を増やさずに「次はこれを試したい」を生むには、世界の変化・素材の組合せ・他プレイヤーの作品のどれを足場にする？対象ユーザーと一緒に説明しよう。</span></div>
+  </div>
+</section>

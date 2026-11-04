@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>目標を選んで島をつくる｜Game Design Lab DAY22</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--line:#d8d6cf;--green:#b8d9a1;--wood:#b87942;--stone:#969ca6;--leaf:#78a96b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+main{max-width:720px;margin:auto;padding:16px 16px 22px}.eyebrow{color:var(--purple);font-size:.76rem;font-weight:800;letter-spacing:.09em;margin:0 0 4px}
+h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.25;margin:0 0 7px}.lead{margin:0 0 14px;color:#45454b}
+.panel{background:#fff;border:1px solid var(--line);padding:14px;margin:12px 0}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+label{font-weight:700;font-size:.88rem;display:block;margin-bottom:4px}select,input,button{font:inherit;color:inherit}
+select{width:100%;padding:10px;border:1px solid #aaa;border-radius:3px;background:#fff;min-height:44px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{min-width:0}
+input[type=range]{width:100%;accent-color:var(--purple);min-height:34px}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--purple);vertical-align:middle}
+button{min-height:46px;border:1px solid var(--ink);background:#fff;padding:9px 13px;border-radius:3px;font-weight:750;cursor:pointer;touch-action:manipulation}
+button.primary{background:var(--purple);border-color:var(--purple);color:#fff}button:disabled{opacity:.48;cursor:not-allowed}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #a99bff;outline-offset:2px}
+.status{font-weight:750}.meters{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.meter{background:#f4f3ee;border:1px solid var(--line);padding:4px 8px;font-size:.86rem}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;max-width:390px;margin:12px auto}
+.cell{min-height:62px;border:1px solid #c5c3bd;background:linear-gradient(#dceaf0 0 54%,#b8d9a1 54%);border-radius:2px;position:relative;display:flex;align-items:end;justify-content:center;padding:4px}
+.cell button{width:100%;height:100%;min-height:52px;padding:0;border:0;background:transparent;font-size:1.45rem}
+.cell .stack{position:absolute;top:2px;right:4px;font-size:.68rem;font-weight:800;color:#30231a}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:.82rem;color:#444}
+.small{font-size:.83rem;color:#555;margin:7px 0 0}.result{padding:10px;background:#f4f3ee;border-left:4px solid var(--purple);margin-top:10px}
+@media(max-width:430px){main{padding:12px 12px 18px}.panel{padding:11px;margin:9px 0}.cell{min-height:54px}.cell button{min-height:46px}.controls{gap:8px}}
+</style>
+</head>
+<body>
+<main>
+<p class="eyebrow">GAME DESIGN LAB / DAY 22</p>
+<h1>小さな島の目標を、自分で選ぼう</h1>
+<p class="lead">木や葉を集めて、選んだ建築を完成させる。まず目標を決め、足りない素材と残り行動を見比べます。</p>
+
+<section class="panel" aria-label="ゲーム設定">
+<div class="controls">
+<div class="control"><label for="goal">島で作るもの</label><select id="goal"><option value="tower">見張り台：木を1列に5個積む</option><option value="bridge">木の橋：横に木を4個並べる</option><option value="garden">小さな庭：葉を2×2に置く</option></select></div>
+<div class="control"><label for="yield">1回で集める量：<span id="yieldOut">2</span></label><input id="yield" type="range" min="1" max="4" value="2"></div>
+<div class="control"><label for="turns">使える行動：<span id="turnOut">8</span>回</label><input id="turns" type="range" min="5" max="10" value="8"></div>
+<div class="control"><label for="pressure"><input id="pressure" type="checkbox"> 夜が来る（行動−2）</label><p class="small">時間制約を足した場合を比べる</p></div>
+</div>
+<div class="row" style="margin-top:10px"><button class="primary" id="start">島づくりを始める</button><button id="download">デモHTMLを保存</button></div>
+<p class="small">設定は次のプレイに反映されます。結果はこのページを開いている間だけ比較します。</p>
+</section>
+
+<section class="panel" aria-live="polite">
+<div class="row" style="justify-content:space-between"><span class="status" id="status">目標を選んで「島づくりを始める」</span><span id="actionCount">—</span></div>
+<div class="meters"><span class="meter">🪵 木 <b id="wood">2</b></span><span class="meter">🪨 石 <b id="stone">1</b></span><span class="meter">🍃 葉 <b id="leaf">2</b></span></div>
+<div class="row"><label for="material" style="margin:0">集める／置く素材</label><select id="material" style="width:auto;min-width:112px"><option value="wood">木</option><option value="stone">石</option><option value="leaf">葉</option></select><button id="gather" disabled>素材を集める</button></div>
+<div class="board" id="board" aria-label="4列4行の島"></div>
+<div class="legend"><span>🪵 木</span><span>🪨 石</span><span>🍃 葉</span><span>空き地をタップ（見張り台は同じ場所に積む）</span></div>
+<div class="result" id="result" hidden></div>
+<div class="row" style="margin-top:10px"><button id="replay" disabled>同じ設定でもう一度</button><span class="small" id="compare">前回の結果：まだありません</span></div>
+</section>
+<p class="small">観察：目標を先に選ぶと、集める素材と置く場所がどう決まる？「夜」や採集量を変えると、計画はどう変わる？</p>
+</main>
+<script>
+"use strict";
+// 改造ポイント1：素材の初期量。目標を始めるときの選択肢に影響する。
+const START_INVENTORY={wood:2,stone:1,leaf:2};
+// 改造ポイント2：行動ごとに増える採集量。大きくすると計画の余裕が変わる。
+let inventory={...START_INVENTORY},placed=Array(16).fill(null),heights=Array(16).fill(0),actions=0,limit=8,active=false,lastResult=null,runNumber=0;
+const $=id=>document.getElementById(id);
+const goal=$("goal"),yieldInput=$("yield"),turnInput=$("turns"),pressure=$("pressure"),material=$("material");
+const glyph={wood:"🪵",stone:"🪨",leaf:"🍃"};
+function goalLabel(){return {tower:"見張り台",bridge:"木の橋",garden:"小さな庭"}[goal.value]}
+function updateSettings(){ $("yieldOut").textContent=yieldInput.value;$("turnOut").textContent=Number(turnInput.value)-(pressure.checked?2:0); }
+function render(){
+ $("wood").textContent=inventory.wood;$("stone").textContent=inventory.stone;$("leaf").textContent=inventory.leaf;
+ $("actionCount").textContent=active?("行動 "+actions+" / "+limit):"全"+limit+"行動";
+ const board=$("board");board.innerHTML="";
+ for(let i=0;i<16;i++){const cell=document.createElement("div");cell.className="cell";const b=document.createElement("button");b.type="button";b.disabled=!active||!!placed[i];b.setAttribute("aria-label",placed[i]?glyph[placed[i]]+"が置かれています":"空き地 "+(i+1));b.textContent=placed[i]?glyph[placed[i]]:"＋";b.addEventListener("click",()=>place(i));cell.appendChild(b);if(heights[i]){const badge=document.createElement("span");badge.className="stack";badge.textContent=heights[i]+"段";cell.appendChild(badge)}board.appendChild(cell)}
+ $("gather").disabled=!active;$("goal").disabled=active;$("material").disabled=!active;
+}
+function startGame(){
+ inventory={...START_INVENTORY};placed=Array(16).fill(null);heights=Array(16).fill(0);actions=0;
+ limit=Number(turnInput.value)-(pressure.checked?2:0);active=true;runNumber++;
+ $("status").textContent="目標："+goalLabel()+" ／ 素材を集めて空き地に置こう";
+ $("result").hidden=true;$("replay").disabled=true;$("compare").textContent=lastResult?("前回："+lastResult):"初回プレイ";
+ render();
+}
+function gather(){if(!active)return;inventory[material.value]+=Number(yieldInput.value);actions++;afterAction("素材を集めた。置き場所を選ぼう。")}
+function place(i){if(!active)return;const m=material.value;if(goal.value!=="tower"&&placed[i])return;if(goal.value==="tower"&&m!=="wood"){ $("status").textContent="見張り台には木を置こう。";return }if(goal.value==="tower"&&placed[i]&&placed[i]!=="wood")return;if(inventory[m]<1){$("status").textContent="その素材が足りない。素材を集めよう。";return}
+ inventory[m]--;placed[i]=m;heights[i]++;
+ actions++;
+ afterAction("置いた場所が島に残った。次の一手を選ぼう。");
+}
+function complete(){
+ if(goal.value==="tower")return heights.some((h,i)=>placed[i]==="wood"&&h>=5);
+ if(goal.value==="bridge")return Array.from({length:4},(_,r)=>r).some(r=>{for(let c=0;c<=0;c++){if([0,1,2,3].every(k=>placed[r*4+c+k]==="wood"))return true}return false});
+ for(let r=0;r<3;r++)for(let c=0;c<3;c++){const ix=[r*4+c,r*4+c+1,(r+1)*4+c,(r+1)*4+c+1];if(ix.every(i=>placed[i]==="leaf"))return true}
+ return false;
+}
+function afterAction(message){
+ render();
+ if(complete()){endGame(true);return}
+ if(actions>=limit){endGame(false);return}
+ $("status").textContent=message+" 残り"+(limit-actions)+"回。";
+}
+function endGame(won){
+ active=false;const text=won?"完成！":"時間切れ";
+ $("status").textContent=text+"　"+goalLabel();
+ $("result").hidden=false;$("result").textContent=won?"目標を完成。選んだ目標が素材集めと置き方を決めました。":"目標は未完成。残った行動と素材を見て、次は計画を変えてみよう。";
+ lastResult=text+"（"+actions+"手）";$("compare").textContent="今回："+lastResult+" ／ 再プレイすると前回と比較できます";
+ $("replay").disabled=false;render();
+}
+$("start").addEventListener("click",startGame);
+$("replay").addEventListener("click",startGame);
+$("gather").addEventListener("click",gather);
+yieldInput.addEventListener("input",updateSettings);turnInput.addEventListener("input",updateSettings);pressure.addEventListener("change",updateSettings);
+$("download").addEventListener("click",()=>{const blob=new Blob(["<!doctype html>\n"+document.documentElement.outerHTML],{type:"text/html;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="GameDesignLab_Day022_2026-11-05.html";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
+updateSettings();render();
+</script>
+</body>
+</html>
