@@ -71,7 +71,7 @@ function render(){
  $("wood").textContent=inventory.wood;$("stone").textContent=inventory.stone;$("leaf").textContent=inventory.leaf;
  $("actionCount").textContent=active?("行動 "+actions+" / "+limit):"全"+limit+"行動";
  const board=$("board");board.innerHTML="";
- for(let i=0;i<16;i++){const cell=document.createElement("div");cell.className="cell";const b=document.createElement("button");b.type="button";b.disabled=!active||!!placed[i];b.setAttribute("aria-label",placed[i]?glyph[placed[i]]+"が置かれています":"空き地 "+(i+1));b.textContent=placed[i]?glyph[placed[i]]:"＋";b.addEventListener("click",()=>place(i));cell.appendChild(b);if(heights[i]){const badge=document.createElement("span");badge.className="stack";badge.textContent=heights[i]+"段";cell.appendChild(badge)}board.appendChild(cell)}
+ for(let i=0;i<16;i++){const cell=document.createElement("div");cell.className="cell";const b=document.createElement("button");b.type="button";b.disabled=!active||!!placed[i]&&!(goal.value==="tower"&&placed[i]==="wood");b.setAttribute("aria-label",placed[i]?glyph[placed[i]]+(goal.value==="tower"&&placed[i]==="wood"?" "+heights[i]+"段目に積む":"が置かれています"):"空き地 "+(i+1));b.textContent=placed[i]?glyph[placed[i]]:"＋";b.addEventListener("click",()=>place(i));cell.appendChild(b);if(heights[i]){const badge=document.createElement("span");badge.className="stack";badge.textContent=heights[i]+"段";cell.appendChild(badge)}board.appendChild(cell)}
  $("gather").disabled=!active;$("goal").disabled=active;$("material").disabled=!active;
 }
 function startGame(){
