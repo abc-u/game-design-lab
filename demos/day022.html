@@ -25,7 +25,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .cell .stack{position:absolute;top:2px;right:4px;font-size:.68rem;font-weight:800;color:#30231a}
 .legend{display:flex;gap:8px;flex-wrap:wrap;font-size:.82rem;color:#444}
 .small{font-size:.83rem;color:#555;margin:7px 0 0}.result{padding:10px;background:#f4f3ee;border-left:4px solid var(--purple);margin-top:10px}
-@media(max-width:430px){main{padding:12px 12px 18px}.panel{padding:11px;margin:9px 0}.cell{min-height:54px}.cell button{min-height:46px}.controls{gap:8px}}
+@media(max-width:520px){main{padding:12px 12px 18px}.panel{padding:11px;margin:9px 0}.cell{min-height:54px}.cell button{min-height:46px}.controls{grid-template-columns:1fr;gap:8px}}
 </style>
 </head>
 <body>
@@ -36,7 +36,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 
 <section class="panel" aria-label="ゲーム設定">
 <div class="controls">
-<div class="control"><label for="goal">島で作るもの</label><select id="goal"><option value="tower">見張り台：木を1列に5個積む</option><option value="bridge">木の橋：横に木を4個並べる</option><option value="garden">小さな庭：葉を2×2に置く</option></select></div>
+<div class="control"><label for="goal">島で作るもの</label><select id="goal"><option value="tower">見張り台：同じ場所に木を5段積む</option><option value="bridge">木の橋：横に木を4個並べる</option><option value="garden">小さな庭：葉を2×2に置く</option></select></div>
 <div class="control"><label for="yield">1回で集める量：<span id="yieldOut">2</span></label><input id="yield" type="range" min="1" max="4" value="2"></div>
 <div class="control"><label for="turns">使える行動：<span id="turnOut">8</span>回</label><input id="turns" type="range" min="5" max="10" value="8"></div>
 <div class="control"><label for="pressure"><input id="pressure" type="checkbox"> 夜が来る（行動−2）</label><p class="small">時間制約を足した場合を比べる</p></div>
