@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>光路ラボ｜ルールを試して、組み合わせる</title>
+<style>
+  :root{--ink:#16161a;--paper:#fff;--bg:#f4f3ee;--purple:#5b3df5;--muted:#52525b;--line:rgba(22,22,26,.18);--pixel:ui-monospace,monospace;--sans:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6}
+  main{max-width:720px;margin:0 auto;padding:18px}
+  h1,h2,p{margin:0}
+  .eyebrow{font:700 12px var(--pixel);letter-spacing:.1em;color:var(--purple)}
+  h1{font-size:clamp(22px,5vw,30px);line-height:1.3;margin:3px 0 8px}
+  .intro{color:var(--muted);font-size:14px}
+  .block{margin-top:18px;padding:16px;background:var(--paper);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+  .settings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 18px}
+  label{display:block;font-size:13px;font-weight:700}
+  select,input{font:inherit}
+  select{display:block;width:100%;min-height:42px;margin-top:5px;border:1.5px solid var(--ink);border-radius:0;background:#fff;padding:7px}
+  input[type=range]{display:block;width:100%;margin:8px 0 0;accent-color:var(--purple)}
+  output{font-weight:700;color:var(--purple)}
+  .game{margin-top:16px;padding:16px;background:#fff;border:2px solid var(--ink)}
+  .gamehead{display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .room{font:700 12px var(--pixel);color:var(--purple)}
+  .status{font-size:12px;color:var(--muted);text-align:right}
+  h2{font-size:19px;line-height:1.35;margin-top:4px}
+  .rule{font-size:14px;color:var(--muted);margin-top:5px;min-height:2.8em}
+  .boardwrap{position:relative;width:min(100%,390px);margin:14px auto 10px;aspect-ratio:1;border:2px solid var(--ink);background-color:#fbfaf6;background-image:linear-gradient(to right,rgba(22,22,26,.12) 1px,transparent 1px),linear-gradient(to bottom,rgba(22,22,26,.12) 1px,transparent 1px);background-size:20% 20%}
+  .board{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr)}
+  .cell{display:flex;align-items:center;justify-content:center;position:relative;border:0;background:transparent;font-size:clamp(18px,6vw,30px);font-weight:800;color:var(--ink)}
+  button.cell{cursor:pointer;touch-action:manipulation}
+  button.cell:hover{background:rgba(91,61,245,.12)}
+  .socket{background:rgba(91,61,245,.08);border:1px dashed var(--purple);font-family:var(--pixel)}
+  .socket.hint{outline:3px solid #e8b800;outline-offset:-4px;background:#fff6c8}
+  .start{color:#007c5c}
+  .goal{color:#c24621}
+  .beam{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .beam polyline{fill:none;stroke:#f0a400;stroke-width:.09;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 .035rem #df6400)}
+  .key{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;font-size:12px;color:var(--muted)}
+  .key b{color:var(--ink)}
+  .controls{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px}
+  .btn{min-height:44px;padding:8px 16px;border:2px solid var(--ink);border-radius:0;background:var(--purple);color:#fff;font:700 14px var(--pixel);cursor:pointer;touch-action:manipulation}
+  .btn.secondary{background:#fff;color:var(--ink)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn:active:not(:disabled){transform:translate(1px,1px)}
+  .result{margin-top:12px;min-height:46px;padding:10px 12px;border-left:4px solid var(--purple);background:#f3f0ff;font-size:14px}
+  .result strong{display:block}
+  .tiny{margin-top:9px;color:var(--muted);font-size:12px}
+  .download{display:block;margin:12px auto 0;border:0;background:none;color:#4030cf;text-decoration:underline;font:inherit;font-size:12px;cursor:pointer}
+  @media(max-width:520px){
+    main{padding:12px}
+    .block{margin-top:14px;padding:13px}
+    .game{padding:12px}
+    .settings{grid-template-columns:1fr;gap:12px}
+    .boardwrap{width:min(100%,340px);margin-top:12px}
+    .controls .btn{flex:1 1 130px;padding-inline:8px}
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">GAME DESIGN LAB / DAY 023</p>
+  <h1>光路ラボ｜ルールを試して、組み合わせる</h1>
+  <p class="intro">鏡でレーザーの向きを変え、3つの部屋を解こう。最初は一つの反射、最後は習った反射を重ねます。</p>
+
+  <section class="block settings" aria-label="ゲーム設定">
+    <label for="attemptSetting">各部屋で試せる回数：<output id="attemptValue">5</output> 回
+      <input id="attemptSetting" type="range" min="2" max="8" value="5">
+    </label>
+    <label for="hintSetting">ヒントの量
+      <select id="hintSetting">
+        <option value="none">なし</option>
+        <option value="location" selected>鏡の場所だけ</option>
+        <option value="orientation">鏡の向きまで</option>
+      </select>
+    </label>
+  </section>
+
+  <section class="game" aria-live="polite">
+    <div class="gamehead">
+      <p class="room" id="roomLabel">準備完了</p>
+      <p class="status" id="status">設定を選んで開始してください</p>
+    </div>
+    <h2 id="roomTitle">光をゴールへ届けよう</h2>
+    <p class="rule" id="ruleText">鏡をタップすると「なし → ／ → ＼」と変わります。置いたら光を飛ばして、結果を確かめましょう。</p>
+    <div class="boardwrap" aria-label="レーザーの盤面">
+      <div class="board" id="board"></div>
+      <svg class="beam" id="beam" viewBox="0 0 5 5" aria-hidden="true"><polyline id="beamLine" points=""></polyline></svg>
+    </div>
+    <div class="key"><span><b>▶</b> 光源</span><span><b>◎</b> ゴール</span><span><b>／ ＼</b> タップで向きを変更</span></div>
+    <div class="controls">
+      <button class="btn secondary" id="hintButton" type="button" disabled>ヒントを見る</button>
+      <button class="btn" id="fireButton" type="button" disabled>光を飛ばす</button>
+      <button class="btn secondary" id="startButton" type="button">開始</button>
+    </div>
+    <div class="result" id="result">鏡を配置し、光がどこへ向かうか観察します。</div>
+    <p class="tiny">3部屋をクリアすると成功。失敗しても、設定を変えて何度でも再挑戦できます。</p>
+  </section>
+  <button class="download" id="downloadButton" type="button">デモHTMLを保存（単体で動作）</button>
+</main>
+<script>
+(() => {
+  const rooms = [
+    {title:"部屋1｜一つの鏡", rule:"光が進む向きを、鏡一枚で曲げてゴールへ。", goal:[2,4], slots:[[2,2]], solution:{ "2,2":"\\" }, learn:"同じルールを一つの場所で試す"},
+    {title:"部屋2｜二つの鏡", rule:"一度曲げた光を、もう一枚の鏡でさらに導こう。", goal:[4,4], slots:[[2,2],[2,4]], solution:{ "2,2":"\\", "2,4":"\\" }, learn:"同じルールを続けて使う"},
+    {title:"部屋3｜組み合わせ", rule:"三枚の鏡をつなぎ、角を越えて光を届けよう。", goal:[0,0], slots:[[2,2],[2,4],[0,4]], solution:{ "2,2":"\\", "2,4":"/", "0,4":"\\" }, learn:"習った判断を別の向きにも応用する"}
+  ];
+  // 改造ポイント：ここを変えると、反射角とパズルの解法が変わります。
+  const reflect = {"/":[3,2,1,0], "\\":[1,0,3,2]};
+  const board = document.getElementById("board");
+  const line = document.getElementById("beamLine");
+  const attemptSetting = document.getElementById("attemptSetting");
+  const attemptValue = document.getElementById("attemptValue");
+  const hintSetting = document.getElementById("hintSetting");
+  const roomLabel = document.getElementById("roomLabel");
+  const roomTitle = document.getElementById("roomTitle");
+  const ruleText = document.getElementById("ruleText");
+  const status = document.getElementById("status");
+  const result = document.getElementById("result");
+  const fireButton = document.getElementById("fireButton");
+  const hintButton = document.getElementById("hintButton");
+  const startButton = document.getElementById("startButton");
+  let roomIndex = -1, attempts = 0, totalAttempts = 0, running = false, ended = false, mirrors = {}, hinted = false;
+
+  attemptSetting.addEventListener("input", () => { attemptValue.value = attemptSetting.value; });
+  startButton.addEventListener("click", startGame);
+  fireButton.addEventListener("click", fire);
+  hintButton.addEventListener("click", showHint);
+  document.getElementById("downloadButton").addEventListener("click", downloadDemo);
+
+  function startGame() {
+    roomIndex = 0; totalAttempts = 0; attempts = 0; running = true; ended = false;
+    startButton.textContent = "最初からやり直す";
+    showRoom();
+  }
+  function showRoom() {
+    const room = rooms[roomIndex];
+    mirrors = {}; hinted = false;
+    roomLabel.textContent = "ROOM " + (roomIndex + 1) + " / " + rooms.length;
+    roomTitle.textContent = room.title;
+    ruleText.textContent = room.rule;
+    attempts = 0; line.setAttribute("points", "");
+    status.textContent = "試行 0 / " + attemptSetting.value + "　・　" + room.learn;
+    result.innerHTML = "<strong>今回の観察</strong>鏡を置いたら光を飛ばし、曲がる位置と向きを見よう。";
+    renderBoard();
+    fireButton.disabled = false; hintButton.disabled = false;
+  }
+  function renderBoard() {
+    const room = rooms[roomIndex];
+    const slotSet = new Set(room.slots.map(([r,c]) => r + "," + c));
+    board.replaceChildren();
+    for (let r=0;r<5;r++) for (let c=0;c<5;c++) {
+      const key = r + "," + c;
+      const isStart = r === 2 && c === 0;
+      const isGoal = r === room.goal[0] && c === room.goal[1];
+      let cell;
+      if (slotSet.has(key)) {
+        cell = document.createElement("button");
+        cell.type = "button";
+        cell.className = "cell socket";
+        cell.setAttribute("aria-label", "鏡の位置 " + (r+1) + "行 " + (c+1) + "列。タップして向きを変える");
+        cell.addEventListener("click", () => {
+          if (!running || ended) return;
+          const order = ["", "/", "\\"];
+          const next = order[(order.indexOf(mirrors[key] || "") + 1) % order.length];
+          if (next) mirrors[key] = next; else delete mirrors[key];
+          cell.textContent = next === "/" ? "／" : next === "\\" ? "＼" : "＋";
+          cell.setAttribute("aria-label", "鏡の位置 " + (r+1) + "行 " + (c+1) + "列。現在 " + (next || "なし"));
+          line.setAttribute("points", "");
+        });
+        cell.textContent = mirrors[key] === "/" ? "／" : mirrors[key] === "\\" ? "＼" : "＋";
+        cell.dataset.key = key;
+        if (hinted && hintSetting.value !== "none" && key === room.slots[0].join(",")) {
+          cell.classList.add("hint");
+          if (hintSetting.value === "orientation") {
+            const answer = room.solution[key];
+            cell.textContent = answer === "/" ? "／" : "＼";
+            mirrors[key] = answer;
+          }
+        }
+      } else {
+        cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = isStart ? "▶" : isGoal ? "◎" : "";
+        if (isStart) cell.classList.add("start");
+        if (isGoal) cell.classList.add("goal");
+        cell.setAttribute("aria-hidden","true");
+      }
+      cell.style.gridRow = String(r+1);
+      cell.style.gridColumn = String(c+1);
+      board.appendChild(cell);
+    }
+  }
+  function showHint() {
+    if (!running || ended) return;
+    if (hintSetting.value === "none") {
+      result.innerHTML = "<strong>ヒントはオフ</strong>鏡を置く位置を先に予想して、試行後の光の向きを手掛かりにしよう。";
+      return;
+    }
+    hinted = true;
+    renderBoard();
+    result.innerHTML = hintSetting.value === "orientation"
+      ? "<strong>ヒント：向きまで</strong>一つ目の鏡の場所と向きを示しました。残りは自分で組み合わせてみよう。"
+      : "<strong>ヒント：位置だけ</strong>最初に考える鏡の位置を示しました。向きは光を飛ばして確かめよう。";
+  }
+  function fire() {
+    if (!running || ended) return;
+    attempts++; totalAttempts++;
+    const room = rooms[roomIndex];
+    const points = [[0,2.5]];
+    let r=2,c=-1,dir=0,won=false;
+    const seen = new Set();
+    for (let i=0;i<40;i++) {
+      c += [1,0,-1,0][dir]; r += [0,1,0,-1][dir];
+      if (r<0 || r>4 || c<0 || c>4) break;
+      points.push([c+.5,r+.5]);
+      if (r===room.goal[0] && c===room.goal[1]) { won=true; break; }
+      const key=r+","+c, mirror=mirrors[key];
+      if (mirror) {
+        const state=key+":"+dir+":"+mirror;
+        if (seen.has(state)) break;
+        seen.add(state);
+        dir=reflect[mirror][dir];
+      }
+    }
+    line.setAttribute("points",points.map(p=>p[0]+","+p[1]).join(" "));
+    status.textContent = "試行 " + attempts + " / " + attemptSetting.value + "　・　合計 " + totalAttempts + " 回";
+    if (won) {
+      if (roomIndex === rooms.length-1) {
+        endGame(true);
+      } else {
+        result.innerHTML = "<strong>部屋クリア！</strong>" + attempts + "回で解けた。次は同じ鏡を組み合わせよう。";
+        roomIndex++; setTimeout(() => { if (running && !ended) showRoom(); }, 800);
+      }
+    } else if (attempts >= Number(attemptSetting.value)) {
+      endGame(false);
+    } else {
+      result.innerHTML = "<strong>まだ届かない</strong>光の軌跡を見て、次は鏡の位置か向きを一つだけ変えよう。残り " + (Number(attemptSetting.value)-attempts) + " 回。";
+    }
+  }
+  function endGame(won) {
+    ended = true; running = false;
+    fireButton.disabled = true; hintButton.disabled = true;
+    roomLabel.textContent = won ? "全室クリア" : "再挑戦しよう";
+    roomTitle.textContent = won ? "光路をつないだ！" : "今回はゴールに届かなかった";
+    ruleText.textContent = won ? "ルールを一つずつ学び、最後に組み合わせました。" : "設定や鏡の置き方を変えて、もう一度試せます。";
+    result.innerHTML = won
+      ? "<strong>成功！</strong>3つの部屋を合計 " + totalAttempts + " 回でクリア。どのルールを使ったか説明してみよう。"
+      : "<strong>終了</strong>試行回数がなくなりました。ヒントを増やすか、回数を変えて再挑戦しよう。";
+  }
+  function downloadDemo() {
+    const html = "<!doctype html>\n" + document.documentElement.outerHTML;
+    const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "GameDesignLab_Day023_2026-11-06.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+---
+day: 23
+date: 2026-11-06
+title: 「解けた！」をどう教える？｜Portal 2の段階的なパズル設計
+theme: 新しいルールを段階的に学ばせる設計
+game: Portal 2
+level: 初級
+minutes: 10
+summary: 新ルールを一つずつ試し、組み合わせる流れから、解けた手応えを設計する。
+question: 新しいルールを、説明文に頼らず「分かった、解けた」へどうつなぐ？
+goals:
+  - 新しいルールを教える順序を設計できる
+  - Portal 2の行動・反応・感情のつながりを説明できる
+  - 自作ゲームで導入・継続・離脱の要因を分けて改善案を作れる
+video:
+  id: tax4e4hBBZc
+  title: Valve「Portal 2 Teaser Trailer」
+  caption: Valve公式のティーザー（2010-06-15公開）。白い試験室と不穏な語りが、遊ぶ前の期待をどう作るかを見てください。
+demo:
+  src: /demos/day023.html
+  title: 光路ラボ｜ルールを試して、組み合わせる
+  height: 1050
+sources:
+  - title: Steam公式ストア「Portal 2」
+    url: https://store.steampowered.com/app/620/Portal_2/?cc=jp&l=japanese
+    note: 発売日・日本価格¥1,400・日本語レビュー1,026件中96%好評（2026-11-06確認。変動する表示）
+  - title: Valve公式「Portal 2 Teaser Trailer」
+    url: https://www.youtube.com/watch?v=tax4e4hBBZc
+    note: Valve公式YouTube、2010-06-15公開（2026-11-06確認）
+  - title: "Game Informer「Thinking With Portals: Making A Portal 2 Test Chamber」"
+    url: https://www.gameinformer.com/b/features/archive/2010/03/17/thinking-with-portals-making-a-test-chamber.aspx
+    note: Valve開発者が、目標からパズルを始め、仕組みを教えつつ挑戦させる設計を説明（2010-03-17公開、2026-11-06確認）
+  - title: "Game Developer「GDC 2012: Portal 2: Making a Sequel to a 'Perfect' Game」"
+    url: https://www.gamedeveloper.com/design/gdc-2012-i-portal-2-i-making-a-sequel-to-a-perfect-game
+    note: 新規プレイヤーへの導入、追加メカニクスと続編設計についての開発者講演（2012-03-08公開、2026-11-06確認）
+  - title: Metacritic「Portal 2」
+    url: https://www.metacritic.com/game/portal-2/
+    note: PC版Metascore 95（批評家レビュー66件の集計、2026-11-06確認。集計は変動）
+  - title: Steamコミュニティ「Portal 2」レビュー
+    url: https://steamcommunity.com/app/620/reviews/?browsefilter=toprated&l=japanese
+    note: 47.7時間プレイの日本語投稿（2015-01-12）は難度と観察による達成感を評価。14.6時間の投稿（2016-11-23）は初見の3D酔いを難点として挙げる（各1件、2026-11-06確認）
+  - title: Steamコミュニティ「Portal 2」低評価レビュー
+    url: https://steamcommunity.com/app/620/negativereviews/?filterLanguage=all
+    note: 表示された低評価投稿の1件（投稿日表示は10月5日、年は確認できず）は後半の複雑さ、目的の見つけにくさ、ロードを批判。単一の選択例（2026-11-06確認）
+  - title: PC Gamer「Portal 2 review」
+    url: https://www.pcgamer.com/portal-2-review/
+    note: 終盤の大きなパズルは解法が見えにくく、苛立つ人もいると指摘（2011-04-19公開、2026-11-06確認）
+  - title: "Ars Technica「Thinking on rails: why Portal 2 isn't as good as the original」"
+    url: https://arstechnica.com/gaming/2011/05/portal-2-a-good-game-but-not-a-great-one/
+    note: 後半まで新要素を教え続ける構成と、解法が一本道に感じられる点を批評（2011-05公開、2026-11-06確認）
+  - title: EA公式「EA and Valve Announce Retail Distribution Agreement for Portal 2」
+    url: https://s204.q4cdn.com/701424631/files/doc_news/2010/12/1/538558.pdf
+    note: EAの小売流通、PS3・Xbox 360・PC・Mac対応と2011年4月発売予定を発表（2010-12-21公開、2026-11-06確認）
+  - title: Valve公式Steamニュース「PORTAL 2 AVAILABLE NOW FOR PRE-ORDER」
+    url: https://store.steampowered.com/news/5006/
+    note: 予約、割引・購入特典、発売週、対応機種の告知（2011-02-14公開、2026-11-06確認）
+  - title: GameSpot「Portal 2 sells 4 million」
+    url: https://www.gamespot.com/articles/portal-2-sells-4-million-report/1100-6375689/
+    note: ValveのDavid Sawyerが2012-05-08に明かした、発売以降の累計400万本という報告（媒体・時点を限定）
+  - title: TechSpot「Portal 2 pre-orders open with discounts and extras」
+    url: https://www.techspot.com/news/42405-portal-2-pre-orders-open-with-discounts-and-extras.html
+    note: 2011年発売前の米国希望小売価格（PC $49.99、家庭用$59.99）と予約特典を報道（2011-02-14公開、二次資料）
+  - title: Valve公式Steamニュース「Last Chance to Pre-Purchase Portal 2, Help Release It Early」
+    url: https://store.steampowered.com/oldnews/?appgroupname=Portal+2&appids=620&enddate=1514793600&feed=steam_announce
+    note: Potato Sack収録作を遊ぶと発売を早められるという参加型キャンペーンを告知（2011-04-15公開、2026-11-06確認）
+  - title: Valve公式Steamニュース「Perpetual Testing Initiative」
+    url: https://store.steampowered.com/news/?appids=620
+    note: プレイヤー作成テスト室の共有機能（2012-05-08告知、2026-11-06確認）
+sources_note: 集計値は確認時点の表示です。レビュー例は良い点・不満点を読むために選んだ少数の個別投稿で、プレイヤー全体の代表とは扱っていません。開発者発言、批評家の解釈、ユーザーの声、独自分析を分け、継続率や要因別売上寄与は公開情報がないため推測していません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：新しいルールは「試す→分かる→組み合わせる」</h2>
+  <p>プレイヤーが「快感がない」と言うとき、報酬が足りないとは限りません。自分の行動が何を変えたか分からず、次の一手を選べないと、成功しても自分で解いた手応えが残りにくくなります。</p>
+  <p>新しい仕組みを教える設計では、ルールを小さく試せる状況を先に作り、その反応を見せ、最後に既習の仕組みと組み合わせます。これはチュートリアルだけの技法ではなく、プレイヤーが判断を身につける順番の設計です。</p>
+
+  <ol class="flow mt-m">
+    <li><b>見せる</b><span>何ができるかを安全に試せる</span></li>
+    <li><b>確かめる</b><span>行動に対する反応をすぐ返す</span></li>
+    <li><b>組み合わせる</b><span>学んだルールで新しい問題を解く</span></li>
+  </ol>
+
+  <h3 class="h-sub">自作企画で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">一度に何を教える？</p><p class="list__text">新しい操作・地形・目的を一度に増やさず、今回覚えてほしい判断を一つ決める。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">結果は読める？</p><p class="list__text">行動後すぐに、成功・失敗の理由を画面や音で見分けられるか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">自力で使い直せる？</p><p class="list__text">次の場面で同じルールを別の条件と組み合わせ、プレイヤー自身に解かせる。</p></div></div>
+  </div>
+  <p>この順序が「解けた！」をどう生むか、次はPortal 2の試験室と新しい道具の組み立て方から見ていきます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Portal 2は、解法をどうプレイヤーに渡す？</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2011-04-18（Steam版）</dd></div>
+    <div><dt>開発・販売</dt><dd>Valve。小売流通はEA Partners</dd></div>
+    <div><dt>対応機種</dt><dd>Windows、Mac、PS3、Xbox 360</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">行動から「解けた！」まで</h3>
+  <p>ポータルで離れた場所をつなぐと、出口が見えない部屋でも、壁・床・高さの関係を自分で組み替えられます。Portal 2はこの基本を再確認させながら、光の橋、牽引ビーム、速度や反発を変えるジェルなどを加え、既に知っているルールと一緒に使わせます。</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールが返す反応</th><th>生まれる判断・感情</th></tr></thead>
+      <tbody>
+        <tr><th>床と壁にポータルを撃つ</th><td>離れた場所がつながり、向こう側が見える</td><td>空間の見方が変わり「通れるかも」と考える</td></tr>
+        <tr><th>物体をポータルへ落とす</th><td>勢いを保って別の出口から飛び出す</td><td>自分の仮説が動きで確かめられ、驚きや納得が生まれる</td></tr>
+        <tr><th>新しい道具を既習ルールと使う</th><td>光・移動・速度の条件が変わる</td><td>前の知識を転用し、自分で解法を発見した感覚が強まる</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h-sub">この作品ならではの面白さ</h3>
+  <p>ポータルは「空間を移動する」操作でありながら、入口と出口を置く場所を考えるパズルの道具です。視点移動、物体の落下、勢いの音と動きが仮説の結果を見せるため、正解した瞬間に「答えを当てた」より「空間の使い方を理解した」と感じやすくなります。</p>
+  <p>前作Portalの二つのポータルという核を保ちながら、続編は新しい道具、長い物語、二人協力用の別キャンペーンを足しました。独自の強みは要素数そのものではなく、既習の操作を残したまま、新しい仕組みを段階的に重ねる構成です。</p>
+
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">「Portal」の続編、Valveの作品、謎の研究施設という既知の入口が購入前の期待を作ります。最初の部屋でポータルを試すと、予告で見た仕掛けがすぐ自分の操作に変わり、作品の核に触れられます。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">一つの部屋を解くと、次は新しい道具や組み合わせが出てくるため、「今の理解で解けるか」を確かめたくなります。キャラクターの会話とストーリーが部屋の間をつなぎ、クリア後は協力キャンペーンやユーザー作成ステージが別の遊び直し先になります。</span></div>
+    <div class="list__row"><span class="list__key">戻る</span><span class="list__body">協力プレイは相手との相談や失敗談を生み、Workshopの共有ステージは新しい問題を供給します。Steam上には多数の高評価レビューがありますが、公開レビュー数は翌日戻る率や長期継続人数を示すデータではありません。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">終盤の大きな部屋では、出口や次の目的を見つけにくくなり、考える時間が「自分で解いている」から「何を見ればいいか分からない」へ変わる人もいます。Steamの低評価投稿の一例は複雑さとロードを不満に挙げ、別の日本語レビューは初見の3D酔いを指摘しました。</span></div>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">解けた手応えは、自由な解法だけでなく「試す順番」と「結果の読みやすさ」で支えられる。</p>
+    <p class="mt-s">Valveの開発者は、パズルを具体的な目標から設計し、仕組みを教えながら挑戦させると説明しています。デモでは鏡で光を曲げるルールを一度に一つずつ導入し、最後に組み合わせて、自力で解く手応えを試します。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：評価された設計にも、合わない人がいる</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s">
+        <li><span>MetacriticのPC版は95点、批評家レビュー66件の集計表示（2026-11-06確認）。</span></li>
+        <li><span>GameSpot（2011-04-19）は難度の上げ方、工夫された仕組み、物語を評価。</span></li>
+        <li><span>PC Gamer（2011-04-19）は終盤の巨大な部屋で目標を見失い、理不尽に感じる人がいると指摘。</span></li>
+        <li><span>Ars Technica（2011-05）は後半の解法が一本道に感じられ、前作の探索感が弱まると批評。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの声</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Steam日本語レビュー1,026件の96%が好評（2026-11-06確認）。全言語レビューも約46.9万件で高評価ですが、いずれも確認時点の集計です。</span></li>
+        <li><span>47.7時間プレイの日本語投稿（2015-01-12）は、観察すれば解ける難度と、クリア時の達成感を評価。</span></li>
+        <li><span>14.6時間プレイの投稿（2016-11-23）は、物語やキャラクターを楽しみつつ初見の3D酔いを難点に挙げました。</span></li>
+        <li><span>低評価ページから選んだ1投稿は、後半の複雑さ・目的の見えにくさ・ロードを不満に挙げます。選択した個別例であり、全体傾向ではありません。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">仕組みを学ぶ負荷が納得感を生む人もいれば、視点移動や曖昧な目的が離脱の理由になる人もいる。</p>
+  </div>
+
+  <h3 class="h-sub">なぜ選ばれ、どう売れた？</h3>
+  <dl class="facts">
+    <div><dt>販売指標</dt><dd>Valve開発者David Sawyerの発言として、GameSpotは2012-05-08に累計400万本を報道。現在の累計ではない</dd></div>
+    <div><dt>発売時の価格</dt><dd>米国予約時はPC $49.99、家庭用 $59.99（2011年、TechSpot報道）</dd></div>
+    <div><dt>日本の現行価格</dt><dd>Steam表示は¥1,400（2026-11-06確認。セール等で変わり得る）</dd></div>
+    <div><dt>販売・対象</dt><dd>Steamでデジタル販売、EA Partnersが小売流通。PC・Mac・PS3・Xbox 360向け</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>発売前の入口</strong>　Valveは前作からのブランド、予約割引・特典、発売前キャンペーンを展開。Potato Sackの対象ゲームを遊んで発売を早める参加型企画は話題を作ったが、売上への寄与は公表されていません。</span></li>
+    <li><span><strong>続ける場所</strong>　二人協力キャンペーンと、後日追加されたプレイヤー制作ステージは、本編クリア後の遊び先を広げました。これは再訪の候補を増やす設計上の説明で、実際の再訪率を示す数字ではありません。</span></li>
+    <li><span><strong>面白さと商業成果</strong>　高い批評スコア、Steamの多数の好評、2012年時点の400万本という報告は、強い評価と販売実績が両立した証拠です。ただしブランド、価格、予約施策、流通、時期、口コミの寄与率は公開されておらず、パズルの面白さだけが販売を生んだとは言えません。</span></li>
+  </ul>
+  <p class="note mt-s">レビュー例は日付とプレイ時間が確認できる投稿を選び、低評価例も一件だけ併記しました。継続率・離脱率・施策ごとの売上効果は公表値を確認できないため、推測していません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：光路ラボでルールの教え方を比べる</h2>
+  <p>鏡をタップして光を曲げ、出口へ導きます。最初は一枚、次は二枚、最後は三枚を組み合わせ、同じルールがどの順で難しくなるか体験してください。</p>
+  <div class="chips mt-s">
+    <span class="chip">各部屋の試行回数</span><span class="chip">ヒントの量</span><span class="chip">鏡の配置</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">失敗した後、ルールの理解は進んだ？解けた理由を自分の言葉で説明できる？</p>
+    <p class="mt-s">設定を変えたら、各部屋で使った試行数と、ヒントを見たかを比べます。これは短いデモ内の比較で、Portal 2の長期継続や売上への効果を測るものではありません。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">ヒント量だけを変える</p>
+      <p class="mt-s">「位置だけ」と「鏡の向きまで」を切り替えます。必要試行数、失敗後に自力で解けた感覚、ヒントを早く見すぎたかを記録してください。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">新しい仕組みを一段追加する</p>
+      <p class="mt-s">たとえば「青い鏡は光を二回曲げる」ルールを足します。まず単独で試す部屋を置き、最後に既存の鏡と組み合わせる構成にして、学習順が変わるか考えます。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの新ルールを、最初から複数の要素と組み合わせる案と、単独で練習してから組み合わせる案で比べると、どんな人にどちらが向く？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">試行錯誤を助けるなら、答えを示すヒント・失敗の理由を返す反応・解法の自由度のどれを増やす？快適さと「自分で解いた」手応えの両面から考えよう。</span></div>
+  </div>
+</section>
