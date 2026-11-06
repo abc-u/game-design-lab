@@ -1,0 +1,188 @@
+---
+day: 24
+date: 2026-11-07
+title: 「うまくなった」が気持ちいい｜Rocket Leagueの技能設計
+theme: 一貫した操作と技能の上達
+game: Rocket League
+level: 初級〜中級
+minutes: 10
+summary: 分かりやすい目標と奥深い操作を両立し、練習が手応えに変わる条件を学ぶ。
+question: ルールは簡単なのに、練習するほど上達を感じるゲームをどう設計する？
+goals:
+  - 分かりやすい目標と技能の深さを分けて設計できる
+  - 操作・物理・フィードバックが上達感を生む流れを説明できる
+  - 自作ゲームの入口と技能の伸びしろを改良案にできる
+video:
+  id: tECQ3Kt8oJ8
+  title: Rocket League 公式ティーザートレーラー
+  caption: 公式映像では車・ボール・ゴールの関係が短時間で伝わります。最初の一手が想像できるかに注目。
+demo:
+  src: /demos/day024.html
+  title: ブースト・ストライク｜走って、当てて、ゴールへ
+  height: 980
+sources:
+  - title: Psyonix公式「Rocket League Going Free To Play This Summer」
+    url: https://www.rocketleague.com/news/rocket-league-going-free-to-play-this-summer
+    note: 無料化、既存ゲームプレイの維持、Epic Games Store・クロスプレイについて（2020-07-21公開）
+  - title: Psyonix公式「Rocket League's 3rd Birthday」
+    url: https://www.rocketleague.com/news/rocket-league-third-birthday
+    note: 4プラットフォーム展開と累計4,600万人のプレイヤーを発表（2018-07-06公開。販売本数ではない）
+  - title: GameSpot「Rocket League Passes 10.5 Million Sales」
+    url: https://www.gamespot.com/articles/rocket-league-passes-105-million-sales-as-dev-expl/1100-6448621/
+    note: Psyonix副社長の発言として、2017年3月時点の販売1,050万本・登録プレイヤー約2,900万人を報道。後者にはPS Plus等が含まれる（2017-03-10公開）
+  - title: PlayStation.Blog「Rocket League Out Today, Free for PS Plus Members」
+    url: https://blog.playstation.com/2015/07/07/rocket-league-out-today-free-for-ps-plus-members/
+    note: PS4発売日と7月のPS Plus提供について（2015-07-07公開）
+  - title: GDC Vault「It IS Rocket Science! The Physics of 'Rocket League' Detailed」
+    url: https://www.gdcvault.com/play/1024972/
+    note: PsyonixのJared Coneによる物理挙動とネットワーク同期の講演（GDC 2018）
+  - title: Metacritic「Rocket League Reviews」
+    url: https://www.metacritic.com/game/rocket-league/?platform=pc
+    note: 批評家スコア85/100（50件）、ユーザー評価7.9/10（3,084評価）の表示を確認（2026-11-07。変動する集計）
+  - title: PC Gamer「Rocket League review」
+    url: https://www.pcgamer.com/rocket-league-review/
+    note: 操作の気持ちよさとオンライン対戦を評価し、ソロ時のAI・反復を弱点として指摘（2015-07公開）
+  - title: Ars Technica「Rocket League review: Soccer meets cars in 2015's most intense game yet」
+    url: https://arstechnica.com/gaming/2015/07/rocket-league-review-soccer-meets-cars-in-2015s-most-intense-game-yet/
+    note: 2015年発売時のレビュー。操作と車×サッカーの独自性を評価する一方、当初のオンライン障害とAIを批判（2015-07-11公開）
+  - title: Metacritic「Rocket League User Reviews」
+    url: https://www.metacritic.com/game/rocket-league/user-reviews/
+    note: 2026-11-07確認。表示された最近の2投稿を定性例として参照。接続・マッチングと、操作性への評価／プレイヤーの荒らしへの不満。少数例で全体傾向ではない。
+  - title: Psyonix公式「Rocket League Teaser Trailer」
+    url: https://www.youtube.com/watch?v=tECQ3Kt8oJ8
+    note: 公式ティーザー映像（2014年公開。2026-11-07確認）
+sources_note: 日付・販売数は発表時点と対象を併記しました。評価数は確認日時点で変動します。レビュー例は代表性のない個別投稿で、プレイヤー全体の意見や継続率を示しません。独自分析は教材内で「分析」と明記しています。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：簡単なルールに、上達の余地を重ねる</h2>
+  <p>ゲームの目標はすぐ理解できても、そこへ向かう操作が毎回同じ結果しか生まなければ、練習する理由は弱くなります。反対に、操作と結果の関係が読み取れ、少しずつ精度を上げられると、同じルールの中で自分なりの上達を試せます。</p>
+  <p>設計では「入口の分かりやすさ」と「習熟の深さ」を分けて考えます。目標や基本操作は早く理解できるようにしつつ、タイミング・位置・強さ・連携など、練習で結果を変えられる要素を残します。</p>
+
+  <ol class="flow mt-m">
+    <li><b>目標</b><span>何をすればよいか一目で分かる</span></li>
+    <li><b>操作</b><span>入力が予測できる変化を起こす</span></li>
+    <li><b>上達</b><span>練習で成功の確率や質を変えられる</span></li>
+  </ol>
+
+  <h3 class="h-sub">自作ゲームで確かめる</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">目標は説明なしで分かる？</p><p class="list__text">一手目を選ぶまでに、読む・覚える負担が多すぎないか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">失敗の理由を見分けられる？</p><p class="list__text">入力・位置・タイミングのどれを変えればよいか、結果から推測できるか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">上達を試せる次の一手がある？</p><p class="list__text">前の結果を踏まえて、同じ場面を違う方法で試せるか。</p></div></div>
+  </div>
+  <p class="note mt-m">この三点を使って、サッカーの目標を車の運転で達成する作品を分解します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Rocket Leagueは、車の操作を競技にする</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2015年7月7日（PS4・PC。後にXbox One、Nintendo Switch等へ展開）</dd></div>
+    <div><dt>開発・運営</dt><dd>Psyonix（2019年にEpic Games傘下へ）</dd></div>
+    <div><dt>ジャンル</dt><dd>車両操作とサッカーを組み合わせた対戦スポーツ</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">行動から感情まで：当て方が変わると、結果も変わる</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーがすること</th><th>ルールが返すもの</th><th>次の判断</th></tr></thead>
+      <tbody>
+        <tr><th>車を走らせ、ボールへぶつかる</th><td>接触位置と速度に応じてボールが飛ぶ。ゴール・壁・相手との接触がすぐ見える</td><td>次は正面から当てるか、角度をつけるか、味方へ譲るか</td></tr>
+        <tr><th>ブーストやジャンプを使う</th><td>速さや高さが変わる一方、ブースト残量を使う</td><td>今ゴールを狙うか、守備に備えて残すか</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h-sub">始めたくなる：目標がすぐ見えて、入口も広い</h3>
+  <p>ボールを相手のゴールに入れる説明は、サッカー経験がなくても分かります。2015年のPS4発売時にはPlayStation Plus加入者向けに無料提供され、通常価格は米国$19.99でした。低い初回負担と明快な映像が「まず一試合」を後押しした、というのが本教材の分析です。</p>
+
+  <h3 class="h-sub">続けたくなる：一試合の中で、狙いを変えて試せる</h3>
+  <p>車の向き・速度・ジャンプ・ブーストが接触後のボールに反映されるため、失敗は「今度は少し早く」「横から当てる」といった修正案になります。短い試合の得点・残り時間・リプレイが結果をすぐ伝え、ランク戦や練習モードはさらに高い技能目標を選べる場になります。</p>
+  <p>独自分析として、同じボールを奪い合う味方の位置も毎回変わるので、個人の操作練習がチームの役割判断へ広がります。これは本デモで検証できる「同じセッション内の再挑戦」の説明で、長期継続率が公開されているという意味ではありません。</p>
+  <p>後日戻る動機は、ランクの更新、定期イベント、新しい対戦相手、友人との再戦などです。Psyonixは大会や追加モード・チャレンジを展開していますが、施策ごとの復帰率は公表していません。</p>
+
+  <h3 class="h-sub">この作品ならではの面白さ：車の勢いで、サッカーの一手を作る</h3>
+  <p>従来のサッカーゲームは選手の走行やキックが中心ですが、本作では車そのものを向け、加速し、空中で姿勢を調整してボールへ接触します。車の操作が「移動」と「キック」を兼ねるため、接触のたびに自分の走り方がショットの形へ変わり、予想外のゴールも自分の一手として感じやすくなります。</p>
+  <p>車でサッカーをする着想自体が完全に前例のない発明というわけではありません。Psyonix自身も前作『Supersonic Acrobatic Rocket-Powered Battle-Cars』から続く系譜と説明しており、独自性は車・ブースト・空中操作・チーム競技を短い試合にまとめた実装にあります。</p>
+  <p>市場ではライセンス選手や本格的な試合再現を売りにする年次サッカーゲームと競合しながら、Rocket Leagueは操作の誇張と車のカスタマイズに軸を置きました。Ars Technicaは『Mario Strikers Charged』などのアーケード競技とも比較しており、既存ジャンルを短く、観戦しても分かる遊びへ圧縮した点が違いです。</p>
+
+  <h3 class="h-sub">離れる理由：上達の余地が、初心者には差に見えることも</h3>
+  <p>ブーストや空中操作を学ぶほど狙いの幅は広がりますが、慣れた相手との対戦では、初めての人がボールに触れられない時間も増え得ます。またPC Gamerはソロ時のAIや反復、Ars Technicaは発売当初のオンライン障害を批判しました。前者は現在もモード次第で起こり得る設計上の懸念、後者は発売時の歴史的な問題として区別します。</p>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">「分かる目標」と「自分で精度を上げる操作」が、初心者の入口と熟練者の目標をつなぐ。</p>
+    <p class="mt-s">本作の核を試すデモでは、移動・接触・ボールの軌道を同じ画面に返します。ゴール幅やブーストの強さを変え、得点のしやすさだけでなく、狙いを修正しやすいかも比べます。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：面白さ以外の「選ばれる理由」も分ける</h2>
+  <h3 class="h-sub">批評家の評価</h3>
+  <ul class="bullets mt-s">
+    <li><span>MetacriticのPC版表示は批評家85/100、レビュー50件。2026-11-07確認の集計です。</span></li>
+    <li><span>PC Gamer（2015年7月）は操作の爽快さ、オンライン対戦、すぐ再戦できるテンポを評価し、ソロ時のAIと反復を弱点に挙げました。</span></li>
+    <li><span>Ars Technica（2015-07-11）は車の操作と「車アクション＋サッカー」の組み合わせを評価しつつ、発売直後のサーバー障害を大きな問題として記録しました。</span></li>
+  </ul>
+
+  <h3 class="h-sub">プレイヤー評価と批判</h3>
+  <ul class="bullets bullets--muted mt-s">
+    <li><span>Metacriticのユーザー評価は7.9/10、3,084評価の表示（2026-11-07確認）。好評の指標ですが、購入者全体や現在の稼働人口を表すものではありません。</span></li>
+    <li><span>同日確認した最近の投稿から2件を例に選ぶと、2026-02-20の投稿は接続・マッチングを批判し、2026-01-28の投稿は操作性を褒めつつプレイヤーの荒らしを難点にしました。これは2件だけの標本で、意見全体の割合ではありません。</span></li>
+    <li><span>Metacriticの「ユーザー評価数」と「表示された文章レビュー件数」は別の指標です。ここでは数値集計と具体的な投稿例を混ぜて一般化しません。</span></li>
+  </ul>
+
+  <h3 class="h-sub">成果指標と市場要因</h3>
+  <dl class="facts">
+    <div><dt>販売指標</dt><dd>開発会社副社長の発言として2017年3月に累計1,050万本販売と報道。現在の累計ではありません。</dd></div>
+    <div><dt>参加規模</dt><dd>Psyonixは2018年7月に累計4,600万人のプレイヤー、4プラットフォーム展開を公表。RLCSの大会視聴は「数百万人」と記載。どちらも販売本数とは異なる数字です。</dd></div>
+    <div><dt>価格・入口</dt><dd>2015年の米国価格$19.99。PS4版は発売月のPS Plus提供対象。</dd></div>
+    <div><dt>市場の変化</dt><dd>2020年9月に基本プレイ無料化し、Epic Games Store版・クロスプラットフォーム進行などを導入。</dd></div>
+  </dl>
+  <p>無料配布、親しみのあるゴール、短い対戦、口コミや配信で伝わりやすい劇的な得点、競技シーン、複数機種展開は、それぞれ試す機会や観戦理由を増やした可能性があります。公開資料は施策と参加規模を示しますが、各要因が売上・継続にどれだけ寄与したかは分かりません。</p>
+  <p class="note mt-s">2017年の1,050万本は無料配布や後の無料化より前の報告値、2018年の4,600万人はプレイヤー数です。売上・登録者・評価数は別の単位として読みます。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：ブースト・ストライク</h2>
+  <p>方向ボタンを押して車を動かし、ボールへぶつけて右のゴールへ入れます。先に3点取るか、45秒間で得点を重ねてください。接触位置と勢いを見て、次の狙いを変えます。</p>
+  <div class="chips mt-s"><span class="chip">ゴール幅</span><span class="chip">ブーストの強さ</span><span class="chip">45秒の試合時間</span></div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">結果を比べる</p>
+    <p class="panel__title">得点数だけでなく、狙いを修正できたかを見る。</p>
+    <p class="mt-s">一度遊んだらゴール幅かブーストだけを変えて再戦します。ボールに触れた回数、得点、失敗後に変えた操作を比べ、結果が読みやすかったかを記録します。個人の短いプレイ結果は、全プレイヤーの継続を示すデータではありません。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="panel">
+    <p class="panel__label">入門｜1つの値を変える</p>
+    <p class="panel__title">ゴール幅だけを変え、結果を予想する。</p>
+    <p class="mt-s">狭い幅と広い幅で各1試合。得点・ボールへの接触数・「次に変える操作を思いついた回数」を比べ、難度と上達の手応えが同じように動いたかを書きます。</p>
+  </div>
+  <div class="panel mt-s">
+    <p class="panel__label">応用｜ルールを足す</p>
+    <p class="panel__title">ブーストを味方と共有する。</p>
+    <p class="mt-s">チーム内で一人が使うと、もう一人の残量も減るルールを追加します。連続攻撃は増えるか、譲り合い・役割判断が生まれるか、初心者の操作負担はどう変わるかを検証します。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの目標を一目で分かる形にする方法と、練習で上達する余地を増やす方法をそれぞれ考える。どちらを先に整えると、初めてのプレイヤーは動きやすい？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">上達の深さを増やす案として、操作の自由度を増やす方法と、同じ操作の結果を見分けやすくする方法を比べる。習熟の楽しさと初心者の負担はどう変わる？</span></div>
+  </div>
+</section>
