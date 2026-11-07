@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f3ee">
+  <title>山道配送｜近道か、先人の橋か</title>
+  <style>
+    :root{--ink:#16161a;--paper:#fff;--bg:#f4f3ee;--muted:#52525b;--line:rgba(22,22,26,.2);--accent:#5b3df5;--warn:#a73525;--shadow:3px 3px 0 var(--ink)}
+    *{box-sizing:border-box} [hidden]{display:none!important}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;font-size:16px;line-height:1.55}
+    .game{width:min(100%,760px);margin:0 auto;padding:18px 14px 24px}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:2px solid var(--ink);padding:2px 0 12px}
+    .brand{font-size:12px;font-weight:800;letter-spacing:.12em}.tag{font-size:12px;color:var(--muted)}
+    h1{font-size:clamp(24px,6vw,36px);line-height:1.2;margin:15px 0 6px;letter-spacing:-.03em}
+    h2{font-size:19px;line-height:1.35;margin:0 0 8px} p{margin:0} .intro{color:#3f3f46;font-size:15px}
+    .panel{background:var(--paper);border:2px solid var(--ink);padding:16px;margin-top:14px}
+    .panel--shadow{box-shadow:var(--shadow)} .eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--accent);margin-bottom:5px}
+    .control{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;margin-top:14px}
+    .control label{font-weight:700}.control output{font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent)}
+    input[type=range]{grid-column:1/-1;width:100%;min-height:40px;accent-color:var(--accent);touch-action:pan-x}
+    .scale{grid-column:1/-1;display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:-7px}
+    .hint{font-size:13px;color:var(--muted);margin-top:10px}
+    button{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:0;min-height:48px;padding:10px 14px;font-weight:750;cursor:pointer;touch-action:manipulation;box-shadow:2px 2px 0 var(--ink)}
+    button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)} button:disabled{opacity:.45;cursor:not-allowed}
+    .primary{background:var(--accent);color:#fff;border-color:var(--ink)} .full{width:100%;margin-top:16px}
+    .hud{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+    .stat{border:1px solid var(--ink);background:#fff;padding:8px 10px;min-width:0}.stat small{display:block;font-size:11px;color:var(--muted)}.stat b{font-size:17px;display:block;white-space:nowrap}
+    .progress{height:8px;background:#ddd;border:1px solid var(--ink);margin-top:9px}.progress span{height:100%;display:block;background:var(--accent);transition:width .25s}
+    .stage-title{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.stage-count{font-size:12px;font-weight:800;white-space:nowrap}
+    .routes{display:grid;gap:9px;margin-top:13px}
+    .route{display:block;width:100%;text-align:left;padding:12px;border-width:2px;box-shadow:none;background:#fff}
+    .route[aria-pressed=true]{outline:3px solid var(--accent);outline-offset:1px;background:#f1efff}
+    .route-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.route-title{font-weight:800}.route-label{font-size:12px;color:var(--muted);white-space:nowrap}
+    .route-detail{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:#3f3f46;margin-top:5px}
+    .bridge-note{font-size:12px;color:var(--accent);font-weight:700;margin-top:5px}
+    .kit{width:100%;margin-top:10px;background:#f4f3ee;text-align:left;box-shadow:none}
+    .kit[aria-pressed=true]{border-color:var(--accent);outline:2px solid var(--accent);background:#f1efff}
+    .actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+    .message{min-height:44px;margin-top:12px;padding:10px 12px;background:#f4f3ee;border-left:4px solid var(--accent);font-size:14px}
+    .message.bad{border-left-color:var(--warn)}
+    .log{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}.log li{border-top:1px solid var(--line);padding-top:8px;font-size:13px}
+    .result-score{font-size:30px;line-height:1.2;font-weight:850;margin:4px 0 8px}.footnote{font-size:12px;color:var(--muted);margin-top:12px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:360px){.game{padding:14px 10px}.panel{padding:13px}.hud{gap:5px}.stat{padding:7px}.stat b{font-size:15px}.route{padding:10px}.route-detail{gap:3px 8px}}
+  </style>
+</head>
+<body>
+  <main class="game">
+    <div class="topline"><span class="brand">GAME DESIGN LAB / FIELD TEST</span><span class="tag">約2分｜タップ操作</span></div>
+    <h1>山道配送</h1>
+    <p class="intro">近道は速い。でも荷物を守れる？ 先人の橋を使うか、遠回りするか選ぼう。</p>
+
+    <section class="panel panel--shadow" id="setup" aria-labelledby="setup-title">
+      <p class="eyebrow">出発前の条件</p>
+      <h2 id="setup-title">荷物と天候を決める</h2>
+      <div class="control">
+        <label for="load">荷物の重さ</label><output id="loadOut" for="load">ふつう</output>
+        <input id="load" type="range" min="1" max="3" step="1" value="2" aria-label="荷物の重さ">
+        <div class="scale"><span>軽い</span><span>ふつう</span><span>重い</span></div>
+      </div>
+      <div class="control">
+        <label for="weather">天候・地形の荒さ</label><output id="weatherOut" for="weather">穏やか</output>
+        <input id="weather" type="range" min="0" max="2" step="1" value="0" aria-label="天候・地形の荒さ">
+        <div class="scale"><span>穏やか</span><span>荒れ気味</span><span>荒天</span></div>
+      </div>
+      <p class="hint">変更するのは1項目ずつ。3つの配送で荷物を守り、近道と助け合いの結果を比べます。</p>
+      <button class="primary full" id="start">出発する</button>
+    </section>
+
+    <section id="play" hidden aria-labelledby="stageName">
+      <div class="hud" aria-label="配送状況">
+        <div class="stat"><small>荷物の状態</small><b id="condition">6 / 6</b></div>
+        <div class="stat"><small>いいね</small><b id="likes">0</b></div>
+        <div class="stat"><small>移動距離</small><b id="distance">0</b></div>
+      </div>
+      <div class="progress" aria-label="配送の進み具合"><span id="progress" style="width:0%"></span></div>
+      <div class="panel panel--shadow">
+        <div class="stage-title"><div><p class="eyebrow" id="stageTerrain">岩場</p><h2 id="stageName">配送 1</h2></div><span class="stage-count" id="stageCount">1 / 3</span></div>
+        <p class="hint" id="stageText">荷物を積んで目的地まで運ぼう。</p>
+        <div class="routes" id="routes" role="group" aria-label="ルートを選ぶ"></div>
+        <button class="kit" id="kit" type="button" aria-pressed="false">補助具を使う（残り1回）｜危険を2下げる</button>
+        <div class="actions"><button class="primary" id="depart" disabled>この道を進む</button></div>
+        <div class="message" id="message" role="status" aria-live="polite">まずルートを選んでください。</div>
+      </div>
+      <section class="panel" aria-labelledby="history-title"><h2 id="history-title">配送の記録</h2><ul class="log" id="log"><li>道の違いを確かめよう。</li></ul></section>
+    </section>
+
+    <section id="finish" hidden aria-labelledby="result-title" class="panel panel--shadow">
+      <p class="eyebrow">配送結果</p><h2 id="result-title">3つの荷物を届けた</h2>
+      <p class="result-score" id="resultScore">荷物 6 / 6</p>
+      <p id="resultText"></p>
+      <ul class="log" id="finalLog"></ul>
+      <button class="primary full" id="replay">設定を変えてもう一度</button>
+      <p class="footnote">このデモはルート選択と短い再挑戦を体験するためのオリジナル作品です。長期的な継続や実際のプレイヤー傾向を測るものではありません。</p>
+    </section>
+    <div class="panel" style="margin-top:14px"><button id="download" type="button">このデモHTMLを保存</button><p class="footnote">一人で遊ぶゲームの中に、誰かの足跡を残せるだろうか？</p></div>
+  </main>
+  <script>
+    (() => {
+      // 改造ポイント：ここを変えると荷重や天候が移動リスクへ反映される。
+      const LOAD_PENALTY = [0, 0, 1]; // 軽い・ふつう・重い
+      const WEATHER_PENALTY = [0, 1, 2]; // 穏やか・荒れ気味・荒天
+      const DAMAGE_LIMITS = { minor: 2, severe: 4 }; // 危険度から荷物損傷への境目
+      const stages = [
+        { terrain: '岩場', name: '配送 1｜岩場を越える', text: '斜面は短いけれど、足元が崩れやすい。', routes: [
+          { id: 'shortcut', name: '岩の近道', tag: '最短', risk: 2, distance: 1 },
+          { id: 'bridge', name: '先人のロープ橋', tag: '共有の足場', risk: 1, distance: 2, shared: true, helper: 'sora' },
+          { id: 'detour', name: '谷沿いの迂回路', tag: '遠回り', risk: 0, distance: 3 }
+        ]},
+        { terrain: '川辺', name: '配送 2｜川を渡る', text: '水かさが増すと、積荷を守る準備が重要。', routes: [
+          { id: 'shortcut', name: '浅瀬を渡る', tag: '最短', risk: 3, distance: 1 },
+          { id: 'bridge', name: '先人の吊り橋', tag: '共有の足場', risk: 1, distance: 2, shared: true, helper: 'nagi' },
+          { id: 'detour', name: '川沿いの迂回路', tag: '遠回り', risk: 0, distance: 3 }
+        ]},
+        { terrain: '雪山', name: '配送 3｜雪の峠を越える', text: '最後の峠。ここまでの荷物を無事に届けよう。', routes: [
+          { id: 'shortcut', name: '雪の急斜面', tag: '最短', risk: 2, distance: 1 },
+          { id: 'bridge', name: '先人の尾根道', tag: '共有の足場', risk: 2, distance: 2, shared: true, helper: 'rei' },
+          { id: 'detour', name: '森を回る道', tag: '遠回り', risk: 0, distance: 3 }
+        ]}
+      ];
+      const $ = (id) => document.getElementById(id);
+      const load = $('load'), weather = $('weather');
+      const state = { step: 0, condition: 6, likes: 0, distance: 0, selected: null, kitLeft: true, kitArmed: false, records: [], settings: { load: 2, weather: 0 } };
+      const loadNames = ['軽い', 'ふつう', '重い'], weatherNames = ['穏やか', '荒れ気味', '荒天'];
+      const currentStage = () => stages[state.step];
+      const getRisk = (route) => Math.max(0, route.risk + LOAD_PENALTY[state.settings.load - 1] + WEATHER_PENALTY[state.settings.weather] - (route.shared ? 1 : 0) - (state.kitArmed && state.kitLeft ? 2 : 0));
+      const damageFor = (risk) => risk >= DAMAGE_LIMITS.severe ? 2 : risk >= DAMAGE_LIMITS.minor ? 1 : 0;
+      function updateSetupLabels() { $('loadOut').textContent = loadNames[Number(load.value) - 1]; $('weatherOut').textContent = weatherNames[Number(weather.value)]; }
+      load.addEventListener('input', updateSetupLabels); weather.addEventListener('input', updateSetupLabels); updateSetupLabels();
+
+      function renderHUD() {
+        $('condition').textContent = `${state.condition} / 6`;
+        $('likes').textContent = String(state.likes);
+        $('distance').textContent = String(state.distance);
+        $('progress').style.width = `${Math.round((state.step / stages.length) * 100)}%`;
+      }
+      function renderRoutes() {
+        const stage = currentStage(), box = $('routes');
+        box.replaceChildren();
+        stage.routes.forEach((route) => {
+          const risk = getRisk(route), damage = damageFor(risk);
+          const button = document.createElement('button'); button.type = 'button'; button.className = 'route'; button.setAttribute('aria-pressed', state.selected === route.id ? 'true' : 'false');
+          button.innerHTML = `<span class="route-head"><span class="route-title">${route.name}</span><span class="route-label">${route.tag}</span></span><span class="route-detail"><span>距離 ${route.distance}</span><span>予測負担 ${risk}</span><span>${damage === 0 ? '荷物は無事' : `損傷 ${damage}`}</span></span>${route.shared ? `<span class="bridge-note">${route.helper}さんの足跡｜使うと「いいね」+2</span>` : ''}`;
+          button.addEventListener('click', () => { state.selected = route.id; renderRoutes(); $('depart').disabled = false; $('message').textContent = `${route.name}を選択。危険度 ${risk}、予測損傷 ${damage}。`; $('message').classList.toggle('bad', damage > 0); });
+          box.append(button);
+        });
+        $('stageTerrain').textContent = stage.terrain;
+        $('stageName').textContent = stage.name;
+        $('stageText').textContent = stage.text;
+        $('stageCount').textContent = `${state.step + 1} / ${stages.length}`;
+        $('kit').disabled = !state.kitLeft;
+        $('kit').textContent = !state.kitLeft ? '補助具は使用済み' : `補助具を${state.kitArmed ? '使う' : '使わない'}（残り1回）｜危険を2下げる`;
+        $('kit').setAttribute('aria-pressed', state.kitArmed ? 'true' : 'false');
+        renderHUD();
+      }
+      $('kit').addEventListener('click', () => { if (!state.kitLeft) return; state.kitArmed = !state.kitArmed; renderRoutes(); $('message').textContent = state.kitArmed ? '補助具をこの配送で使います。' : '補助具を温存します。'; });
+      $('start').addEventListener('click', () => {
+        state.step = 0; state.condition = 6; state.likes = 0; state.distance = 0; state.selected = null; state.kitLeft = true; state.kitArmed = false; state.records = [];
+        state.settings = { load: Number(load.value), weather: Number(weather.value) };
+        $('setup').hidden = true; $('finish').hidden = true; $('play').hidden = false; $('depart').disabled = true;
+        $('log').innerHTML = '<li>道の違いを確かめよう。</li>'; $('message').textContent = 'まずルートを選んでください。'; $('message').classList.remove('bad'); renderRoutes();
+      });
+      $('depart').addEventListener('click', () => {
+        if (state.selected === null) return;
+        const route = currentStage().routes.find((r) => r.id === state.selected);
+        const risk = getRisk(route), damage = damageFor(risk);
+        state.condition = Math.max(0, state.condition - damage);
+        state.distance += route.distance;
+        if (damage === 0) state.likes += 1;
+        if (route.shared) state.likes += 2;
+        if (state.kitArmed) state.kitLeft = false;
+        const record = { stage: currentStage().terrain, route: route.name, risk, damage, distance: route.distance, helper: route.shared ? route.helper : '', kit: state.kitArmed };
+        state.records.push(record);
+        const item = document.createElement('li'); item.textContent = `${record.stage}：${record.route}｜負担 ${risk}・損傷 ${damage}・距離 ${route.distance}${record.helper ? `・${record.helper}さんの橋にいいね` : ''}${record.kit ? '・補助具を使用' : ''}`;
+        if ($('log').firstElementChild?.textContent === '道の違いを確かめよう。') $('log').replaceChildren();
+        $('log').prepend(item);
+        state.step += 1; state.selected = null; state.kitArmed = false;
+        if (state.condition <= 0 || state.step >= stages.length) { finishGame(); return; }
+        $('depart').disabled = true; $('message').textContent = damage === 0 ? `荷物を守れた。${route.shared ? `${route.helper}さんの橋も役立った。` : ''}次の配送へ。` : damage === 1 ? '荷物の一部が傷ついた。次は道具やルートを見直そう。' : '大きな損傷が出た。危険の予測を次の便に活かそう。';
+        $('message').classList.toggle('bad', damage > 0); renderRoutes();
+      });
+      function finishGame() {
+        $('play').hidden = true; $('finish').hidden = false;
+        const won = state.condition > 0 && state.step >= stages.length;
+        $('result-title').textContent = won ? '荷物を届けきった' : '荷物を守りきれなかった';
+        $('resultScore').textContent = `荷物 ${state.condition} / 6`;
+        $('resultText').textContent = `${state.step}つの配送で、距離 ${state.distance}・いいね ${state.likes}。${won ? '急ぐ道、安全な道、誰かの橋。どの判断が結果を変えたか見直そう。' : '重さ・天候・ルートの組み合わせを変えて、もう一度計画しよう。'}`;
+        $('finalLog').replaceChildren(...state.records.map((r) => { const li = document.createElement('li'); li.textContent = `${r.stage}：${r.route}（負担 ${r.risk}／損傷 ${r.damage}）`; return li; }));
+      }
+      $('replay').addEventListener('click', () => { $('finish').hidden = true; $('play').hidden = true; $('setup').hidden = false; updateSetupLabels(); load.focus(); });
+      $('load').addEventListener('change', updateSetupLabels); $('weather').addEventListener('change', updateSetupLabels);
+      $('download').addEventListener('click', () => {
+        const html = '<!doctype html>\n' + document.documentElement.outerHTML;
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob), link = document.createElement('a');
+        link.href = url; link.download = 'GameDesignLab_Day025_2026-11-08.html'; link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+    })();
+  </script>
+</body>
+</html>

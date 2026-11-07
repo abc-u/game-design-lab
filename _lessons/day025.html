@@ -1,0 +1,210 @@
+---
+day: 25
+date: 2026-11-08
+title: 道が選択になる｜『DEATH STRANDING』の地形と配送
+theme: 地形コストとルート選択
+game: DEATH STRANDING
+level: 初級〜中級
+minutes: 10
+summary: 地形の負担を、ルート判断と他者の助けに変える設計を学ぶ。
+question: 危険な近道と安全な遠回りを、プレイヤーが納得して選ぶには？
+goals:
+  - 荷重・地形・道具が移動の判断を変える因果を説明できる
+  - 作品の開始・継続・離脱の理由を、根拠と仮説に分けられる
+  - ルート条件を改造し、選択と結果を比べられる
+video:
+  id: Hen8tPH0A2w
+  title: DEATH STRANDING 公式ゲームプレイトレーラー｜PlayStation
+  caption: 公式ゲームプレイ映像（2019-05-29公開）。荷物を背負った移動、道具、地形の違いに注目。
+demo:
+  src: /demos/day025.html
+  title: 山道配送｜近道か、先人の橋か
+  height: 980
+sources:
+  - title: PlayStation.Blog「Death Stranding Available November 8 on PS4」
+    url: https://blog.playstation.com/2019/05/29/death-stranding-available-november-8-on-ps4/
+    note: PS4発売日、米国標準版の予約価格$59.99、作品紹介（2019-05-29公開、2026-11-08確認）
+  - title: PlayStation Store「DEATH STRANDING」
+    url: https://store.playstation.com/en-us/product/UP9000-CUSA11260_00-DEATHSTRAND00001
+    note: PS4、発売日2019-11-08、掲載価格（2026-11-08確認。現在価格は割引等で変動）
+  - title: PlayStation Europe「Death Stranding - Official Gameplay Release Date Trailer」
+    url: https://www.youtube.com/watch?v=Hen8tPH0A2w
+    note: 公式ゲームプレイトレーラー（2019-05-29公開、2026-11-08確認）
+  - title: 505 Games「DEATH STRANDING is OUT NOW on Steam and Epic Games Store」
+    url: https://505games.com/death-stranding-is-out-now-on-steam-and-epic-games-store/
+    note: PC版をSteam・Epic Games Storeで発売（2020-07-14公開、2026-11-08確認）
+  - title: KOJIMA PRODUCTIONS「20 MILLION PORTERS CONNECTED THROUGH DEATH STRANDING」
+    url: https://www.kojimaproductions.jp/index.php/en/DS-20million-porters
+    note: PS4・PS5・PC・Xbox・iOS・Amazon Lunaで2,000万人超のPorterとつながったと発表。販売本数ではなく、Director's Cutや後発プラットフォームを含む（2025-03-31公開、2026-11-08確認）
+  - title: KOJIMA PRODUCTIONS「Company」
+    url: https://www.kojimaproductions.jp/en/company
+    note: PS4・PCで累計500万本超を販売したと発表（2021年3月時点、2026-11-08確認）
+  - title: Hideo Kojimaインタビュー｜Game Informer
+    url: https://gameinformer.com/interview/2019/09/16/hideo-kojima-answers-our-questions-about-death-stranding
+    note: 非同期オンライン、他プレイヤーの足跡と「いいね」に関する開発者の見解（2019-09-16公開、2026-11-08確認）
+  - title: Hideo Kojimaインタビュー｜ファミ通.com
+    url: https://www.famitsu.com/news/201911/02185866.html
+    note: 道具・橋などを他プレイヤーと共有する仕組みについて（2019-11-02公開、2026-11-08確認）
+  - title: "GDC Vault「AI Summit: 'Death Stranding': An AI Postmortem」"
+    url: https://www.gdcvault.com/play/1027144
+    note: 断片的な地形、経路探索、プレイヤー設置構造物上の移動を解説（GDC 2021、2026-11-08確認）
+  - title: Metacritic「Death Stranding Reviews」
+    url: https://www.metacritic.com/game/death-stranding/
+    note: タイトルページ表示は批評家82/100（111件）、ユーザー7.4/10（20,072評価）。ページ全体の集計、2026-11-08確認。変動する評価で購入者全体の調査ではない
+  - title: GameSpot「Death Stranding Review」
+    url: https://www.gamespot.com/reviews/death-stranding-review/1900-6417358/
+    note: PS4版レビューは2019-11-01初出。つながりを描く非同期要素を評価しつつ、序盤の進行が遅い点にも言及（PC版更新2020-07-13）
+  - title: PC Gamer「Death Stranding review」
+    url: https://www.pcgamer.com/death-stranding-review/
+    note: 景観・雰囲気・独自性を評価する一方、遅いテンポや往復の反復を指摘（2020-07-13公開、PC版）
+  - title: Steam Community「DEATH STRANDING DIRECTOR'S CUT」否定的レビュー一覧
+    url: https://steamcommunity.com/app/1850570/negativereviews/?browsefilter=toprated&l=english
+    note: 2022-09-05投稿、18.1時間プレイ時点の個別例を参照。道の反復と移動の遅さが負担になったという意見。否定的レビュー一覧から選んだ1件で代表性はない（2026-11-08確認）
+sources_note: 事実、開発者の見解、批評家・プレイヤーの意見、独自分析を分けました。販売数は対象機種と発表時点を併記し、評価数は確認日時点の表示です。個別レビューや短時間のデモ結果から、全プレイヤーの継続率・離脱率は推定できません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：移動の負担を、選べるコストにする</h2>
+  <p>移動がただ遅いだけでは、プレイヤーは待たされていると感じます。地形・荷物・道具の違いが「速いが危険」「安全だが時間がかかる」のような判断に結びつくと、移動そのものが設計上の選択になります。</p>
+  <p>設計では、道ごとの時間・危険・資源コストを分け、行く前に違いを読み取れるようにします。到着後は荷物や進行度の変化を返し、次のルート選びに活かせる情報を残します。</p>
+
+  <ol class="flow mt-m">
+    <li><b>読む</b><span>地形・荷物・道具の違いを見る</span></li>
+    <li><b>選ぶ</b><span>速さ・安全・準備を比べる</span></li>
+    <li><b>確かめる</b><span>到着後に時間や荷物の状態を見る</span></li>
+  </ol>
+
+  <h3 class="h-sub">自作ゲームで確かめる</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">選択肢ごとに違いがある？</p><p class="list__text">安全な道と危険な近道が、時間や荷物のリスクで分かれているか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">結果の原因を読める？</p><p class="list__text">荷物の重さ、地形、道具のどれが損傷につながったか分かるか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">次の一手を変えられる？</p><p class="list__text">失敗や他者の助けを見て、次の移動や準備を変えられるか。</p></div></div>
+  </div>
+  <p class="note mt-m">この見方で、移動の負担を物語のテーマや他プレイヤーとの接点につなげた『DEATH STRANDING』を見ます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：荷物を運ぶ道が、プレイヤーの選択になる</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2019年11月8日（PS4）。PC版は2020年7月14日発売</dd></div>
+    <div><dt>開発・発売</dt><dd>KOJIMA PRODUCTIONS／Sony Interactive Entertainment（PS4）、505 Games（PC）</dd></div>
+    <div><dt>ジャンル</dt><dd>オープンワールドのアクション・アドベンチャー。配送と地形移動が中心</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <figure class="mt-m" aria-labelledby="route-caption">
+    <svg viewBox="0 0 760 300" role="img" aria-labelledby="route-title route-desc" style="display:block;width:100%;height:auto;background:#fff;border:2px solid #16161a">
+      <title id="route-title">荷物を運ぶ三つのルートの比較図</title>
+      <desc id="route-desc">出発地から到着地まで、短く危険な近道、他プレイヤーが残した橋、安全だが長い迂回路を比較する独自図。</desc>
+      <rect x="28" y="28" width="704" height="244" fill="#f4f3ee" />
+      <circle cx="80" cy="150" r="25" fill="#5b3df5"/><text x="80" y="157" text-anchor="middle" font-size="18" fill="#fff">出発</text>
+      <circle cx="680" cy="150" r="25" fill="#16161a"/><text x="680" y="157" text-anchor="middle" font-size="18" fill="#fff">到着</text>
+      <path d="M105 150 L655 150" stroke="#d65b4a" stroke-width="8" stroke-dasharray="12 9" fill="none"/>
+      <path d="M105 150 Q370 48 655 150" stroke="#5b3df5" stroke-width="9" fill="none"/>
+      <path d="M105 150 Q210 245 370 235 Q530 225 655 150" stroke="#777" stroke-width="7" fill="none"/>
+      <rect x="346" y="83" width="48" height="20" fill="#16161a"/><text x="370" y="72" text-anchor="middle" font-size="18" fill="#16161a">先人の橋</text>
+      <text x="380" y="177" text-anchor="middle" font-size="18" fill="#8c2c20">近道：速い・危険</text>
+      <text x="380" y="258" text-anchor="middle" font-size="18" fill="#3f3f46">迂回：安全・長い</text>
+      <text x="465" y="97" text-anchor="middle" font-size="16" fill="#3f3f46">他者の足場で負担が下がる</text>
+    </svg>
+    <figcaption id="route-caption" class="note mt-s">独自図：ルートごとの時間・危険と、他プレイヤーが残した構造物が移動を助ける関係を整理。ゲーム画面の転載ではありません。</figcaption>
+  </figure>
+
+  <h3 class="h-sub">行動から感情まで：運ぶ荷物が、道の読み方を変える</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーがすること</th><th>ルールが返すもの</th><th>次の判断</th></tr></thead>
+      <tbody>
+        <tr><th>荷物を背負い、目的地まで歩く</th><td>荷重・斜面・川・足場が、バランスや移動の危険に関わる</td><td>近道を進むか、道具を使うか、荷物を減らすか</td></tr>
+        <tr><th>はしごやロープを置く</th><td>自分の先の移動を助け、オンライン上で他者の世界にも構造物が現れ得る</td><td>いまの資源を使うか、他者の足跡を利用するか</td></tr>
+        <tr><th>荷物を届ける</th><td>荷物の状態や配送評価が表示され、他者の構造物には利用者の「いいね」も付く</td><td>次は別の道を試すか、役立つ足場を残すか</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h-sub">始めたくなる：謎と作り手の名前が入口になる</h3>
+  <p>公式映像は、荒廃した世界、Norman Reedusらの出演、謎めいた物語を前面に出しました。Kojimaの新作を追ってきた人や、映像から世界観に惹かれた人が期待を持って始める入口ですが、どの広告要素が購入を生んだかの比較データは公表されていません。</p>
+  <p>最初の配送では、荷物を背負って目的地へ向かうという目標は明快です。一方、GameSpotはPS4版の序盤を遅い展開と評し、オンライン要素がまだ開いていないこともその理由に挙げました。見どころに届くまでの時間は、入口の摩擦になり得ます。</p>
+
+  <h3 class="h-sub">続けたくなる：道を覚え、助けを受け、次は助ける</h3>
+  <p>斜面で荷物を落としそうになれば、足場や道具の必要性が見えてきます。荷物を無事に届けた直後の評価は今回の結果を知らせ、他者が置いた橋やはしごは次の移動を楽にします。独自分析では、危険を避ける工夫が物語の「つながり」を行動として確かめる機会になります。</p>
+  <p>開発者の小島秀夫は、オンラインでも一人で歩く孤独と、他者の足跡を見つける感覚を狙いとして説明しました。批評家レビューも、他者の構造物が世界を少しずつ通りやすくする非同期の仕組みを評価しています。</p>
+  <p>同じセッションでは、新しい地域・依頼・道具が移動計画を更新し、先ほどの失敗を別の方法で試せます。後日戻る理由は、続きの物語や配送、共同で育ったルートに再び触れることだと考えられますが、作品の長期継続率や復帰率は公開資料から確認できません。</p>
+
+  <h3 class="h-sub">この作品ならでは：移動を、他者と道をつなぐ行為にする</h3>
+  <p>オープンワールド作品では移動が次の戦闘や目的地までの移動手段になりやすい一方、本作では荷物の安定、地形、道具の準備が道中の中心的な課題になります。プレイヤーが置いた足場が別の人の世界にも役立ち、その人の痕跡に「いいね」を返せる組み合わせが、孤独な配送を間接的な協力に変えます。</p>
+  <p>配送シミュレーションや地形を越える遊び自体が本作だけの発明という意味ではありません。特徴は、著名な作り手による物語、荷物の扱い、身体のバランス、共有される構造物を一つのテーマでまとめた点にあります。</p>
+
+  <h3 class="h-sub">離れる理由：移動の手応えが、反復や遅さにもなる</h3>
+  <p>PC Gamerは静かな景観や独自性を評価しながら、長い往復やゆっくりした進行も指摘しました。SteamのDirector’s Cutで、2022年9月5日・18.1時間プレイ時点の否定的レビューを1件選んで読むと、景色や物語は魅力でも、道の反復と遅い探索が負担になったという声があります。</p>
+  <p>この一例は、歩行中心のテンポが合わない人の経験を示しますが、全体の意見割合ではありません。ルートを考えず繰り返し同じ道を進む人、配送より物語の進行を急ぐ人には、地形コストが選択ではなく足止めに感じられる可能性があります（独自分析）。</p>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析</p>
+    <p class="panel__title">地形の負担を「読める選択」にし、他者の足場を通じて移動を協力へ広げる。</p>
+    <p class="mt-s">このデモでは、危険な近道、安全だが長い迂回路、他者が残した橋を比べます。重さと天候を変えたとき、選択肢の価値がどう動くかを試してください。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：独自性だけで選ばれたわけではない</h2>
+  <h3 class="h-sub">批評家とプレイヤーの評価</h3>
+  <ul class="bullets mt-s">
+    <li><span><strong>批評家集計：</strong>Metacriticの作品ページは82/100、111件。内訳は肯定86件（77%）、中間22件（20%）、否定3件（3%）の表示でした（2026-11-08確認）。</span></li>
+    <li><span><strong>プレイヤー集計：</strong>同ページのユーザー評価は7.4/10、20,072件。肯定70%、中間7%、否定22%の表示です（同日確認。丸めのため合計は100%にならない）。批評家の評価と投稿ユーザーの評価は母集団が異なります。</span></li>
+    <li><span><strong>批評家の具体例：</strong>GameSpotは、孤独な配送と非同期協力が「つながり」を表す点を評価する一方、序盤が遅いとも述べました。PC Gamerは景観と独自性を評価しながら、後半の往復やテンポを弱点に挙げています。</span></li>
+    <li><span><strong>プレイヤーの具体例：</strong>Metacriticで2026年7月30日の投稿は長い依頼を認めながらも体験を勧め、同年6月6日の投稿は他者の構造物を面白いとしつつ、全体が長すぎると批判しました。日付順に選んだ2件の定性例で、全ユーザーの傾向を表しません。</span></li>
+  </ul>
+
+  <h3 class="h-sub">確認できる成果と、市場の仮説</h3>
+  <dl class="facts">
+    <div><dt>販売本数</dt><dd>開発元発表では、PS4・PCで500万本超（2021年3月時点）。後年の総販売数ではありません。</dd></div>
+    <div><dt>到達規模</dt><dd>2025年3月、PS4・PS5・PC・Xbox・iOS・Amazon Lunaで2,000万人超のPorterと「つながった」と発表。販売本数と同一の指標ではありません。</dd></div>
+    <div><dt>価格・機種</dt><dd>PS4版の米国標準版予約価格は$59.99。PC版は2020年にSteam・Epicで発売し、後にDirector’s Cutも展開。</dd></div>
+  </dl>
+  <p>作り手の知名度、Norman Reedusらの出演、謎を多く残す映像、PS4発売時の注目、のちのPC・PS5展開は作品を知る接点を増やした可能性があります。5百万本という販売実績は確認できますが、ブランド・映像・ゲーム性それぞれの売上寄与や、競合作品から選ばれた割合は公開資料から分かりません。</p>
+  <p class="note mt-s">ここでの市場仮説は、発表済みの販売数から因果を証明するものではありません。レビューの評価差も、年齢・機種・作品への期待などを調べない限り、どの層がなぜ離れたかまでは示しません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：山道配送</h2>
+  <p>荷物を3つ届けます。近道・先人の橋・迂回路を選び、重さと荒天を変えて、荷物の状態・移動距離・もらった「いいね」を比べてください。</p>
+  <div class="chips mt-s"><span class="chip">荷物の重さ</span><span class="chip">天候の荒さ</span><span class="chip">補助具は1回</span><span class="chip">3つの配送</span></div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">結果を比べる</p>
+    <p class="panel__title">完了数だけでなく、ルートを変えた理由も記録する。</p>
+    <p class="mt-s">開始前に「どの道を選ぶか」「何を失う可能性があるか」を予想し、到着後に実際の損傷と距離を比べます。再プレイで重さか天候を一つだけ変え、選択がどう変わったかを確認してください。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="panel">
+    <p class="panel__label">入門｜1つの値を変える</p>
+    <p class="panel__title">荷物の重さを1段階上げる。</p>
+    <p class="mt-s">天候は固定し、軽い荷物と重い荷物で1回ずつ配送。近道を選ぶ回数、損傷、補助具を使う場面を比べ、「重さで選択が変わる」と予想した結果を記録します。</p>
+  </div>
+  <div class="panel mt-s">
+    <p class="panel__label">応用｜ルールを足す</p>
+    <p class="panel__title">自分の足場を、次の便の人へ残す。</p>
+    <p class="mt-s">橋に置く標識を1つ設け、次の配送で橋の危険を下げるルールを加えます。設置に距離や資源のコストを付ける案と、無償にする案を比べ、他者への助けと自分の近道のどちらが選ばれるかを考えます。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの移動を面白くするなら、危険な近道・安全な迂回・資源を使う道のどれを置く？選びやすさと、失敗の痛さはどう変わる？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">他プレイヤーの足跡を見せる案と、世界を完全に一人で探索する案を比べる。世界への没入、孤独感、他者とのつながりはそれぞれどう変わる？</span></div>
+  </div>
+</section>
