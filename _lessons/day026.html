@@ -1,0 +1,216 @@
+---
+day: 26
+date: 2026-11-09
+title: 手作業を「仕組みの設計」に変える｜『Factorio』の自動化
+theme: 反復作業の自動化と設計者への役割移行
+game: Factorio
+level: 初級〜中級
+minutes: 10
+summary: 繰り返す作業を機械へ渡すと、次の設計判断が遊びになる流れを学ぶ。
+question: 同じ作業を繰り返す時間を、プレイヤーが仕組みを考える時間へどう変える？
+goals:
+  - 作業の自動化が、行動・結果・次の設計判断を生む因果を説明できる
+  - 『Factorio』の入口・継続・離脱要因を、開発者の発言や評価データと分けて分析できる
+  - デモの生産条件を変え、自作ゲームで「手を動かす時間」と「仕組みを考える時間」を比べられる
+video:
+  id: BqaAjgpsoW8
+  title: Factorio 1.0 Launch Trailer｜Wube Software
+  caption: Wube Software公式ローンチトレーラー（2020-08-14公開）。採掘・搬送・組立がつながり、工場が自動で動く場面を見てください。
+demo:
+  src: /demos/day026.html
+  title: 組み立てライン｜手を動かすか、仕組みを動かすか
+  height: 940
+sources:
+  - title: Wube Software「Factorio on Steam」
+    url: https://store.steampowered.com/app/427520/Factorio/?l=english
+    note: 発売日、レビュー数・比率、対応OS、無料デモ、メーカー説明と価格表示（2026-11-09確認。レビュー数・価格は変動）
+  - title: Wube Software「Friday Facts #372 - 2022 recap」
+    url: https://www.factorio.com/blog/post/fff-372
+    note: 2022-12-30公開。累計販売350万本超、年約50万本、セールをしない方針についての開発元発表
+  - title: Wube Software「Friday Facts #349 - The 1.0 plan」
+    url: https://www.factorio.com/blog/post/fff-349
+    note: 2020-05-29公開。Cyberpunk 2077と発売時期が重なる懸念から、1.0日程を前倒しした開発元の説明
+  - title: Wube Software「Friday Facts #360 - 1.0 is here!」
+    url: https://www.factorio.com/blog/post/fff-360
+    note: 2020-08-14公開。1.0発売、早期アクセスを避ける購入者・批評家、動画や配信が認知に果たした役割について
+  - title: Wube Software「Factorio Presskit」
+    url: https://www.factorio.com/support/press-kit
+    note: 対応機種、無料デモ5ミッション、MOD、マルチプレイ、価格（米国表示$35）と公式素材（2026-11-09確認）
+  - title: PC Gamer「Factorio review」
+    url: https://www.pcgamer.com/factorio-review/
+    note: Rick Lane、2020-08-24公開。91/100。生産ラインの深さを評価しつつ、見た目や戦闘の好みも論じる
+  - title: Metacritic「Factorio Reviews」
+    url: https://www.metacritic.com/game/factorio/
+    note: 批評家8件のMetascore 90、ユーザー評価1,012件の平均8.9/10を確認（2026-11-09確認。集計は変動）
+sources_note: レビューの集計は確認時点の表示です。個別のユーザー意見は選んだ事例であり、全体の代表とはみなしません。事実・開発者の見解・批評・独自分析を分けています。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：自動化は「作業をなくす」設計</h2>
+  <p>ゲームの自動化とは、プレイヤーが繰り返していた行動を、ルールに沿って動く仕組みに任せることです。作業を省くことで、空いた注意を「次は何を作るか」「どこを直すか」という別の判断へ移せます。</p>
+
+  <ol class="flow mt-m">
+    <li><b>手で作る</b><span>行動と結果を知る</span></li>
+    <li><b>機械に任せる</b><span>同じ結果を繰り返す</span></li>
+    <li><b>流れを見る</b><span>詰まりや不足を見つける</span></li>
+    <li><b>次を設計する</b><span>より大きな目標へ進む</span></li>
+  </ol>
+
+  <h3 class="h-sub">自作ゲームで使う見方</h3>
+  <div class="list">
+    <div class="list__row">
+      <span class="num-box num-box--fill">A</span>
+      <div><p class="list__title">何を繰り返している？</p><p class="list__text">移動・入力・収集など、プレイヤーが何度も行う操作を一つ選ぶ。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">B</span>
+      <div><p class="list__title">任せると、次に何を考える？</p><p class="list__text">機械を置いた結果、新しい計画や課題が生まれるか確かめる。</p></div>
+    </div>
+    <div class="list__row">
+      <span class="num-box num-box--fill">C</span>
+      <div><p class="list__title">動いたことが見える？</p><p class="list__text">素材・生産数・音・動きで、仕組みが働いた結果を伝える。</p></div>
+    </div>
+  </div>
+  <p class="note mt-m">見る問い：自動化で生まれた時間は、プレイヤーの次の選択につながっている？</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：手作業から工場設計へ</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2020-08-14（PC。Nintendo Switch版は2022年）</dd></div>
+    <div><dt>開発・販売</dt><dd>Wube Software</dd></div>
+    <div><dt>ジャンル</dt><dd>工場建設・自動化シミュレーション</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">一つの作業が、次の設計問題になる</h3>
+  <p>墜落した主人公は、最初は自分で資源を掘り、必要な道具を作ります。しかしロケットを完成させるには、部品を作るための部品、その材料を掘る設備まで大量に必要です。手作業では間に合わなくなり、採掘機・炉・ベルト・組立機を配置して、生産工程そのものを作る必要が出てきます。</p>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールが返す変化</th><th>次に生まれる判断</th></tr></thead>
+      <tbody>
+        <tr><th>鉱石を手で掘る</th><td>材料は得るが、同じ操作に時間を使う</td><td>この作業を機械へ任せるか</td></tr>
+        <tr><th>採掘機から炉へ運ぶ</th><td>鉱石が板材へ変わり、一定量ずつ流れる</td><td>入力・電力・搬送のどこが足りないか</td></tr>
+        <tr><th>組立機を接続する</th><td>部品が自動生産され、別の行動中も流れ続ける</td><td>次の技術や、より複雑な製品へ進む</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜この作品ならではの組み合わせ</p>
+    <p class="panel__title">画面上で機械が動くことと、工場を自分で設計することが同じ遊びになります。</p>
+    <p class="mt-s">部品がベルトを流れ、機械の腕がつかみ、組立機が動く。配置が正しければ完成品が連続して出るため、「自分が作った工程が働いている」と目で確かめられます。素材を集めるだけのサンドボックスと違い、作業の反復を自動化するほど、プレイヤーの役割が生産者から工程の設計者へ移ります。</p>
+  </div>
+
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row">
+      <span class="list__key">始める</span>
+      <span class="list__body">無料デモは5ミッション。まず掘る・作るを触り、動画ではベルトや機械が動く完成像を見られます。開発者も、チュートリアルが長く手作業だけで終わると、自動化の面白さへ届く前に「単なる作業」と誤解される懸念を記録しています（開発者見解）。</span>
+    </div>
+    <div class="list__row">
+      <span class="list__key">続ける</span>
+      <span class="list__body">製品が増えるたびに、採掘・精錬・搬送の組み合わせが必要になります。部品が流れる手応えが次の不足を見つけさせ、「この工程も任せたい」という短期目標と、ロケット建造の長期目標をつなぎます。</span>
+    </div>
+    <div class="list__row">
+      <span class="list__key">戻る</span>
+      <span class="list__body">MOD、マップ編集、協力プレイは、別の工場や遊び方を試す余地を広げます。これは再訪の選択肢を増やす設計ですが、公開資料から個々の継続率までは分かりません。</span>
+    </div>
+    <div class="list__row">
+      <span class="list__key">離れる</span>
+      <span class="list__body">工程や素材が増えるほど、初見では何から始めるか見失うこともあります。IGNは学ぶ価値のある奥行きと同時に、複雑さと学習コストを指摘しており、手順を組むこと自体が好きでない人には長い準備に感じられます。</span>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：面白さだけで売れたとは言わない</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s">
+        <li><span>Metacritic：PC批評家8件の平均90/100（確認日 2026-11-09）。</span></li>
+        <li><span>PC Gamer：91/100。工程が複雑になるにつれて遊びが深まる点を称賛。一方、見た目の色調や戦闘は弱点・好みが分かれる点として記述。</span></li>
+        <li><span>IGN：8/10。習熟すれば深いが、複雑さが入口の壁になり得ると評価。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの評価</p>
+      <ul class="bullets mt-s">
+        <li><span>Steam英語レビュー：確認時 118,564件中98%好評。直近30日分は1,132件中96%好評（表示値、2026-11-09確認）。</span></li>
+        <li><span>Metacriticユーザー評価：1,012件、平均8.9/10。内訳表示は好評88%、賛否両論6%、不評6%。</span></li>
+        <li><span>個別例：2026-08-16の10/10投稿は自動化の創造性を評価。2020-12-08の2/10投稿は、気に掛ける対象やグラフィックが乏しいと批判。2件を意図的に選んだ例で、意見全体の割合ではありません。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">「生産ラインを組むこと」を目的として楽しむ人には長所が刺さり、人物や物語への関心を重視する人には、同じ仕組みが空虚さや複雑さに映ることがあります。</p>
+  </div>
+
+  <h3 class="h-sub">確認できる成果と市場条件</h3>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>Wubeは2022-12-30時点で累計350万本超、年間約50万本と発表。現在の累計とは扱わない。</dd></div>
+    <div><dt>価格</dt><dd>公式プレスキットの米国表示は$35。地域・通貨で異なる。開発元は値下げセールを行わない方針を表明。</dd></div>
+    <div><dt>機種</dt><dd>Windows / macOS / Linux、Nintendo Switch。無料デモは5ミッション。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>発売時期（事実）</strong>　開発元は、Cyberpunk 2077と近い日程だと注目や報道がそちらに集まる懸念から、1.0の発売日を前倒ししたと説明。</span></li>
+    <li><span><strong>認知（事実・開発者見解）</strong>　開発元は、動画・記事・配信が作品を広めたと1.0発売時に謝意を示した。無料デモ、長期の開発ブログ、MODや攻略資料を作るコミュニティも、内容を知り試す接点になっています。</span></li>
+    <li><span><strong>成功要因（独自分析）</strong>　明確な対象層、試遊の入口、動画で見せやすい生産ライン、追加コンテンツを作る余地、早期アクセス期からの認知が重なったと考えられます。350万本という数字だけでは、各要因の売上寄与や値下げしない戦略の因果までは分かりません。</span></li>
+  </ul>
+  <p class="note mt-s">レビュー件数と割合は変動します。英語Steamレビュー、Metacritic批評家集計、Metacriticユーザー評価は別の母集団です。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：ラインを作ると、手作業はどう変わる？</h2>
+  <p>8シフト以内に部品を5個作ります。毎シフトの採掘と精錬は自動で進み、あなたは採掘機・炉・組立機を増やすか、2枚の板材から手作業で部品を作るかを選びます。</p>
+  <div class="chips mt-s">
+    <span class="chip">鉱石の量</span>
+    <span class="chip">電力上限</span>
+    <span class="chip">納品目標</span>
+    <span class="chip">シフト数</span>
+  </div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">最初の1個はいつ作れた？ その後、あなたは生産する以外に何を考えられた？</p>
+    <p class="mt-s">まず標準条件で遊び、次に鉱石量か電力上限を一つだけ変えて再プレイしてください。結果の個数だけでなく、いつ自動化へ投資したか、手作業に何シフト使ったかも比べます。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">鉱石量だけを変える</p>
+      <p class="mt-s">標準と鉱石量2を比較し、組立機を置いた時点・納品個数・余ったシフトを記録。「素材が多いと手作業が減る」という予想が当たるか確かめます。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">自動化へ一手を足す</p>
+      <p class="mt-s">組立機が完成した後、プレイヤーが使える行動を1つ追加します（例：不足予測、ベルトの向き変更）。生産量を増やすだけの場合と、次の設計判断が生まれる場合を比べます。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの反復作業を自動化するなら、プレイヤーにどんな新しい判断を渡す？ 操作が減ることで失われる手応えを、何で補う？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">『Factorio』の工場設計を、料理・音楽・街づくりなど別ジャンルへ移すなら、何を流れにし、失敗や停止をどう見せる？ 複雑さを楽しむ人と避ける人の両方を想像してください。</span></div>
+  </div>
+  <p class="note mt-m">今日の範囲：自動化したデモ内での再挑戦は観察できますが、日をまたぐ継続率や実際のユーザー行動は測っていません。</p>
+</section>
