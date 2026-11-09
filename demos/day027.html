@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>変化する庭｜Game Design Lab DAY27</title>
+<style>
+:root{--ink:#16161a;--paper:#fff;--bg:#f4f3ee;--muted:#52525b;--purple:#5b3df5;--line:rgba(22,22,26,.22);--font:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;padding:20px 14px 32px}.shell{max-width:760px;margin:auto}.topline{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--purple)}h1{font-size:clamp(24px,6vw,36px);line-height:1.3;margin:6px 0 8px}.intro{margin:0 0 18px;color:var(--muted)}.panel{background:var(--paper);border:2px solid var(--ink);padding:16px;margin:14px 0}.setrow{display:flex;flex-wrap:wrap;gap:12px;align-items:end}.field{flex:1 1 210px;min-width:0}.field label{display:block;font-weight:750;margin:0 0 4px}.field select{width:100%;min-height:46px;padding:8px 10px;font:inherit;border:2px solid var(--ink);background:#fff;color:var(--ink)}button{font:inherit;font-weight:750;color:var(--ink);background:#fff;border:2px solid var(--ink);min-height:48px;min-width:48px;padding:8px 14px;cursor:pointer;touch-action:manipulation}button:focus-visible,select:focus-visible{outline:3px solid var(--purple);outline-offset:2px}.primary{background:var(--purple);color:#fff;box-shadow:3px 3px 0 var(--ink)}.primary:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}.status{font-weight:750;min-height:28px;margin:0 0 8px}.stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.pill{border:1px solid var(--line);background:#f7f6ff;padding:4px 9px;font-size:14px;font-weight:700}.board{display:grid;gap:7px}.row{display:grid;grid-template-columns:52px repeat(3,minmax(0,1fr));gap:6px;align-items:stretch}.rowlabel{display:flex;align-items:center;font-size:13px;font-weight:700;color:var(--muted)}.cell{min-width:0;padding:7px 2px;border:1px solid var(--line);background:#fafafa;text-align:center;font-size:20px}.cell.current{border:2px solid var(--purple);background:#f0edff}.cell.past{opacity:.46}.cell.here{box-shadow:inset 0 -4px var(--purple)}.cell.empty{color:#9a9aa2}.movebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}.movebar button{padding:7px 4px}.movebar button[disabled]{opacity:.48;cursor:not-allowed}.keyhint{font-size:13px;color:var(--muted);margin:9px 0 0}.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--muted);margin-top:10px}.event{border-left:5px solid var(--purple);padding:9px 12px;background:#f0edff;margin:10px 0;font-weight:700}.result{font-size:21px;font-weight:850;margin:0}.small{font-size:14px;color:var(--muted)}[hidden]{display:none!important}@media(max-width:420px){body{padding:16px 10px 28px}.panel{padding:13px}.row{grid-template-columns:45px repeat(3,minmax(0,1fr));gap:4px}.cell{font-size:18px;padding:6px 1px}.rowlabel{font-size:12px}.movebar{gap:5px}.movebar button{font-size:14px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <p class="topline">GAME DESIGN LAB / DAY 027</p>
+  <h1>変化する庭</h1>
+  <p class="intro">いつもの道を進み、途中で起きる変化に合わせて選び直そう。9歩で花びらを4枚集めればクリア。</p>
+  <section id="setup" class="panel" aria-label="実験設定">
+    <div class="setrow">
+      <div class="field"><label for="trigger">庭が変わる歩数</label><select id="trigger"><option value="3">3歩目</option><option value="4" selected>4歩目</option><option value="5">5歩目</option></select></div>
+      <div class="field"><label for="effect">変化の種類</label><select id="effect"><option value="swap">花びらとトゲを入れ替え</option><option value="shift">道をひとつ横へずらす</option></select></div>
+      <button id="start" class="primary" type="button">はじめる</button>
+    </div>
+  </section>
+  <section id="game" class="panel" hidden aria-live="polite">
+    <p id="status" class="status">1歩目。進む列を選ぼう。</p>
+    <div class="stats"><span class="pill">花びら <span id="petals">0</span> / 4</span><span class="pill">トゲ <span id="hits">0</span> / 2（2回で失敗）</span><span class="pill">現在地 <span id="pos">中央</span></span></div>
+    <div id="event" class="event" hidden></div>
+    <div id="board" class="board" aria-label="進行ルート"></div>
+    <div id="moves" class="movebar" aria-label="進む列"><button type="button" data-lane="0">← 左へ</button><button type="button" data-lane="1">● まっすぐ</button><button type="button" data-lane="2">右へ →</button></div>
+    <p class="keyhint">左右の隣の列か、同じ列へ進めます。各マスの記号はその列に進んだときの結果です。</p>
+    <div class="legend"><span>✿ 花びら +1</span><span>▲ トゲ（2回で失敗）</span><span>· 何もなし</span><span>紫枠＝次の一歩</span></div>
+  </section>
+  <section id="end" class="panel" hidden aria-live="polite">
+    <p id="result" class="result"></p><p id="summary" class="small"></p>
+    <button id="again" class="primary" type="button">同じ設定でもう一度</button>
+    <button id="change" type="button">設定を変える</button>
+  </section>
+  <p class="small">このデモはルール変化を比べるためのオリジナル作品です。選択や結果は端末内だけで扱い、外部送信しません。</p>
+</main>
+<script>
+(function(){
+  // 改造ポイント1：この配置を変えると、変化前に見える危険と報酬の分布が変わります。
+  const original=[['·','✿','▲'],['✿','·','▲'],['▲','✿','·'],['·','▲','✿'],['✿','▲','·'],['▲','·','✿'],['·','✿','▲'],['✿','▲','·'],['▲','·','✿']];
+  const laneNames=['左','中央','右'];
+  let board=[],step=0,pos=1,petals=0,hits=0,changed=false,gameOver=false;
+  const $=id=>document.getElementById(id);
+  function makeBoard(){board=original.map(row=>row.slice());}
+  function canMove(lane){return Math.abs(lane-pos)<=1;}
+  function render(){
+    $('petals').textContent=petals;$('hits').textContent=hits;$('pos').textContent=laneNames[pos];
+    const b=$('board');b.textContent='';
+    board.forEach((row,i)=>{
+      const el=document.createElement('div');el.className='row';
+      const label=document.createElement('span');label.className='rowlabel';label.textContent=i<step?'済':(i===step?'次 '+(i+1):String(i+1));el.appendChild(label);
+      row.forEach((icon,j)=>{const cell=document.createElement('span');cell.className='cell '+(icon==='·'?'empty':'')+(i===step?' current':'')+(i<step?' past':'')+(i===step&&j===pos?' here':'');cell.textContent=icon;cell.setAttribute('aria-label',(i+1)+'歩目、'+laneNames[j]+'、'+(icon==='✿'?'花びら':icon==='▲'?'トゲ':'何もなし'));el.appendChild(cell);});
+      b.appendChild(el);
+    });
+    document.querySelectorAll('[data-lane]').forEach(btn=>{const lane=Number(btn.dataset.lane);btn.disabled=gameOver||step>=board.length||!canMove(lane);});
+  }
+  function transform(){
+    if(changed||step!==Number($('trigger').value))return;
+    changed=true;const mode=$('effect').value;
+    for(let r=step;r<board.length;r++){
+      if(mode==='swap')board[r]=board[r].map(x=>x==='✿'?'▲':x==='▲'?'✿':x);
+      else board[r]=[board[r][2],board[r][0],board[r][1]];
+    }
+    $('event').hidden=false;$('event').textContent=mode==='swap'?'庭が変化！ これからの花びらとトゲが入れ替わった。':'庭が変化！ これからの道が右へずれた。';
+  }
+  function finish(){
+    gameOver=true;$('game').hidden=true;$('end').hidden=false;
+    const won=petals>=4&&hits<2;
+    $('result').textContent=won?'クリア！ 花びらを集めた。':'ここで終了。庭の変化を読み直そう。';
+    $('summary').textContent='結果：花びら '+petals+' 枚、トゲ '+hits+' 回。'+(hits>=2?'トゲに2回当たりました。':petals<4?'花びらが4枚に届きませんでした。':'9歩を進み切りました。');
+  }
+  function move(lane){
+    if(gameOver||step>=board.length||!canMove(lane))return;
+    pos=lane;const tile=board[step][lane];if(tile==='✿')petals++;if(tile==='▲')hits++;step++;
+    if(hits>=2||step>=board.length){render();finish();return;}
+    transform();$('status').textContent=changed?'変化の後。次の列を選び直そう。':(step+1)+'歩目。進む列を選ぼう。';render();
+  }
+  function start(){
+    makeBoard();step=0;pos=1;petals=0;hits=0;changed=false;gameOver=false;$('setup').hidden=true;$('end').hidden=true;$('game').hidden=false;$('event').hidden=true;$('event').textContent='';$('status').textContent='1歩目。進む列を選ぼう。';render();
+  }
+  $('start').addEventListener('click',start);$('again').addEventListener('click',start);$('change').addEventListener('click',()=>{$('end').hidden=true;$('game').hidden=true;$('setup').hidden=false;$('trigger').focus();});
+  document.querySelectorAll('[data-lane]').forEach(btn=>btn.addEventListener('click',()=>move(Number(btn.dataset.lane))));
+})();
+</script>
+</body>
+</html>

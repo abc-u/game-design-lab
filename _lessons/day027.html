@@ -1,0 +1,167 @@
+---
+day: 27
+date: 2026-11-10
+title: いつもの操作に「予想外」を差し込む｜『スーパーマリオブラザーズ ワンダー』
+theme: 慣れたルールと局所的な変化で発見をつくる
+game: スーパーマリオブラザーズ ワンダー
+level: 初級〜中級
+minutes: 10
+summary: 基本操作を保ち、一部のルールを変えることで驚きと次の判断を生む設計を学ぶ。
+question: プレイヤーが知っている操作を残したまま、どこを変えれば「次を見たい」と思える？
+goals:
+  - 変化の前に基準となるルールを示す理由と、変化が行動を変える流れを説明できる
+  - 『ワンダー』の入口・継続・離脱要因を、開発者の意図や評価データと分けて分析できる
+  - デモの変化タイミングと変化方法を変え、驚きと判断の違いを自作ゲームへ応用できる
+video:
+  id: XvQNlGKNC6o
+  title: スーパーマリオブラザーズ ワンダー ローンチトレーラー
+  caption: 任天堂公式ローンチトレーラー（2023-10-20公開）。花に触れる前後でコースや音がどう変わるかを見てください。
+demo:
+  src: /demos/day027.html
+  title: 変化する庭
+  height: 930
+sources:
+  - title: 任天堂「スーパーマリオブラザーズ ワンダー」公式サイト
+    url: https://www.nintendo.com/jp/switch/aqmxa/index.html
+    note: Nintendo Switch専用、発売日2023-10-20、希望小売価格（2026-11-10確認。発売時表示）
+  - title: 任天堂「開発者に訊きました：スーパーマリオブラザーズ ワンダー」
+    url: https://www.nintendo.com/jp/interview/aqmxa/index.html
+    note: 2023-10-18公開。変化を軸にした発想、各コースの驚き、難易度の段階差よりアイデア数を重視した意図
+  - title: 任天堂「Nintendo Switch First-Party Software Sell-Through」
+    url: https://www.nintendo.co.jp/ir/pdf/2025/250508_4e.pdf
+    note: 2025-05-08公表。2025-03-31までの世界累計1,603万本（Nintendo Switch版。任天堂の販売推定）
+  - title: 任天堂「スーパーマリオブラザーズ ワンダー 商品情報」
+    url: https://www.nintendo.com/jp/switch/aqmxa/products/soft.html
+    note: 発売時の日本希望小売価格と発売日（2026-11-10確認）
+  - title: セガ「『ソニックスーパースターズ』本日発売」
+    url: https://www.sega.co.jp/release/231017_1.html
+    note: 2023-10-17公開。同じ2D横スクロールアクション市場での発売時期・対応機種を確認
+  - title: Nintendo Life「Super Mario Bros. Wonder Review」
+    url: https://www.nintendolife.com/reviews/nintendo-switch/super-mario-bros-wonder
+    note: 2023-10-18公開。発想の豊かさ、協力・オンライン機能を評価し、全体の難度は控えめと指摘
+  - title: Metacritic「Super Mario Bros. Wonder Reviews」
+    url: https://www.metacritic.com/game/super-mario-bros-wonder/
+    note: 批評家スコア92/100（130件）、ユーザー平均8.9/10（3,454評価）を確認（2026-11-10。件数は変動）
+  - title: Metacritic「Super Mario Bros. Wonder User Reviews」
+    url: https://www.metacritic.com/game/super-mario-bros-wonder/user-reviews/
+    note: 2026-11-10確認。2026年5〜7月の表示レビューから肯定・混合・批判の3件を選び、難度・ボス・ボリューム・創造性の意見を比較（代表標本ではない）
+sources_note: 発売時の価格と販売累計には対象日を付けています。レビュー件数・評価は確認時点の表示です。ユーザーレビュー3件は具体例で、全購入者の傾向を示すものではありません。事実、開発者の意図、批評、独自分析を区別しています。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：予想をつくり、一部だけを変える</h2>
+  <p>プレイヤーは、同じ操作を何度か使うと「このボタンなら跳ぶ」「この床なら乗れる」と予測します。その予測を足場にして一部のルールや状況を変えると、変化に気づき、次の行動を選び直す体験をつくれます。</p>
+  <ol class="flow mt-m">
+    <li><b>基準を知る</b><span>操作と結果が読める</span></li>
+    <li><b>変化に出会う</b><span>予想が少し外れる</span></li>
+    <li><b>反応を読む</b><span>新しい状況を理解する</span></li>
+    <li><b>選び直す</b><span>次の一手を試す</span></li>
+  </ol>
+  <h3 class="h-sub">設計では「何を残し、何を変えるか」を決める</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">変化前に、基準が分かる？</p><p class="list__text">プレイヤーが何度か試せる操作や見た目を先に置く。基準がなければ、変化にも気づきにくい。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">変わった結果は見える？</p><p class="list__text">地形・敵・音・目標など、何が変わったかをすぐ読み取れるようにする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">変化後に選び直せる？</p><p class="list__text">驚かせるだけで終えず、理解したルールを使う行動を残す。変化の前後で入力まで毎回変えると、学習が途切れることがある。</p></div></div>
+  </div>
+  <p class="note mt-m">分析の問い：変化の前後で、プレイヤーの予測・行動・選択肢のどれが変わる？</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：同じジャンプで、景色の意味を変える</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2023-10-20（Nintendo Switch）</dd></div>
+    <div><dt>開発・販売</dt><dd>任天堂</dd></div>
+    <div><dt>ジャンル</dt><dd>横スクロールアクション</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から次の判断まで</h3>
+  <p>コースを進んでワンダーフラワーに触れると、土管が動き出したり、敵や地形が変わったりする「ワンダー」が発生します。移動やジャンプの基本操作は使い続けられるので、プレイヤーは慣れた入力で変化を確かめ、次に安全な足場や進路を選び直せます。</p>
+  <figure class="panel mt-m" style="margin-left:0;margin-right:0" aria-label="ワンダー効果の設計を示す図">
+    <p class="panel__label">今回の因果を図にする</p>
+    <svg viewBox="0 0 720 150" role="img" aria-labelledby="wonder-flow-title wonder-flow-desc" style="display:block;width:100%;height:auto;margin-top:12px">
+      <title id="wonder-flow-title">基準を保ち、コースの意味を変える流れ</title>
+      <desc id="wonder-flow-desc">同じ移動とジャンプを続けながら、花に触れた後に地形や敵のルールが変化し、プレイヤーが進路を選び直す。</desc>
+      <rect x="5" y="18" width="155" height="112" fill="#fff" stroke="#16161a" stroke-width="3"/><text x="82" y="56" text-anchor="middle" font-size="17" fill="#16161a">いつもの入力</text><text x="82" y="88" text-anchor="middle" font-size="16" fill="#52525b">移動・ジャンプ</text>
+      <path d="M169 74h43m-10-10 10 10-10 10" fill="none" stroke="#5b3df5" stroke-width="4"/>
+      <rect x="224" y="18" width="155" height="112" fill="#fff" stroke="#16161a" stroke-width="3"/><text x="301" y="56" text-anchor="middle" font-size="17" fill="#16161a">花に触れる</text><text x="301" y="88" text-anchor="middle" font-size="16" fill="#52525b">変化の合図</text>
+      <path d="M388 74h43m-10-10 10 10-10 10" fill="none" stroke="#5b3df5" stroke-width="4"/>
+      <rect x="443" y="18" width="155" height="112" fill="#fff" stroke="#16161a" stroke-width="3"/><text x="520" y="56" text-anchor="middle" font-size="17" fill="#16161a">世界が変化</text><text x="520" y="88" text-anchor="middle" font-size="16" fill="#52525b">足場・敵・音</text>
+      <path d="M607 74h43m-10-10 10 10-10 10" fill="none" stroke="#5b3df5" stroke-width="4"/>
+      <rect x="662" y="18" width="53" height="112" fill="#5b3df5" stroke="#16161a" stroke-width="3"/><text x="688" y="59" text-anchor="middle" font-size="15" fill="#fff">選び</text><text x="688" y="84" text-anchor="middle" font-size="15" fill="#fff">直す</text>
+    </svg>
+    <figcaption class="note mt-s">操作を学び直させず、操作の使い道を変える。図は本教材で作成した概念図。</figcaption>
+  </figure>
+  <div class="table-wrap mt-m">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルール・表現の反応</th><th>次に生まれる判断</th></tr></thead>
+      <tbody>
+        <tr><th>花に触れる</th><td>音楽やコースの様子が一変する</td><td>何が動き、何が危険になったかを読む</td></tr>
+        <tr><th>ジャンプを続ける</th><td>動く足場や敵の配置が新しい意味を持つ</td><td>同じ入力でどこまで進めるか試す</td></tr>
+        <tr><th>ワンダーシードを得る</th><td>コースの達成が進み、新しいコースや道が開く</td><td>次のコース、別のルート、収集を選ぶ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜この作品ならではの組み合わせ</p>
+    <p class="panel__title">変化の驚きを、2Dマリオの読みやすい操作と、コースごとの短いアイデアに載せている。</p>
+    <p class="mt-s">任天堂の開発者は、各コースに驚きや楽しさを入れることを目指し、従来のような難度の段階差より、多くのアイデアを見せる方針を説明しています。『スーパーマリオ オデッセイ』のような広い3D空間を探索するのではなく、横スクロールの進行中に局所的な変化を重ねるため、短い時間で「見慣れたマリオなのに、今だけ違う」体験になります。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">公式映像は、土管や敵が変わる場面を購入前に見せます。11年ぶりの完全新作2D『スーパーマリオブラザーズ』という既知のシリーズ名が入口になり、最初のコースでは慣れた移動・ジャンプから始められるため、初見でも変化の観察へ進みやすいと考えられます（公式情報と独自分析）。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">コースごとにワンダーの仕掛けが変わり、バッジやワンダーシード、隠しルートも用意されています。変化を見届けた後に「次は何が起こるか」「別ルートを探すか」が選べる構成です。批評家はアイデアの豊かさやローカル協力・オンライン要素を評価していますが、これは発売後に戻る頻度や継続率を示すデータではありません。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">Nintendo Lifeは発想の豊かさを高く評価する一方、通常コースの難度はあまり高くないと指摘しました。精密な高難度アクションを求める人には物足りなく感じられる可能性があります（批評家の見解）。</span></div>
+  </div>
+  <p class="note mt-s">開発者の狙いは「全員が驚く」という実証結果ではありません。長期の継続率・離脱率は公開資料から確認できないため、ここでは断定しません。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：アイデアの豊かさと難度の好み</h2>
+  <div class="grid">
+    <div class="panel"><p class="pixel">批評家の評価</p><ul class="bullets mt-s"><li><span>Metacriticは92/100、批評家130件（2026-11-10確認）。Nintendo Lifeはコースの創造性や協力・オンライン要素を評価。</span></li><li><span>同レビューは、全体の難度が控えめで熟練者には易しすぎる場合があると指摘（2023-10-18）。</span></li></ul></div>
+    <div class="panel"><p class="pixel">プレイヤーの声</p><ul class="bullets bullets--muted mt-s"><li><span>Metacriticのユーザー平均は8.9/10、3,454評価（2026-11-10確認）。投稿型の点数で、購入者全体の調査ではありません。</span></li><li><span>表示レビューから選んだ3件では、創造性を支持する声がある一方、通常面の易しさ・ボスの単調さ・短さを不満とする声もありました（2026年5〜7月）。3件は代表標本ではありません。</span></li></ul></div>
+  </div>
+  <div class="panel panel--dark mt-s"><p class="panel__label">読み解き</p><p class="panel__title">新しい変化を次々試したい人には発見の密度が魅力になり、歯ごたえを求める人には難度やボスの反復が離れる理由になり得る。</p></div>
+  <h3 class="h-sub">売れた理由を、面白さだけで説明しない</h3>
+  <dl class="facts">
+    <div><dt>販売実績</dt><dd>1,603万本（世界累計、2025-03-31まで。任天堂の販売推定）</dd></div>
+    <div><dt>発売時価格</dt><dd>日本：パッケージ版6,578円、ダウンロード版6,500円（税込）</dd></div>
+    <div><dt>市場条件</dt><dd>Switch専用、2023年発売。長く認知されたマリオのブランドと、2Dシリーズ約11年ぶりの完全新作</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>事実</strong>　任天堂の2025-05-08資料は、Nintendo Switch版の世界累計を1,603万本と報告しています（2025-03-31時点）。</span></li>
+    <li><span><strong>競合</strong>　同じ2D横スクロール作品の『ソニックスーパースターズ』は10-17に複数機種で発売され、Wonderは10-20にSwitch専用で発売されました。3日差だけで市場成果の優劣は説明できません。</span></li>
+    <li><span><strong>独自分析</strong>　価格帯・既存ファン・Switchの普及台数・約11年の間隔に加え、数秒の映像でも変化が伝わるため、宣伝動画や配信で特徴を見せやすかった可能性があります。配信視聴が購入に与えた効果は確認できません。</span></li>
+    <li><span><strong>限界</strong>　これらの要因が売上にどれだけ寄与したかは、この資料だけでは分かりません。販売数を、面白さや継続率の証明として扱わないでください。</span></li>
+  </ul>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：同じ道で、途中から選択肢が変わる</h2>
+  <p>9歩の庭を進み、花びらを集めてゴールを目指します。設定した歩数で庭の一部が変わったら、見えている次のマスを読み直して進路を選んでください。</p>
+  <div class="chips mt-s"><span class="chip">変化が起きる歩数</span><span class="chip">花びらとトゲの入れ替え／道の横ずれ</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">変化の前に選んだ道と、変化を見た後の選び方はどう違った？</p><p class="mt-s">同じ配置で、変化タイミングだけを変えて再プレイします。驚きの大きさだけでなく、変化が起きたと分かる速さと、選び直す余地を比べてください。</p></div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">変化のタイミングを一つ変える</p><p class="mt-s">変化する歩数を前後させ、花びら数・トゲに当たった回数・次の一手を決めるまでの迷いを記録。変化前に予想を一言で書き、結果と比べます。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">変化の種類を入れ替える</p><p class="mt-s">「花びらとトゲの交換」と「道の横ずれ」を比較し、基本操作を保ったままどちらが判断を促すかを説明します。自作案では変える要素を一つだけ追加し、何を読み直させるかを書きます。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで、プレイヤーがすでに理解している操作やルールは何？そこを残して、変化させると次の判断が生まれる要素はどれ？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">別ジャンル（レース、パズル、協力ゲームなど）へ応用するとき、驚きを残しつつ混乱を減らすために、変化の合図・範囲・持続時間をどう設計する？</span></div>
+  </div>
+</section>
