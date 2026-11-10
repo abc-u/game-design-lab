@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>間を読む｜行動で進むミニゲーム</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--red:#e34f4f;--line:#c9c7c0;--muted:#66656d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Noto Sans JP",sans-serif}
+main{max-width:760px;margin:auto;padding:20px}
+h1{font-size:clamp(1.55rem,5vw,2.2rem);line-height:1.2;margin:.2rem 0 .5rem}
+p{margin:.5rem 0}
+.kicker{font-size:.78rem;letter-spacing:.12em;font-weight:800;color:var(--purple)}
+.box{border:2px solid var(--ink);background:#fff;padding:16px;margin:14px 0;box-shadow:4px 4px 0 var(--ink)}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+label{display:flex;gap:8px;align-items:center;flex:1 1 180px}
+select,button{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:0;padding:10px 12px}
+button{font-weight:750;cursor:pointer;touch-action:manipulation}
+button:focus-visible,select:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+button.primary{background:var(--purple);color:white}
+button:disabled{opacity:.5;cursor:default}
+.status{display:flex;justify-content:space-between;gap:12px;font-weight:750}
+.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:14px auto;max-width:490px}
+.cell{aspect-ratio:1;border:1px solid var(--line);background:#fff;display:grid;place-items:center;position:relative;font-size:clamp(1.05rem,6vw,2rem);font-weight:900}
+.cell.player{background:#e9e5ff;border:2px solid var(--purple);color:var(--purple)}
+.cell.bullet{background:#ffe3e0;color:#a92f32}
+.cell.exit{background:#e8f0e4;color:#275a2b}
+.cell.both{background:#ffd7d0;border:3px solid var(--red)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.88rem}
+.pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,54px);gap:6px;justify-content:center;margin:12px auto}
+.pad button{padding:4px;font-size:1.15rem}
+.pad .up{grid-column:2;grid-row:1}.pad .left{grid-column:1;grid-row:2}.pad .down{grid-column:2;grid-row:2}.pad .right{grid-column:3;grid-row:2}
+.result{min-height:1.8em;font-weight:800;color:var(--purple)}
+.note{font-size:.9rem;color:var(--muted)}
+[hidden]{display:none!important}
+@media(max-width:480px){main{padding:14px}.box{padding:12px}.board{gap:3px}.pad{grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,50px)}}
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">GAME DESIGN LAB · DAY 28</p>
+  <h1>間を読む</h1>
+  <p>観察中は危険が進まない。移動を決めると、相手も動く。出口までたどり着こう。</p>
+
+  <section class="box" aria-label="ゲーム設定">
+    <div class="controls">
+      <label>危険の進む速さ
+        <select id="speed"><option value="1">1マス／行動</option><option value="2">2マス／行動</option></select>
+      </label>
+      <label>危険の数
+        <select id="count"><option value="1">1つ</option><option value="2">2つ</option></select>
+      </label>
+    </div>
+  </section>
+
+  <section class="box" aria-label="ゲーム">
+    <div class="status"><span id="phase">開始前</span><span>行動 <b id="turns">0</b></span></div>
+    <div id="board" class="board" role="grid" aria-label="5かける5の盤面"></div>
+    <div class="legend"><span>● あなた</span><span>◆ 接近する危険</span><span>□ 出口</span></div>
+    <p id="result" class="result" aria-live="polite">盤面を見てから、開始しよう。</p>
+    <div class="controls">
+      <button id="start" class="primary">開始</button>
+      <button id="replay" hidden>もう一度</button>
+    </div>
+    <div id="pad" class="pad" hidden aria-label="移動">
+      <button class="up" data-move="up" aria-label="上へ">↑</button>
+      <button class="left" data-move="left" aria-label="左へ">←</button>
+      <button class="down" data-move="down" aria-label="下へ">↓</button>
+      <button class="right" data-move="right" aria-label="右へ">→</button>
+    </div>
+    <p class="note">キーボードの矢印キーでも操作できます。止まって考えている間、危険の位置は変わりません。</p>
+  </section>
+  <p class="note">これは「行動が時間を進める」考え方を試すオリジナルの小さなパズルです。実在作品の画像・音・コードは使っていません。</p>
+</main>
+<script>
+(function(){
+  const board=document.getElementById('board'),speedEl=document.getElementById('speed'),countEl=document.getElementById('count');
+  const phase=document.getElementById('phase'),turnEl=document.getElementById('turns'),result=document.getElementById('result');
+  const start=document.getElementById('start'),replay=document.getElementById('replay'),pad=document.getElementById('pad');
+  let state;
+  const starters=[{r:0,c:2},{r:0,c:4}];
+  function fresh(){
+    state={r:4,c:2,turn:0,bullets:starters.slice(0,Number(countEl.value)).map(x=>({...x})),active:false,done:false};
+    draw();
+  }
+  function draw(){
+    board.innerHTML='';
+    for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+      const cell=document.createElement('div');cell.className='cell';cell.setAttribute('role','gridcell');
+      const isPlayer=state.r===r&&state.c===c,isBullet=state.bullets.some(b=>b.r===r&&b.c===c),isExit=r===0&&c===2;
+      if(isPlayer&&isBullet)cell.classList.add('both');else if(isPlayer)cell.classList.add('player');else if(isBullet)cell.classList.add('bullet');else if(isExit)cell.classList.add('exit');
+      cell.textContent=isPlayer&&isBullet?'✕':isPlayer?'●':isBullet?'◆':isExit?'□':'';
+      cell.setAttribute('aria-label',(isPlayer?'あなた。':'')+(isBullet?'危険。':'')+(isExit?'出口。':'')||'空きマス');
+      board.appendChild(cell);
+    }
+    turnEl.textContent=state.turn;
+    speedEl.disabled=countEl.disabled=state.active;
+    phase.textContent=state.done?(state.r===0&&state.c===2?'到達':'終了'):state.active?'行動を選ぶ':'開始前';
+    pad.hidden=!state.active;
+    start.hidden=state.active||state.done;
+    replay.hidden=!state.done;
+  }
+  function finish(won){
+    state.active=false;state.done=true;
+    result.textContent=won?'出口に到達。止まって考えた時間は、危険を進めなかった。行動 '+state.turn+' 回。':'危険に接触。行動を選んだ瞬間に状況が進んだ。行動 '+state.turn+' 回。';
+    draw();
+  }
+  function move(dir){
+    if(!state||!state.active||state.done)return;
+    let nr=state.r,nc=state.c;
+    if(dir==='up')nr--;if(dir==='down')nr++;if(dir==='left')nc--;if(dir==='right')nc++;
+    if(nr<0||nr>4||nc<0||nc>4)return;
+    const next={r:nr,c:nc},speed=Number(speedEl.value);
+    const moved=state.bullets.map(b=>({r:b.r+speed,c:b.c})).filter(b=>b.r<5);
+    state.r=nr;state.c=nc;state.turn++;
+    const hit=moved.some(b=>b.r===next.r&&b.c===next.c)||state.bullets.some(b=>b.c===nc&&b.r<=nr&&b.r+speed>=nr);
+    state.bullets=moved;
+    if(hit){finish(false);return}
+    if(nr===0&&nc===2){finish(true);return}
+    draw();
+    result.textContent='危険が進んだ。次の一手を盤面で確かめよう。';
+  }
+  start.addEventListener('click',()=>{fresh();state.active=true;result.textContent='観察してから移動。盤面は行動するまで変わらない。';draw()});
+  replay.addEventListener('click',()=>{fresh();state.active=true;result.textContent='同じ設定で再挑戦。';draw()});
+  pad.addEventListener('click',e=>{const b=e.target.closest('[data-move]');if(b)move(b.dataset.move)});
+  document.addEventListener('keydown',e=>{const map={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'};if(map[e.key]&&state&&state.active){e.preventDefault();move(map[e.key])}});
+  function settingsChanged(){if(!state.active){fresh();result.textContent='設定を変更しました。開始して試そう。'}}
+  speedEl.addEventListener('change',settingsChanged);
+  countEl.addEventListener('change',settingsChanged);
+  fresh();
+})();
+</script>
+</body>
+</html>

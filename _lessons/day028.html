@@ -1,0 +1,148 @@
+---
+day: 28
+date: 2026-11-11
+title: 行動の間が、判断をつくる
+theme: 行動が時間を進める設計
+game: SUPERHOT
+level: 初級
+minutes: 10
+summary: プレイヤーの行動と時間を結び、観察・判断・実行を面白さに変える。
+question: プレイヤーの行動が時間を進めると、判断と緊張はどう変わる？
+goals:
+  - 時間と行動の関係が、選択や感情に及ぼす影響を説明できる
+  - 観察の余地と行動のコストを、自作ゲームで調整できる
+video:
+  id: QWJSiJsmO-A
+  title: SUPERHOT Release Date Trailer（公式）
+  caption: 公式トレーラー。敵の動きとプレイヤーの移動がどう同期するかに注目。
+demo:
+  src: /demos/day028.html
+  title: 間を読む｜行動で進むミニゲーム
+  height: 1060
+sources:
+  - title: SUPERHOT Team 公式プレスキット
+    url: https://superhotgame.com/presskit
+    note: 7 Day FPS試作、プロトタイプ公開後の反響、Kickstarterの時期・調達額（公開日不明、2026-11-11確認）
+  - title: SUPERHOT 公式ゲームページ
+    url: https://superhotgame.com/superhot
+    note: 作品紹介と「動くと時間が進む」設計（公開日不明、2026-11-11確認）
+  - title: Steam公式ストア「SUPERHOT」
+    url: https://store.steampowered.com/app/322500/SUPERHOT/?cc=us&l=english
+    note: 2016-02-25発売、通常価格$24.99、英語レビュー16,334件中90%好評（2026-11-11確認。価格・件数は変動）
+  - title: PC Gamer「Superhot review」
+    url: https://www.pcgamer.com/superhot-review-2/
+    note: 2016-02-25公開、84点。行動と弾丸時間の因果、短い本編への評価
+  - title: Metacritic「SUPERHOT」
+    url: https://www.metacritic.com/game/superhot/
+    note: 全機種の批評家82/100（96件）、ユーザー7.6/10（1,059件、2026-11-11確認）
+  - title: PCGamesInsider「Superhot shoots past the two million sales mark」
+    url: https://www.pcgamesinsider.biz/news/69064/superhot-shoots-past-the-two-million-sales-mark-pc-has-around-40-per-cent-share/
+    note: 2019-05-27公開。開発側担当者への取材で、通常版120万〜150万本・VR版80万本、シリーズ合計200万本超
+  - title: Steam Community「SUPERHOT Reviews」
+    url: https://steamcommunity.com/app/322500/reviews/
+    note: 英語・ページ既定表示の先頭レビューを8件確認し、うち3件を具体例として参照（2026-11-11確認。少数の便宜標本）
+sources_note: 販売・価格・レビュー値は確認時点の公表情報です。ゲーム本編とVR版の販売数を分け、事実・開発者発言・批評・プレイヤー投稿・独自分析を区別しています。プレイヤーレビューの少数例は全購入者の代表意見ではありません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：行動のコストが、時間と選択をつくる</h2>
+  <p>ゲーム内時間の進み方は、プレイヤーの行動に対するコストの一つです。行動中も世界が進むなら素早い判断を促せますし、行動した時だけ進むなら、考える時間と実行する時間を分けられます。</p>
+  <p>この設計を考える時は「何をしたら世界が進むか」を先に決めます。止まって観察する間に情報が増えるのか、敵や制限時間も止まるのか、そして動き出した時にどんな危険が返るのかをそろえると、判断に意味が生まれます。</p>
+  <ol class="flow mt-m">
+    <li><b>観察する</b><span>位置・脅威・目標を読む</span></li>
+    <li><b>決める</b><span>行動の利益と危険を比べる</span></li>
+    <li><b>実行する</b><span>世界が進み、結果が返る</span></li>
+  </ol>
+  <h3 class="h-sub">自作ゲームで確かめる</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">入力と時間の結びつきは読める？</p><p class="list__text">移動・射撃・メニュー操作のうち、どの入力で敵や制限時間が動くかを一貫させる。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">止まる時間に意味はある？</p><p class="list__text">安全に見るだけで終わらず、観察した情報が次の選択を変えるようにする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">動く危険は納得できる？</p><p class="list__text">行動の直後に何が進むかを見せ、失敗を「なぜ起きたか」読める反応にする。</p></div></div>
+  </div>
+  <p class="note mt-m">分析の問い：プレイヤーが止まる・動く選択をした時、ゲーム内の何が変化し、その変化は見える？</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：動くほど、危険も進む</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2016年2月25日（Windows PC。後に複数機種へ展開）</dd></div>
+    <div><dt>開発・販売</dt><dd>SUPERHOT Team</dd></div>
+    <div><dt>ジャンル</dt><dd>一人称シューティング／パズル的アクション</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から感情までの流れ</h3>
+  <p>多くのFPSでは、プレイヤーが立ち止まっても敵や銃弾は進み続けます。『SUPERHOT』では、プレイヤーの移動・照準・攻撃に合わせて世界の時間も進み、静止中は大きく遅くなります。完全に無時間で何でもできるというより、入力が状況を進めるため、考えている間の余裕と、動く時の危険が一つのルールに結ばれています。</p>
+  <div class="table-wrap mt-m">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールの反応</th><th>生まれる判断・感情</th></tr></thead>
+      <tbody>
+        <tr><th>立ち止まり、敵や弾を見る</th><td>時間が大きく遅くなり、位置関係を読める</td><td>次の一歩を考える余裕が生まれる</td></tr>
+        <tr><th>移動・照準・攻撃をする</th><td>世界が進み、敵や弾も近づく</td><td>その一手の危険を引き受ける緊張が生まれる</td></tr>
+        <tr><th>武器を投げ、敵の武器を取る</th><td>距離と時間が進み、空中の武器や弾道が変わる</td><td>即興の工夫と、成功した時の手応えが生まれる</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜この作品ならではの面白さ</p>
+    <p class="panel__title">FPSの照準や移動を残したまま、戦闘を「観察して組み立てる短いパズル」に変えている。</p>
+    <p class="mt-s">白い空間と赤い敵の簡潔な画面が弾道を見分けやすくし、プレイヤーの入力で時間が進むルールが「一歩動くこと」自体を判断にします。通常のスローモーション演出と違い、見る時間をつくる行為と敵を進める行為が同じ操作体系にあるため、計画と即興が交互に起こります。PC Gamerは俯瞰型の『Hotline Miami』と比べ、SUPERHOTでは一人称視点の限られた視野が情報の読み方を変える点にも触れています。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">開発チームによると、作品は2013年8月の7 Day FPSゲームジャムで生まれ、試作公開後にゲームメディアで取り上げられました。「動くと時間が進む」という一文と短い映像で、新しさを購入前に想像しやすい入口です。これは開発側の説明であり、試作の話題が製品購入にどれほど結びついたかを示すデータではありません。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">短い戦闘場面ごとに、弾を避ける・武器を奪う・出口へ向かう次の判断が生まれます。PC Gamerは、繰り返し挑戦しながら連続した動きを組み立てる感覚を評価し、クリア後の追加チャレンジにも触れています（2016-02-25）。ただし、その評価はプレイヤーの継続率を示しません。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">PC Gamerは本編を2〜3時間でクリアしたとし、追加モードは面白いが長く極める気にはならなかったと評しました。短い体験や初見の驚きを好む人にはまとまりになり得ますが、長いキャンペーンや多彩な敵を求める人には物足りない可能性があります。後半は独自分析です。</span></div>
+  </div>
+  <p class="note mt-s">批評家のプレイ時間・感想と、実際の継続データは別の情報です。継続率・離脱率は公開資料から確認できないため、数値を推測しません。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：新しい判断と、短さのトレードオフ</h2>
+  <div class="grid">
+    <div class="panel"><p class="pixel">批評家の評価</p><ul class="bullets mt-s"><li><span>PC Gamerは84点。行動と時間の厳密な結びつき、武器を投げて奪う戦闘、演出と物語の組み合わせを評価（2016-02-25）。</span></li><li><span>同レビューは本編の短さと、クリア後の挑戦を長く極める動機の弱さも指摘。</span></li></ul></div>
+    <div class="panel"><p class="pixel">プレイヤーの声</p><ul class="bullets bullets--muted mt-s"><li><span>Steam英語レビューは16,334件中90%が好評（2026-11-11確認）。時点ごとに変わるユーザー投稿の集計です。</span></li><li><span>同日のSteam Communityで英語・既定表示の先頭8件を見て、3件を例にしました。2件は革新性や遊んだ思い出を肯定し、1件は「動画で見る方が面白い」と述べています。選択された8件の小標本で、全体の傾向ではありません。</span></li></ul></div>
+  </div>
+  <div class="panel panel--dark mt-s"><p class="panel__label">評価が分かれる理由｜独自分析</p><p class="panel__title">一手を組み立てる快感が、短さや反復を「凝縮」と感じさせる人もいれば、「遊びの幅が少ない」と感じさせる人もいる。</p></div>
+  <h3 class="h-sub">販売と価格から分かる範囲</h3>
+  <dl class="facts">
+    <div><dt>販売実績</dt><dd>2019年の開発側担当者取材で、通常版120万〜150万本、VR版80万本。シリーズ合計200万本超（無料配布・バンドルを除く）</dd></div>
+    <div><dt>価格</dt><dd>Steam米国ストアの通常価格$24.99（2026-11-11確認。割引・地域別価格あり）</dd></div>
+    <div><dt>評価指標</dt><dd>Metacritic 82/100（批評家96件）、7.6/10（ユーザー評価1,059件、2026-11-11確認）</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>市場の入口</strong>　開発チームは、ゲームジャム試作の公開後に注目を集め、Kickstarterは2014年5月に23時間で目標達成したと説明しています。興味の表れですが、後の販売の理由を単独で説明するものではありません。</span></li>
+    <li><span><strong>広がり方</strong>　発売後はXbox One、PlayStation 4などにも展開しました。PC Games Insiderの取材では、2019年時点で通常版とVR版の合計が200万本を超え、PCが売上の約4割と開発側担当者が説明しています。</span></li>
+    <li><span><strong>限界</strong>　通常版とVR版を合わせた数字をPC版単体の販売数として扱えません。発売後の機種展開、価格セール、地域対応、VR市場なども関係するため、面白さだけで商業的成功を説明することはできません。</span></li>
+  </ul>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：考えている間、盤面は止まる</h2>
+  <p>盤面を見て、矢印ボタンかキーボードで出口へ進みます。あなたが一手を選ぶと危険も進み、止まって観察するだけなら位置は変わりません。</p>
+  <div class="chips mt-s"><span class="chip">危険の速度：1／2マス</span><span class="chip">危険の数：1／2個</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">何を見ている間は安全で、どの行動をした瞬間にリスクが生まれた？</p><p class="mt-s">まず通常設定でクリアし、次に危険の速度か数を一つだけ変えて再挑戦。設定変更が進路の決め方や失敗の理由にどう影響するか比べましょう。</p></div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">危険の速度だけ変える</p><p class="mt-s">1マスと2マスを比べ、クリア・接触・手数を記録します。失敗した場合、「どの入力で危険がどこまで進んだか」を説明できるか確認します。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">観察にもコストをつける</p><p class="mt-s">止まっている間も危険は進まないが、観察できる回数に上限を設ける案を考えます。情報と安全のどちらを制限すると、選択の重みが増すか比較します。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <p>この仕組みはFPS以外にも応用できます。戦略ゲームで「考えている間は敵も待つ」、音楽ゲームで「入力が次の拍へ進める」など、ジャンルに合わせて時間と行動の結びつきを作れます。</p>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで、時間を進める入力は何？ 観察する時間を与えると、どんな判断が増える？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">止まることを強くすると緊張はどう変わる？ 行動の危険、情報の見え方、再挑戦の速さを一つずつ調整し、プレイヤーの選択が変わったか確かめよう。</span></div>
+  </div>
+</section>
