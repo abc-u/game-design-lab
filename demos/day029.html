@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>壊して抜ける｜準備つき強盗ミニゲーム</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--red:#c93c3c;--green:#286a3a;--line:#c9c7c0;--muted:#62616a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Noto Sans JP",sans-serif}
+main{max-width:760px;margin:auto;padding:18px}
+h1{font-size:clamp(1.5rem,5vw,2.15rem);line-height:1.2;margin:.2rem 0 .4rem}
+p{margin:.5rem 0}
+.kicker{font-size:.76rem;letter-spacing:.12em;font-weight:800;color:var(--purple)}
+.box{border:2px solid var(--ink);background:#fff;padding:14px;margin:12px 0;box-shadow:4px 4px 0 var(--ink)}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+label{display:flex;gap:8px;align-items:center;flex:1 1 180px;font-weight:700}
+select,button{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:0;padding:10px 12px}
+button{font-weight:750;cursor:pointer;touch-action:manipulation}
+button:focus-visible,select:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+button.primary{background:var(--purple);color:#fff}
+button:disabled{opacity:.5;cursor:default}
+.status{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:750}
+.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:14px auto;max-width:440px}
+.cell{aspect-ratio:1;border:1px solid var(--line);background:#fff;display:grid;place-items:center;position:relative;font-size:clamp(1.1rem,7vw,2rem);font-weight:900;user-select:none}
+.cell.wall{background:#292833;color:#fff;cursor:pointer}
+.cell.cleared{background:#eee9ff;color:var(--purple)}
+.cell.player{outline:3px solid var(--purple);outline-offset:-3px;background:#eee9ff}
+.cell.loot{background:#fff0bd;color:#735300}
+.cell.exit{background:#e5f1e4;color:var(--green)}
+.cell.both{background:#e8ddff}
+.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.88rem}
+.pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,52px);gap:6px;justify-content:center;margin:12px auto}
+.pad button{padding:4px;font-size:1.15rem}
+.pad .up{grid-column:2;grid-row:1}.pad .left{grid-column:1;grid-row:2}.pad .down{grid-column:2;grid-row:2}.pad .right{grid-column:3;grid-row:2}
+.result{min-height:1.7em;font-weight:800;color:var(--purple)}
+.small{color:var(--muted);font-size:.9rem}
+@media(max-width:480px){main{padding:12px}.box{padding:11px}.pad{grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,50px)}}
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">GAME DESIGN LAB · DAY 029</p>
+  <h1>壊して抜ける</h1>
+  <p>警報が鳴る前に壁を壊して道を作る。荷物を2つ回収し、出口まで戻ろう。</p>
+
+  <section class="box" aria-label="設定">
+    <div class="controls">
+      <label>警報後の制限
+        <select id="limit"><option value="7">7手</option><option value="8">8手</option></select>
+      </label>
+      <label>爆薬
+        <select id="tools"><option value="1">1個</option><option value="0">0個</option></select>
+      </label>
+      <button id="start" class="primary" type="button">作戦開始</button>
+      <button id="reset" type="button">やり直す</button>
+    </div>
+    <p class="small">準備中は時間停止。スタートは右下、最初の荷物は右列中央です。</p>
+  </section>
+
+  <section class="box">
+    <div class="status"><span id="phase">作戦前</span><span id="toolcount">爆薬：1個</span><span id="counter">警報まで：—</span></div>
+    <div id="board" class="board" role="grid" aria-label="強盗現場のマップ"></div>
+    <div class="legend"><span>🧍 自分</span><span>🧱 壁（準備中にタップ）</span><span>💼 荷物</span><span>🚪 出口</span></div>
+    <p id="result" class="result" aria-live="polite">「作戦開始」を押してください。</p>
+  </section>
+
+  <div class="pad" aria-label="移動">
+    <button class="up" data-dir="up" type="button" aria-label="上へ">▲</button>
+    <button data-dir="left" type="button" aria-label="左へ">◀</button>
+    <button data-dir="down" type="button" aria-label="下へ">▼</button>
+    <button class="right" data-dir="right" type="button" aria-label="右へ">▶</button>
+  </div>
+  <p class="small">矢印ボタンまたはキーボードの方向キーで移動できます。道具の数と警報後の制限を変えて、結果を比べてください。</p>
+</main>
+<script>
+(function(){
+  const W=5,H=5,START={r:4,c:4},FIRST={r:2,c:4},SECOND={r:2,c:0},EXIT={r:4,c:0},WALL={r:2,c:2};
+  let state;
+  const el=id=>document.getElementById(id);
+  function fresh(){
+    state={active:false,over:false,pos:{...START},blasted:false,tools:Number(el("tools").value),limit:Number(el("limit").value),moves:0,alarm:false,loot1:false,loot2:false};
+    draw();update();
+  }
+  function same(a,b){return a.r===b.r&&a.c===b.c}
+  function update(){
+    el("phase").textContent=state.over?"作戦終了":state.alarm?"警報中":state.active?"準備中":"作戦前";
+    el("counter").textContent=state.alarm?"残り手数："+Math.max(0,state.limit-state.moves):"警報まで："+(state.loot1?"発動":"—");
+    el("toolcount").textContent="爆薬："+state.tools+"個";
+    el("start").disabled=state.active||state.over;
+    el("result").textContent=state.result||(!state.active?"「作戦開始」を押してください。":state.alarm?"二つ目の荷物を取り、出口へ！":state.blasted?"壁が消えた。最初の荷物へ進もう。":"準備中：壁をタップして近道を作れます。");
+  }
+  function draw(){
+    const board=el("board");board.innerHTML="";
+    for(let r=0;r<H;r++)for(let c=0;c<W;c++){
+      const p={r,c},cell=document.createElement("div");cell.className="cell";cell.setAttribute("role","gridcell");
+      let symbol="";
+      const isWall=same(p,WALL)&&!state.blasted,isExit=same(p,EXIT),isPlayer=same(p,state.pos);
+      const hasFirst=same(p,FIRST)&&!state.loot1,hasSecond=same(p,SECOND)&&!state.loot2;
+      if(isWall){cell.classList.add("wall");symbol="🧱";cell.setAttribute("aria-label","壁。準備中にタップして壊す");cell.tabIndex=0;cell.addEventListener("click",()=>blast());cell.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();blast()}})}
+      else {
+        if(same(p,WALL)){cell.classList.add("cleared");symbol="·"}
+        if(isExit){cell.classList.add("exit");symbol="🚪"}
+        if(hasFirst||hasSecond){cell.classList.add("loot");symbol="💼"}
+        if(isPlayer){cell.classList.add("player");symbol=(hasFirst||hasSecond)?"🧍💼":"🧍"}
+        if(isExit&&isPlayer)cell.classList.add("both");
+        cell.setAttribute("aria-label",`${r+1}行${c+1}列 ${symbol}`);
+      }
+      cell.textContent=symbol;board.appendChild(cell);
+    }
+  }
+  function blast(){
+    if(!state.active||state.over||state.alarm||state.blasted||state.tools<=0)return;
+    state.blasted=true;state.tools--;state.result="壁を壊した。警報前に近道を準備できた。";draw();update();
+  }
+  function end(win,msg){
+    state.over=true;state.active=false;state.result=msg;update();draw();
+  }
+  function move(dir){
+    if(!state.active||state.over)return;
+    const d={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]}[dir];if(!d)return;
+    const nr=state.pos.r+d[0],nc=state.pos.c+d[1];
+    if(nr<0||nr>=H||nc<0||nc>=W)return;
+    if(nr===WALL.r&&nc===WALL.c&&!state.blasted){state.result="壁が道をふさいでいる。準備中に爆薬で壊そう。";update();return}
+    state.pos={r:nr,c:nc};
+    if(same(state.pos,FIRST)&&!state.loot1){state.loot1=true;state.alarm=true;state.result="1つ目を回収。警報が鳴った！";draw();update();return}
+    if(same(state.pos,SECOND)&&!state.loot2){state.loot2=true;state.result="2つ目を回収。出口へ戻ろう。"}
+    if(state.alarm){state.moves++;if(state.moves>state.limit){end(false,"時間切れ。道具かルートを変えて再挑戦！");return}}
+    if(same(state.pos,EXIT)){
+      if(state.loot1&&state.loot2){end(true,`脱出成功！ ${state.moves}手で完了。準備したルートが間に合いました。`);return}
+      state.result="出口にはまだ戻れない。荷物を2つ集めよう。";
+    }
+    if(state.alarm&&state.moves===state.limit){end(false,"制限手数に到達。出口に着く前に警備が来た！");return}
+    draw();update();
+  }
+  el("start").addEventListener("click",()=>{fresh();state.active=true;state.result="準備中：壁を壊すか、そのまま進むか決めよう。";update();draw()});
+  el("reset").addEventListener("click",fresh);
+  document.querySelectorAll("[data-dir]").forEach(b=>b.addEventListener("click",()=>move(b.dataset.dir)));
+  document.addEventListener("keydown",e=>{const map={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right"};if(map[e.key]&&document.activeElement.tagName!=="SELECT"){e.preventDefault();move(map[e.key])}});
+  el("limit").addEventListener("change",fresh);el("tools").addEventListener("change",fresh);
+  fresh();
+})();
+</script>
+</body>
+</html>

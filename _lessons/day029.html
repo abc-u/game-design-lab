@@ -1,0 +1,145 @@
+---
+day: 29
+date: 2026-11-12
+title: 壊すことで、道を選ぶ
+theme: 破壊をルート設計に変える
+game: Teardown
+level: 初級
+minutes: 10
+summary: 破壊でルートを作り、準備と実行の選択を面白さに変える。
+question: 道を壊して作れると、プレイヤーの計画と緊張はどう変わる？
+goals:
+  - ルールが空間の見方と行動選択をどう変えるか説明できる
+  - 準備・道具・制限時間を調整し、自作ゲームの判断を改善できる
+video:
+  id: 77MzwpZmDDM
+  title: Teardown 公式 Gameplay Overview Trailer
+  caption: 公式ゲームプレイ紹介映像。壊した建物が新しい侵入路やショートカットになる場面を見てください。
+demo:
+  src: /demos/day029.html
+  title: 壊して抜ける｜準備つき強盗ミニゲーム
+  height: 1100
+sources:
+  - title: Teardown公式サイト
+    url: https://www.teardowngame.com/index.html
+    note: 破壊可能な環境、道を作って強盗を計画する紹介・公式動画（公開日記載なし、2026-11-12確認）
+  - title: Steam公式ストア「Teardown」
+    url: https://store.steampowered.com/app/1167630/Teardown/
+    note: 早期アクセス日・正式発売日・価格・レビュー集計・機能（2026-11-12確認、価格とレビュー数は変動）
+  - title: GameSpot「Teardown Review – Came In Like A Wrecking Ball」
+    url: https://www.gamespot.com/reviews/teardown-review-came-in-like-a-wrecking-ball/1900-6417871/
+    note: 2022-04-28公開。破壊と物理挙動を評価し、前半の反復と道具解放の遅さを批評
+  - title: Steam Community「Does this game have any kind of story?」
+    url: https://steamcommunity.com/app/1167630/discussions/0/4638239688792999510/
+    note: 2024-11-19開始、全13投稿の任意参加スレッドから複数投稿を例示。代表性のない小標本（2026-11-12確認）
+  - title: Embracer Group「Embracer Group acquires Tuxedo Labs」
+    url: https://www.embracer.com/releases/embracer-group-acquires-tuxedo-labs/
+    note: 2022-08-18公開。Steam早期アクセス時代を含む100万本超の販売発表と創業者コメント
+  - title: Coffee Stain Group Capital Markets Event 2025
+    url: https://coffeestain.com/wp-content/uploads/Coffee-Stain-Capital-Markets-Event-2025-2.pdf
+    note: 2025-11-17発表資料。Teardownの生涯Net sales SEK 450m（2025年8月時点）、Steam好評率96%・平均プレイ時間29時間（2025年10月時点）
+sources_note: 発売・価格・レビューなどの更新値は2026-11-12確認時点です。販売発表、批評家の解釈、Steam上のユーザー集計、限られた個人意見、独自分析を分けています。販売数・継続率は公表された範囲に限り、面白さだけで商業実績を説明しません。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：空間を資源にする</h2>
+  <p>レベルデザインでは、壁・段差・距離・通路を「どこへ進めるか」を決めるルールとして設計します。壊せる物を置くと、壁は通行止めであると同時に、プレイヤーが道へ作り替えられる資源になります。</p>
+  <p>選択を面白くするには、行動の効果と代償を組み合わせます。壊す時間や道具の消費、音や危険の増加を設けると、「近道を作るか、安全な遠回りをするか」に判断が生まれます。</p>
+  <ol class="flow mt-m">
+    <li><b>読む</b><span>目標・障害・利用できる道具を探す</span></li>
+    <li><b>準備する</b><span>地形を変え、ルートを試す</span></li>
+    <li><b>実行する</b><span>制限の中で計画を成立させる</span></li>
+  </ol>
+  <h3 class="h-sub">設計に使う手順</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">1</span><div><p class="list__title">ルートを複数用意する</p><p class="list__text">短いが危険な道と、長いが安定した道を置く。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">2</span><div><p class="list__title">変更可能な要素を決める</p><p class="list__text">破壊できる素材、道具の数、準備時間を調整する。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">3</span><div><p class="list__title">実行後の判断も作る</p><p class="list__text">タイマー、警備、音などが、準備した道を使う理由になる。</p></div></div>
+  </div>
+  <p class="note mt-s">作品を見るときは「この壁は何を止め、壊した後はどんな選択が増えるか」を追います。この見方で、Teardownの計画と実行を分解します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Teardown</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2020年10月29日 早期アクセス開始、2022年4月21日正式発売（Steam。PC・PlayStation 5・Xbox Series X|Sなど）</dd></div>
+    <div><dt>開発</dt><dd>Tuxedo Labs</dd></div>
+    <div><dt>ジャンル</dt><dd>ボクセル破壊・物理サンドボックス・強盗アクション</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から感情まで</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールが返すもの</th><th>生まれる判断・感情</th></tr></thead>
+      <tbody>
+        <tr><th>目標を確認し、現場を歩く</th><td>複数の回収地点と障害物が見える</td><td>どう回るかを自分で考え始める</td></tr>
+        <tr><th>壁を壊す・車両や爆薬を使う</th><td>地形が変わり、近道や侵入路ができる</td><td>自分の発想で環境を解いた手応え</td></tr>
+        <tr><th>警報後に目標を回収して脱出</th><td>時間内にルートを走り切る必要がある</td><td>準備の正しさを確かめる緊張と達成感</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜この作品ならではの面白さ</p>
+    <p class="panel__title">破壊表現を眺める遊びから、破壊で道を設計する遊びへつなげている。</p>
+    <p class="mt-s">一般的な強盗ゲームは鍵や遮蔽物を越える方法を選びますが、Teardownでは壁そのものを崩して地形を変えられます。警報が鳴る前の準備で道を作り、最初の目標で時間制限が始まるため、準備中の自由が実行中の緊張へ切り替わります。破壊の物理挙動と、計画したルートを走り切る目的が一つの行動ループに結びつく点が固有の核です。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">公式紹介は「完全に破壊できる世界で強盗を計画・実行する」と訴え、壁を爆破して近道を作る映像を見せます。見慣れた一人称操作に「どこでも壊せる」という約束が加わるので、プレイヤーは遊ぶ前から自分の攻略案を想像しやすい。Steamでは通常価格が米国$29.99、早期アクセス版は2020年、正式版は2022年発売です（2026-11-12確認）。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">現場の探索で目標と障害を見つけ、道具で地形を変え、警報後に回収・脱出を試します。道具の使用回数や移動速度があるため、最短距離だけでなく「どの道具をどこに使うか」も考える。クリア後は新しい道具・目標や、Steam Workshopのマップと改造が別の試行理由になります。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">GameSpotは、キャンペーン前半の目標と道具解放が似た形で続き、新しい道具の追加も遅いと批評しました。自由な破壊を期待する人はタイマー付き強盗の反復に疲れる可能性があり、逆に計画を立てるのが好きな人には同じ型を攻略する余地になります。</span></div>
+  </div>
+  <p class="note mt-s">GameSpotの評価は批評家のプレイ経験であり、全員の離脱理由を示すデータではありません。継続率・離脱率は公開資料から確認できないため、推測しません。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：自由度を支える入口と負担</h2>
+  <div class="grid">
+    <div class="panel"><p class="pixel">批評家</p><ul class="bullets mt-s"><li><span>GameSpotは破壊できる環境、手応えある物理、道具が生む選択を評価（7/10、2022-04-28）。</span></li><li><span>一方で、前半のミッション反復と道具解放の遅さ、チャレンジモードの短命さを指摘。</span></li></ul></div>
+    <div class="panel"><p class="pixel">プレイヤー</p><ul class="bullets bullets--muted mt-s"><li><span>Steam英語レビューは77,156件中95%好評、直近30日分は1,365件中95%好評（2026-11-12確認）。多数のユーザー投稿を集約した指標で、個々の不満や全地域の意見を代表するとは限りません。</span></li><li><span>Steam Communityの13投稿スレッドから、キャンペーンの反復・難度・Mod利用に直接触れた3投稿を確認しました。「少し反復的だが、主にModの土台として使う」という意見と「難しいが楽しい」という意見がありました（2024-11-19開始、2026-11-12確認）。便宜的な小標本で、全体傾向とは扱いません。</span></li></ul></div>
+  </div>
+  <div class="panel panel--dark mt-s"><p class="panel__label">評価が分かれる理由｜独自分析</p><p class="panel__title">破壊の自由を、タイマー付き課題が攻略に変える。同じ制約を、計画好きは挑戦、自由に壊したい人は窮屈さと受け取る。</p></div>
+  <h3 class="h-sub">確認できる市場データ</h3>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>Embracerは2022年8月、Steamで100万本超と発表。Coffee Stain資料では生涯Net sales SEK 450m（約45億クローナ、2025年8月時点）、Steam好評率96%（2025年10月時点）。Net salesはプラットフォーム手数料控除後の会社資料上の値で、販売本数ではありません。</dd></div>
+    <div><dt>価格</dt><dd>米国Steam通常価格$29.99（2026-11-12確認、セール・地域価格は変動）。</dd></div>
+    <div><dt>評価</dt><dd>Steamは英語レビュー95%好評（77,156件）、Metacriticは批評家80/100（2026-11-12確認）。指標の集計範囲が異なるため、単純に同じ評価尺度として比べません。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>入口の広がり</strong>　早期アクセスで2020年にPCへ登場し、2022年に正式発売。後にコンソール展開とマルチプレイも加わり、長期の開発・販売機会ができた。</span></li>
+    <li><span><strong>遊びの寿命</strong>　公式Steam説明はキャンペーン40ミッション、無制限のサンドボックス、数千のコミュニティ製Modを掲げる。作品外の創作・共有が、公式キャンペーンの反復を避ける遊び方にもなる。</span></li>
+    <li><span><strong>市場の読み方</strong>　2022年の100万本超は販売本数、2025年のNet salesは会社の収益指標、レビュー率は購入者等の投稿評価です。価格、セール、移植、更新、Mod文化も関わるため、これらの数字だけで成功要因を一つに決められません。</span></li>
+  </ul>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：壁を壊して、警報前に道を作る</h2>
+  <p>準備中に壁をタップして壊し、スタートから最初の荷物へ進みます。荷物を取ると警報が始まるので、二つ目の荷物を回収して出口へ戻りましょう。</p>
+  <p>まず制限7手・道具1個で遊び、次に道具0個または制限8手へ変えて再挑戦します。設定の変更が、近道の価値と成功結果をどう変えるか見てください。</p>
+  <div class="chips mt-s"><span class="chip">準備中は時間停止</span><span class="chip">壁を壊せるのは1回</span><span class="chip">荷物1つ目で警報開始</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">壊す前と後で、最短ルートは何手変わった？</p><p class="mt-s">壁を壊す行動に制限がないと選択は自明になります。タイマーの長さや道具の数を一つずつ変え、遠回りと近道がどちらも成立する境界を探します。</p></div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">制限手数を7と8で比較</p><p class="mt-s">道具1個のまま制限を変え、壁を壊す理由、移動手数、成功・失敗を記録します。設定が変わると「壊す」判断がどう変化したかを説明します。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">道具を複数にし、障害を追加</p><p class="mt-s">壁を二つ置き、破壊できる回数を1または2にします。最短ルートだけでなく、どの壁を壊すと失敗の余地や選択肢が増えるかを検証します。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <p>破壊の代わりに、鍵を開ける、足場を動かす、資源を消費して通路を作ることでも、空間を選択肢にできます。プレイヤーが地形を変えた結果を、直後の行動と後の目標に結びつけます。</p>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームの障害物を、プレイヤーが有利に使う方法はありますか？ 利益だけでなく、時間・道具・危険のどれを代償にしますか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">準備時間と実行時間を分けると、どんな選択が増えますか？ 一本道を一つ変え、複数のルートがそれぞれ成立するかテストしてください。</span></div>
+  </div>
+</section>
