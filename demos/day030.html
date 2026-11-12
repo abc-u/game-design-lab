@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>霧笛の記録室｜仮説をまとめて確定する推理ミニゲーム</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--line:#c9c7c0;--muted:#62616a;--green:#276b45;--red:#ad3939}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Noto Sans JP",sans-serif}
+main{max-width:820px;margin:auto;padding:24px 18px 40px}
+h1{font-size:clamp(1.35rem,5vw,2rem);line-height:1.25;margin:0 0 8px}
+h2{font-size:1.1rem;margin:0 0 12px}
+p{margin:8px 0}
+.lead{color:var(--muted);margin-bottom:18px}
+.box{border:1px solid var(--ink);padding:16px;margin:14px 0;background:#fff}
+.settings{display:flex;flex-wrap:wrap;gap:12px}
+label{display:block;font-weight:700}
+select,button{font:inherit;color:var(--ink);padding:10px 12px;border:1px solid var(--ink);background:#fff;border-radius:0;min-height:44px}
+button{cursor:pointer;font-weight:700}
+button.primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row label{flex:1 1 200px}
+.status{font-weight:700}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+.case{border:1px solid var(--line);padding:14px;background:#fff}
+.case h3{margin:0 0 6px;font-size:1rem}
+.clues{padding-left:20px;margin:8px 0 12px}
+.clues li{margin:4px 0}
+.case select{width:100%}
+.confirmed{border-color:var(--green);background:#f3faf5}
+.result{padding:12px;border:1px solid var(--ink);background:#fff;margin-top:12px}
+.hidden{display:none}
+.small{font-size:.9rem;color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+progress{width:100%;height:14px;accent-color:var(--purple)}
+@media(min-width:680px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){main{padding:18px 12px 30px}.box{padding:12px}}
+</style>
+</head>
+<body>
+<main>
+<h1>霧笛の記録室</h1>
+<p class="lead">手掛かりを読み、四つの記録に人物を当てはめよう。正誤はすぐには返らない。設定した数の正解が揃うと、合っている記録だけが確定する。</p>
+<section class="box" id="setup">
+<h2>調査条件</h2>
+<div class="settings">
+<label>確定に必要な正答数
+<select id="threshold"><option value="2">2件（返答が早い）</option><option value="3" selected>3件（慎重に照合）</option></select></label>
+<label>手掛かりの表示
+<select id="clueLevel"><option value="1">要点のみ</option><option value="2" selected>詳しい記録</option></select></label>
+</div>
+<p class="small">設定を変えると、答え合わせまでの条件や各事件に出る情報が変わる。</p>
+<button class="primary" id="start">調査を始める</button>
+</section>
+<section class="box hidden" id="game">
+<div class="row"><p class="status" id="turnText">調査 1 / 6</p><p class="status" id="progressText">確定 0 / 4</p></div>
+<progress id="progress" max="4" value="0"></progress>
+<p id="instruction">四つの記録に仮説を登録してから一括確認する。</p>
+<div class="grid" id="cases"></div>
+<div class="actions">
+<button class="primary" id="submit">仮説を登録して照合</button>
+</div>
+<div class="result hidden" id="result" aria-live="polite"></div>
+</section>
+<section class="box hidden" id="end" aria-live="polite">
+<h2 id="endTitle"></h2><p id="endText"></p>
+<button class="primary" id="again">再プレイ</button>
+</section>
+<p class="small">スマートフォンでは選択欄をタップして操作できます。全四件を確定すると成功、調査6回で残っている記録があれば未解決で終了します。</p>
+</main>
+<script>
+(function(){
+"use strict";
+const people=["ミナ","セイ","トオル","ユイ"];
+const data=[
+ {title:"消えた羅針盤",a:"ミナ",clues:["羅針盤の空箱には、右舷の舵輪についた真鍮粉が残っていた。","当直表では、羅針盤を扱える舵手はミナ。現場の袖口にも同じ粉がある。"]},
+ {title:"破られた名簿",a:"セイ",clues:["破れた紙片に薬品の跡。書庫の鍵は医務係が保管する決まり。","当直表では医務係はセイ。薬品庫の記録にも、彼女が夜番とある。"]},
+ {title:"鳴らない鐘",a:"トオル",clues:["鐘の縄に厨房の青い糸が絡まり、現場に小麦粉の足跡が続く。","厨房の当番表で鐘の時刻に持ち場を離れていたのはトオルだけ。"]},
+ {title:"閉じた信号窓",a:"ユイ",clues:["窓の留め金は外からではなく、内側から閉じられていた。","見張りの記録では、信号室の鍵を持つ航海士はユイ。窓辺に彼女の手袋がある。"]}
+];
+let active=false,turn=0,threshold=3,clueLevel=2,confirmed=new Set(),lastResults=[],lastGuesses=[];
+const $=id=>document.getElementById(id);
+function render(){
+ const host=$("cases");host.innerHTML="";
+ data.forEach((c,i)=>{
+  const card=document.createElement("article");card.className="case"+(confirmed.has(i)?" confirmed":"");
+  const h=document.createElement("h3");h.textContent=(confirmed.has(i)?"✓ ":"")+String(i+1).padStart(2,"0")+"｜"+c.title;card.appendChild(h);
+  const ul=document.createElement("ul");ul.className="clues";
+  c.clues.slice(0,clueLevel).forEach(t=>{const li=document.createElement("li");li.textContent=t;ul.appendChild(li)});
+  card.appendChild(ul);
+  const label=document.createElement("label");label.textContent="記録上の人物";
+  const sel=document.createElement("select");sel.setAttribute("aria-label",c.title+"の人物");
+  const opt=document.createElement("option");opt.value="";opt.textContent="人物を選ぶ";sel.appendChild(opt);
+  people.forEach(name=>{const o=document.createElement("option");o.value=name;o.textContent=name;sel.appendChild(o)});
+  if(confirmed.has(i)){sel.value=c.a;sel.disabled=true}
+  else if(lastGuesses[i]){sel.value=lastGuesses[i]}
+  label.appendChild(sel);card.appendChild(label);host.appendChild(card);
+ });
+ $("progressText").textContent="確定 "+confirmed.size+" / 4";
+ $("progress").value=confirmed.size;
+ $("turnText").textContent="調査 "+turn+" / 6";
+}
+function finish(win){
+ active=false;$("game").classList.add("hidden");$("end").classList.remove("hidden");
+ $("endTitle").textContent=win?"全記録を復元した":"未解決の記録が残った";
+ $("endText").textContent=win?"根拠を照合し、四つの人物を確定できた。":"調査回数を使い切った。答え合わせでは各記録の正解を確認できる。";
+ if(!win){$("endText").textContent+=" 正解： "+data.map((c,i)=>(i+1)+" "+c.title+"＝"+c.a).join("／");}
+}
+function begin(same){
+ threshold=Number($("threshold").value);clueLevel=Number($("clueLevel").value);
+ if(!same){turn=0;confirmed=new Set();lastResults=[];lastGuesses=[]}
+ active=true;$("setup").classList.add("hidden");$("end").classList.add("hidden");$("game").classList.remove("hidden");
+ $("result").classList.add("hidden");$("submit").classList.remove("hidden");
+ $("instruction").textContent="四つの記録に仮説を登録してから一括確認する。";render();
+}
+$("start").addEventListener("click",()=>begin(false));
+$("again").addEventListener("click",()=>{$("setup").classList.remove("hidden");$("end").classList.add("hidden");$("game").classList.add("hidden")});
+$("submit").addEventListener("click",()=>{
+ if(!active)return;
+ const cards=[...$("cases").children];
+ const guesses=cards.map((c,i)=>confirmed.has(i)?data[i].a:c.querySelector("select").value);
+ if(guesses.some((v,i)=>!confirmed.has(i)&&!v)){ $("instruction").textContent="未入力の記録があります。人物を選んでから照合してください。";return; }
+ turn++;
+ const remaining=data.map((_,i)=>i).filter(i=>!confirmed.has(i));
+ const needed=Math.min(threshold,remaining.length);
+ lastGuesses=guesses.slice();
+ const correct=remaining.filter(i=>guesses[i]===data[i].a);
+ lastResults=guesses.map((v,i)=>({ok:v===data[i].a}));
+ const panel=$("result");panel.classList.remove("hidden");
+ if(correct.length>=needed){
+  correct.forEach(i=>confirmed.add(i));
+  panel.textContent=correct.length+"件の正答が条件を満たした。正しい記録だけ確定した。残りは手掛かりを見直せる。";
+  $("instruction").textContent="確定した人物は固定。残る記録を照合しよう。";
+  render();
+ }else{
+  panel.textContent="確定条件に届かなかった。個別の正誤は伏せたまま。証拠を読み直し、仮説を更新しよう。";
+  $("instruction").textContent="証拠を読み直して再挑戦。どの人物関係を見落とした？";
+ }
+ if(confirmed.size===data.length){finish(true);return}
+ if(turn>=6){finish(false);return}
+ $("turnText").textContent="調査 "+turn+" / 6";
+});
+})();
+</script>
+</body>
+</html>

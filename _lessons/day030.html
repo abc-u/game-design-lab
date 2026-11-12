@@ -1,0 +1,180 @@
+---
+day: 30
+date: 2026-11-13
+title: 仮説に、いつ確信を返す？
+theme: 推理の確定単位とフィードバック
+game: Return of the Obra Dinn
+level: 初級
+minutes: 10
+summary: 仮説を試し、正解が確かめられるタイミングを設計する。
+question: 推理の答え合わせをまとめて返すと、考え方と緊張はどう変わる？
+goals:
+  - 推理ゲームにおける仮説・手がかり・確定の関係を説明できる
+  - 自作ゲームの答え合わせの頻度と条件を改善できる
+video:
+  id: ILolesm8kFY
+  title: Return of the Obra Dinn 公式トレーラー
+  caption: 公式トレーラー。低解像度の白黒映像と、船上の死を調べる手掛かりの見せ方を観察してください。
+demo:
+  src: /demos/day030.html
+  title: 霧笛の記録室｜仮説をまとめて確定する推理ミニゲーム
+  height: 1250
+sources:
+  - title: Lucas Pope「Return of the Obra Dinn 公式サイト」
+    url: https://obradinn.com/media/prerelease.html
+    note: 発売・対応環境・当初価格・プレイ時間、視認性設定、動画撮影と音声の注意（公開日記載なし、2026-11-13確認）
+  - title: Steam「Return of the Obra Dinn」
+    url: https://store.steampowered.com/app/653530/Return_of_the_Obra_Dinn/
+    note: 発売日、開発・販売元、タグ、英語レビュー集計（2026-11-13確認。集計と価格は変動）
+  - title: Bryant Francis「For Lucas Pope, Return of the Obra Dinn was a bunch of appealing design problems」Game Developer
+    url: https://www.gamedeveloper.com/design/for-lucas-pope-i-return-of-the-obra-dinn-i-was-a-bunch-of-appealing-design-problems
+    note: 2018-11-26公開。1-bit表現と設計上の制約について開発者が説明
+  - title: "Joel Couture「Road to the IGF: Lucas Pope's Return of the Obra Dinn」Game Developer"
+    url: https://www.gamedeveloper.com/business/road-to-the-igf-lucas-pope-s-i-return-of-the-obra-dinn-i-
+    note: 2019-03-15公開。手掛かりの配置、記録帳、3件ずつ答えを確定する構造、開発者の意図
+  - title: Andy Kelly「Return of the Obra Dinn review」PC Gamer
+    url: https://www.pcgamer.com/return-of-the-obra-dinn-review/
+    note: 2018-10-19公開、90点。推理の手応えと、答えの手掛かりが少なく行き詰まる批評
+  - title: Steam「Return of the Obra Dinn User Reviews」
+    url: https://store.steampowered.com/app/653530/Return_of_the_Obra_Dinn/#app_reviews_hash
+    note: 2026-11-13確認時、英語レビュー18,863件の96%が好評、直近30日413件の94%が好評と表示。件数・比率は変動
+  - title: Steam Community「プレイヤーレビュー」
+    url: https://steamcommunity.com/app/653530/reviews/
+    note: 検索表示で確認できた2件を対照例として参照。推理の独自性を評価する声と、後半の総当たり・価格に見合う満足感を疑問視する声。便宜抽出で代表性なし（2026-11-13確認）
+  - title: Nintendo UK「Return of the Obra Dinn」
+    url: https://www.nintendo.com/en-gb/Games/Nintendo-Switch-download-software/Return-of-the-Obra-Dinn-1633060.html
+    note: Switch版の発売日2019-10-17（2026-11-13確認）
+sources_note: 数値は確認日付きの公開表示を記録し、Steamレビュー数を販売本数とは扱いません。販売本数は今回確認した一次資料では公表を確認できず、推定値を採用していません。開発者の意図、批評家の解釈、集計値、2件の個人意見、独自分析を分けています。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：答え合わせを「確定単位」で設計する</h2>
+  <p>フィードバックは、プレイヤーの行動に返す情報です。推理ゲームでは「正解を見せるか」だけでなく、何問解けたら答えを確定するか、どこまで個別の正誤を知らせるかも設計できます。</p>
+  <p>即時に正誤を返せば試行錯誤は速くなりますが、間違いを片端から試す遊びにもなりえます。確認をまとめれば、複数の手掛かりをつなぐ動機が生まれる一方、根拠が足りない人は行き詰まりやすくなります。</p>
+  <ol class="flow mt-m">
+    <li><b>仮説</b><span>証拠から答えを予想する</span></li>
+    <li><b>登録</b><span>人物や出来事を記録する</span></li>
+    <li><b>確定</b><span>条件を満たした答えを確かめる</span></li>
+  </ol>
+  <h3 class="h-sub">設計に使う手順</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">1</span><div><p class="list__title">プレイヤーの仮説を決める</p><p class="list__text">誰が、何をしたか。証拠で説明できる問いにする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">2</span><div><p class="list__title">確定の条件を決める</p><p class="list__text">一つずつか、複数の正答が揃ってからかを選ぶ。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">3</span><div><p class="list__title">待ち時間を支える</p><p class="list__text">記録帳、再訪できる証拠、追加の手掛かりで考えを保つ。</p></div></div>
+  </div>
+  <p class="note mt-s">作品を見るときは「何を手掛かりに仮説を立て、どの条件で正しさが返るか」を追います。この問いで、推理の確定単位を分析します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Return of the Obra Dinn</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2018年10月18日、PC・Macで発売。2019年にSwitch版などへ展開</dd></div>
+    <div><dt>開発・販売</dt><dd>Lucas Pope（開発）、3909（Steam表記）</dd></div>
+    <div><dt>ジャンル</dt><dd>一人称の探索・推理アドベンチャー</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から感情まで</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>仕組みが返すもの</th><th>生まれる判断・感情</th></tr></thead>
+      <tbody>
+        <tr><th>懐中時計で死の直前の場面を調べる</th><td>静止した現場、会話、位置関係を見直せる</td><td>誰が何をしていたか、観察を始める</td></tr>
+        <tr><th>乗員名簿と場面を照合する</th><td>名前・役割・死因の候補を記録帳に整理する</td><td>複数の断片から仮説を組み立てる</td></tr>
+        <tr><th>複数の運命を入力する</th><td>正しい推理が一定数揃うと、答えがまとめて確定する</td><td>個別の当てずっぽうを避け、根拠を揃えようとする</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜作品ならではの面白さ</p>
+    <p class="panel__title">船上の短い証言や配置を、名簿を埋める「自分の推理」へ変える。</p>
+    <p class="mt-s">多くのミステリーは章ごとに犯人や真相を明かしますが、本作ではプレイヤー自身が乗員の名前と運命を帳簿へ入力します。個別の正解をすぐ返さず、複数の正答が揃うまで確定を待つことで、声・役割・場所を横断して根拠を照合する必要が生まれます。断片をつなぎ、帳簿の空欄が埋まる瞬間がこの作品固有の達成感です。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">「色数を絞った保険調査」という見せ方は、見知らぬ船と乗員の死を調べる入口になる。公式サイトの当初価格は米国19.99ドルで、最初に遺体を時計で調べると、映像を観察して名簿へ記録する遊びにすぐ触れる。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">新しい死の場面が開くと、初見では無関係に見えた顔や声を再確認できる。手掛かりを記録帳で結び直し、三件の正答が確定したときに進捗が返る。章ごとの短い事件が整理されているので、大きな謎を一度に解かず、次の空欄を目標にできる。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">PC Gamerは、手掛かりが少ない場面では正誤の目安がなく、船内を歩き回って行き詰まることも指摘する。公式サイトも点描の白黒表示による長時間プレイ時の見づらさや、音声への依存・字幕なしを案内しており、ヒントや視聴覚上の配慮を求める人には負担になりうる。</span></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：刺さる人、離れる人</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">評価された点</p>
+      <ul class="bullets mt-s">
+        <li><span>PC Gamerは90点。観察を重ねて自力で解く推理と、白黒表現の雰囲気を評価。</span></li>
+        <li><span>Steam英語レビューは11月13日確認時に18,863件中96%が好評。直近30日も413件中94%が好評。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判・留保</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>PC Gamerは、正誤の途中経過がわかりにくく、進展が止まったように感じる場面を指摘。</span></li>
+        <li><span>Steamレビューの便宜抽出2件では、独自の推理体験を評価する声と、後半の総当たりや価格に対する満足感を疑問視する声が並ぶ。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">強い自力感は、答え合わせを待てるプレイヤーには報酬になる。手掛かり不足と沈黙は、推理の根拠を見失う人には離脱要因になる。</p>
+  </div>
+  <h3 class="h-sub">市場の手掛かり</h3>
+  <dl class="facts">
+    <div><dt>レビュー指標</dt><dd>MetacriticはPC批評家スコア89（35件）、ユーザー評価8.7（657件）の表示を確認。Steamは上記のユーザー投稿件数と好評率。どちらも売上本数ではない。</dd></div>
+    <div><dt>販売本数</dt><dd>今回確認した開発者・公式の一次資料では総販売本数を確認できず。Steamレビューから本数を推計しない。</dd></div>
+    <div><dt>価格・対象</dt><dd>公式サイトは発売時の米国価格を19.99ドル相当と掲載。Steamで販売、Switch等にも展開。ミステリーをじっくり読み解く一人プレイ層に向けた価格・流通と読める（独自分析）。現在価格は地域・セールで変わる。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>ブランド</strong>　『Papers, Please』制作者の新作という認知が入口になりうる。</span></li>
+    <li><span><strong>見た目と配信</strong>　1-bit映像は小さなサムネイルでも差別化しやすい一方、開発者自身が動画圧縮で映像が崩れやすいと注意している。配信だけに頼る宣伝には相性上の課題がある。</span></li>
+    <li><span><strong>競合と口コミ</strong>　推理・パズル作品が比較対象。口コミでは「推理が独特」という魅力と、「助言が少ない」という負担が同時に広がりうる。</span></li>
+  </ul>
+  <p class="note mt-s">これは作品の市場要因の読み解きで、販売数・継続率の公表値は確認できません。好評率だけから売上や長期継続を断定しないでください。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：仮説をまとめて確定する</h2>
+  <p>四つの事件で、手掛かりから人物を推理し、まとめて登録します。設定した数以上の正答が揃うまで個別の正誤は伏せられます。失敗しても記録は見直せるので、確定条件を変えて違いを比べてください。</p>
+  <div class="chips mt-s">
+    <span class="chip">確定に必要な正答数</span>
+    <span class="chip">表示する手掛かり数</span>
+  </div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">確定条件が上がると、考える時間と「進展がない」時間はどう変わる？</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">確定条件を2件から3件へ</p>
+      <p class="mt-s">正解をすぐ示さずに待ちます。解けた数、試行回数、答え合わせまでの納得感を記録し、推理の根拠を言葉にできるか比べます。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">「あと一歩」の情報を加える</p>
+      <p class="mt-s">正解を明かさず、候補の絞り込みや証拠の再訪を促す情報を一つ追加します。答えの漏れすぎと、行き詰まりの解消を両方観察します。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで「快感がない」と言われた場面は、行動の結果が弱いのか、確信が返るまでが長いのか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">別の推理作品で答えが確定する瞬間を一つ選び、条件・返す情報・その前にできる行動を書き出す。</span></div>
+    <div class="list__row"><span class="list__key">Q3</span><span class="list__body">確定を待たせるなら、プレイヤーが次に試す手掛かりや目標も用意できているか？</span></div>
+  </div>
+  <p class="note mt-m">まず正解時の気持ちよさを足すのではなく、根拠を集める行動が確信につながる道筋を調整します。</p>
+</section>
