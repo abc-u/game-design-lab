@@ -1,0 +1,190 @@
+---
+day: 31
+date: 2026-11-14
+title: "知らない誰かと、なぜ歩き続ける？"
+theme: 匿名の合図と任意の同行
+game: Journey
+level: 初級
+minutes: 10
+summary: 言葉のない合図が、協力を義務にせず同行の気持ちを生む仕組みを学ぶ。
+question: 指示を出せない相手と、なぜもう少し一緒に進みたくなる？
+goals:
+  - 合図・距離・返答が、協力の意味をどう作るか説明できる
+  - 自作ゲームのコミュニケーションを「指示」から「解釈」へ調整する案を作れる
+video:
+  id: TVFLq4OS_pU
+  title: "Journey 公式ローンチトレーラー"
+  caption: 公式トレーラー。旅人の姿、砂の移動、山へ向かう構図と音の合図を観察してください。
+demo:
+  src: /demos/day031.html
+  title: "呼び声の距離｜無言の同行を試す"
+  height: 1080
+sources:
+  - title: "Jenova Chen「Jenova Chen Explains Journey: Social Relevance and Artistic Inspirations」PlayStation.Blog"
+    url: https://blog.playstation.com/2011/01/11/jenova-chen-explains-journey-social-relevance-and-artistic-inspirations/
+    note: 2011-01-11公開。ロビーなしの参加、単独でも完走できる設計、呼び声と飛行、収集物を「借りる力」とした意図
+  - title: "thatgamecompany「Journey’s First Steps Post-E3」PlayStation.Blog"
+    url: https://blog.playstation.com/2011/06/27/journey%E2%80%99s-first-steps-post-e3/
+    note: 2011-06-27公開。最大2人、匿名で出会う、マッチングロビー・ID・チャットを置かない仕様
+  - title: "PlayStation.Blog「Journey Takes Its First Steps This March」"
+    url: https://blog.playstation.com/2012/02/16/journey-takes-its-first-steps-this-march/
+    note: 2012-02-16公開。PS3向けPlayStation Store発売日2012-03-13、発売時の米国価格14.99ドル、Spring Feverの先行作品
+  - title: "PlayStation Plus in March: Early Journey Access, Free Sly Cooper, Street Fighter and More"
+    url: https://blog.playstation.com/?p=71127
+    note: 2012-03公開。PS Plus先行アクセス、PSN全体の発売日2012-03-13を案内
+  - title: "8 Years Later, Journey is Still as Serenely Captivating as Ever"
+    url: https://blog.playstation.com/?p=224007
+    note: 2020-05-01公開。呼び声、匿名同行、接触によるスカーフの充電について回顧
+  - title: "Jenova Chen「Journey Breaks PSN Sales Records」PlayStation.Blog"
+    url: https://blog.playstation.com/archive/2012/03/29/journey-breaks-psn-sales-records/
+    note: 2012-03-29公開。開発者がSCEA・SCEE地域のPlayStation Store最速販売タイトルと発表。販売本数は示していない
+  - title: "Jane Douglas「Journey Review」GameSpot"
+    url: https://www.gamespot.com/reviews/journey-review/1900-6363693/
+    note: 2012-03-13公開、9/10。匿名の同行と音の合図、短い一回の体験を評価。同行者が必須ではないことも論じる
+  - title: "Kyle Orland「Journey: A hauntingly beautiful art-house film disguised as a game」Ars Technica"
+    url: https://arstechnica.com/gaming/2012/03/journey-a-hauntingly-beautiful-art-house-film-disguised-as-a-game/
+    note: 2012-03公開。映像や雰囲気を評価しながら、対話的な遊びが弱く短編映画の方が適するのではと批判
+  - title: "Steam「Journey」"
+    url: https://store.steampowered.com/app/638230/Journey/
+    note: PC版は2020-06-11発売。2026-11-14確認時、英語レビュー12,913件の92%が好評と表示。件数・比率は変動し、販売本数ではない
+  - title: "Steam Community「Journey User Reviews」"
+    url: https://steamcommunity.com/app/638230/reviews/
+    note: 表示中のレビューから好評1件・不評1件を便宜抽出。同行を記憶に残る長所とする声と、一本道で挑戦が少ないという声（2026-11-14確認、代表性なし）
+  - title: "PlayStation.Blog「Journey Arrives on PS4 July 21st」"
+    url: https://blog.playstation.com/2015/07/07/journey-arrives-on-ps4-july-21st/
+    note: 2015-07-07公開。PS4版の発売日2015-07-21とクロスバイ対応
+sources_note: PSNの販売記録は開発者による地域別の順位発表で、絶対販売数や長期継続を示しません。Steamレビューは英語の投稿集計、個人レビューは選んだ2件の事例です。仕様と開発者の意図、批評、ユーザー評価、独自分析を区別しています。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：合図は「指示」ではなく、解釈の入口</h2>
+  <p>ゲーム内コミュニケーションは、プレイヤーが意図を伝え、相手がそれを受け取り、行動で返す仕組みです。文字チャットのように意味を明示する方法もあれば、短い音や動きから相手の意図を推測する方法もあります。</p>
+  <p>後者は伝達の正確さでは不利ですが、相手の反応を読む余地が生まれます。設計では「合図の種類」「届く距離」「返答が見えるまでの時間」「協力しなくても先へ進めるか」を一緒に調整します。</p>
+  <ol class="flow mt-m">
+    <li><b>意図</b><span>近くに来てほしい／待ちたい</span></li>
+    <li><b>合図</b><span>音・光・動きで伝える</span></li>
+    <li><b>解釈</b><span>相手が止まる、寄る、進む</span></li>
+  </ol>
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">1</span><div><p class="list__title">何を伝えられるか絞る</p><p class="list__text">合図を増やすほど正確になる一方、相手を操作する指示になりやすい。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">2</span><div><p class="list__title">返答を行動で見せる</p><p class="list__text">接近、停止、音の反響など、相手がどう受け取ったかを画面に返す。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">3</span><div><p class="list__title">協力を任意に保つ</p><p class="list__text">相手がいない、離れる、合図を読めない場合も遊びが成立する道を用意する。</p></div></div>
+  </div>
+  <p class="note mt-s">作品分析では「合図が何を伝え、どんな返答を生み、同行を義務にしているか」を追います。この視点で、Journeyの協力を分解します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Journey</h2>
+  <dl class="facts">
+    <div><dt>発売・機種</dt><dd>2012-03-13にPS3向け配信。2015年PS4、2020年Steam版などへ展開</dd></div>
+    <div><dt>開発・販売</dt><dd>thatgamecompany／Sony Computer Entertainment（PS3版）</dd></div>
+    <div><dt>ジャンル</dt><dd>探索アドベンチャー。最大2人のオンライン同行は任意</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から感情まで</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>行動</th><th>ルール・返答</th><th>判断・感情へのつながり</th></tr></thead>
+      <tbody>
+        <tr><th>砂丘を進み、遠くの山を見る</th><td>移動と滑走で、文字の説明なしに次の場所を示す</td><td>山へ向かう目標がわかり、まず歩いてみる</td></tr>
+        <tr><th>見知らぬ旅人のそばで呼び声を出す</th><td>短い音と記号が出る。近くで触れ合うと互いのスカーフが回復する</td><td>「命令」ではなく、呼び返す／待つ／離れるを選ぶ</td></tr>
+        <tr><th>一緒に滑空する、または一人で進む</th><td>同行者は役割固定もチャットもなく、いなくても旅を完走できる</td><td>助けが必要な場面で相手が残ると、任意の親切が記憶に残る</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜作品ならではの面白さ</p>
+    <p class="panel__title">協力を「役割をこなす仕事」から「知らない相手と同じ景色を見る時間」へ変える。</p>
+    <p class="mt-s">『Overcooked! 2』のように役割分担と同期を楽しむ協力作とは違い、Journeyは名前・チャット・固定の役目を外し、短い呼び声と近さだけを渡します。呼び声で相手を呼べても、命令はできません。だから隣に残る行動が自発的に見え、別れたときにも相手の意志を想像しやすくなります。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">砂漠、赤い旅人、遠い山を見せるトレーラーが、操作より先に「どこへ行く旅か」を伝える。PS3版は2012年にPlayStation Storeで14.99米ドル、Spring Feverの先頭で発売され、既作『flOw』『Flower』のスタジオブランドも入口になった（価格・発売・企画は事実、ブランドが購入を促したかは仮説）。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">新しい地形や滑空が現れると、プレイヤーは次の景色へ進む。同行者との距離が縮まり、呼び声が返り、スカーフが回復すると、便利さと「一緒に行こう」という解釈が重なり、もう少し隣を歩く選択が生まれる。</span></div>
+    <div class="list__row"><span class="list__key">戻る・離れる</span><span class="list__body">対戦成績や恒久的な育成を追う作品ではなく、主なゴールは山への一度の旅。GameSpotは2〜3時間ほどで一息に遊べる長さと、お気に入りの章への再訪を挙げる。短さや伝統的な挑戦の少なさを物足りなく感じる人は離れやすく、他方、同行者との記憶を振り返りたい人には章の再訪が戻る理由になる。</span></div>
+  </div>
+  <p class="note mt-s">旅の後に経験値や戦績を積み上げる仕組みは主軸ではありません。オンラインの再会・継続率がどれだけ起きたかを示す公開データも確認できず、ここではプレイ構造からの分析と分けています。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：余白は報酬にも不足にもなる</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">支持された点</p>
+      <ul class="bullets mt-s">
+        <li><span>GameSpotは9/10。匿名の相手と短い音だけで生まれる同行、音楽、滑走を評価（2012-03-13）。</span></li>
+        <li><span>Steam英語レビューは2026-11-14確認時、12,913件中92%が好評。投稿者の評価指標で、購入者全体や販売数とは異なる。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">批判・留保</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Ars Technicaは、雰囲気を評価しつつ、操作による関与が弱く短編映画の方が向くのではと批判（2012年3月）。</span></li>
+        <li><span>Steam表示レビューを好評1件・不評1件だけ選ぶと、匿名の同行を忘れがたいとする声と、一本道で挑戦が乏しいとする声が並ぶ。2件は代表標本ではない。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">指示を減らすと相手の存在を想像する余白が生まれる。同じ余白が、操作の手応えや挑戦を求める人には不足として映る。</p>
+  </div>
+  <h3 class="h-sub">市場の手掛かり</h3>
+  <dl class="facts">
+    <div><dt>価格・入口</dt><dd>PS3版の発売時価格は14.99米ドル。PSNのデジタル配信、Spring Fever企画、PlayStation Plus先行アクセス告知と公式トレーラーが販売接点になった。</dd></div>
+    <div><dt>確認できる実績</dt><dd>発売約2週間後、開発者はSCEA・SCEE地域でPlayStation Store最速販売と発表。順位の指標であり、絶対販売本数は非公表。</dd></div>
+    <div><dt>対象・機種</dt><dd>短時間で完結する探索作を好む人に向くというのは内容からの分析。PS4版はクロスバイ対応、Steam版も発売され、後年に異なる機種の利用者へ届いた（その効果の大きさは非公表）。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>競合</strong>　同じPSNのSpring Fever枠には他の配信作も並んだ。限定されたストア露出と発売時期は接点の一つだが、売上記録の原因をゲームの面白さだけに帰せない。</span></li>
+    <li><span><strong>配信・口コミ</strong>　画面と音楽は視聴者に雰囲気を伝えやすい一方、匿名で出会った相手との個人的な記憶は、配信者と視聴者では同じ形で共有されない。これは体験形式からの仮説。</span></li>
+  </ul>
+  <p class="note mt-s">確認できた公式発表は販売速度の順位までです。販売本数、継続率、同行者に出会う確率は公開値を確認できず、レビュー比率から推測しません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：呼び声の届く距離を変える</h2>
+  <p>4つの地形を進み、行動回数の範囲で山頂を目指します。近くの旅人に呼び声が届けばスカーフと同行の記録が増えますが、遠くなら風に消えます。</p>
+  <div class="chips mt-s">
+    <span class="chip">呼び声の距離</span>
+    <span class="chip">同行の返答</span>
+    <span class="chip">行動上限</span>
+  </div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">距離を広げると、旅人を見つける安心と、近づく意味はどう変わる？</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">呼び声の距離を変えて再挑戦</p>
+      <p class="mt-s">近距離と遠距離で、同行の記録数・残りのスカーフ・行動回数を比べます。結果だけでなく、相手が近くにいると気づいた瞬間も記録しましょう。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">合図を増やすか、返答を増やすか</p>
+      <p class="mt-s">指示ボタンを増やす案と、相手の行動で意味を読み取らせる案を比べます。協力が義務にならず、単独でも完走できる条件を保ってください。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで「快感がない」と言われた場面は、入力の反応が弱いのか、相手の行動から意図を読めないのか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">協力プレイの役割・合図・距離を一つずつ書き、相手がいないと成立しない仕組みを探す。</span></div>
+    <div class="list__row"><span class="list__key">Q3</span><span class="list__body">別作品や自作企画で、相手に命令せず「一緒にいたい」と感じさせる返答を一つ設計できるか？</span></div>
+  </div>
+  <p class="note mt-m">伝達の正確さだけを最適化せず、合図を受け取った相手が何を選べるかまで作ると、交流そのものが遊びになります。</p>
+</section>
