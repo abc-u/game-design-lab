@@ -1,0 +1,184 @@
+---
+day: 32
+date: 2026-11-15
+title: "命令に逆らうと、ゲームはどう返す？"
+theme: 選択の手掛かりと反応的な語り
+game: "The Stanley Parable: Ultra Deluxe"
+level: 初級
+minutes: 10
+summary: 語り手の予告、選択の手掛かり、反応の違いから「自分で選んだ」手応えを考える。
+question: ゲームが選択肢を見せ、行動に返事をすると、なぜその一手が自分のものに感じられる？
+goals:
+  - 選択を見つける手掛かりと、選択後の反応を分けて説明できる
+  - 自作ゲームの選択肢と結果の見せ方を、遊び手の行動から改善できる
+video:
+  id: 3WNxhbtUocQ
+  title: "The Stanley Parable: Ultra Deluxe 公式ローンチトレーラー"
+  caption: PlayStation公式ローンチトレーラー。無人のオフィス、語り手の指示、進路を選ぶ場面に注目してください。
+demo:
+  src: /demos/day032.html
+  title: "退館ルート｜放送の指示を試す"
+  height: 1000
+sources:
+  - title: "Crows Crows Crows『The Stanley Parable: Ultra Deluxe Press Kit』"
+    url: https://stanleyparable.com/press/
+    note: 公式プレスキット。2022-04-27発売、対応機種、発売時価格24.99米ドル、追加の選択・秘密について（2026-11-15確認）
+  - title: "Crows Crows Crows『The Stanley Parable: Ultra Deluxe』公式サイト"
+    url: https://www.stanleyparable.com/
+    note: 作品の紹介、追加内容の説明、オリジナル版とUltra Deluxe版を別に提供する方針（2026-11-15確認）
+  - title: "Steam公式ストア『The Stanley Parable: Ultra Deluxe』"
+    url: https://store.steampowered.com/app/1703340/The_Stanley_Parable_Ultra_Deluxe/
+    note: 2022-04-27発売。2026-11-15確認時、英語レビュー24,596件中94%が好評。レビュー集計は販売本数ではない。米国ストア表示価格24.99米ドル（地域・セールで変動）
+  - title: "Crows Crows Crows『Helpful Development Showcase #3』"
+    url: https://stanleyparable.com/hds/3/
+    note: 公式開発ブログ。2018-12-07のThe Game Awards発表トレーラーがオンライン視聴者2,620万人超に届いたと記載（2026-11-15確認）。視聴数は購入数ではない
+  - title: "Chris Kerr『The Stanley Parable: Ultra Deluxe sells over 100k copies on Steam in 24 hours』Game Developer"
+    url: https://www.gamedeveloper.com/business/the-stanley-parable-ultra-deluxe-sells-over-100k-copies-on-steam-in-24-hours
+    note: 2022-04-29公開。開発元発表としてSteam版が発売後24時間で10万本超。Steamの初日分で、全機種や長期販売を示す数字ではない
+  - title: "Jordan Ramée『The Stanley Parable: Ultra Deluxe Review – A Sequel In All But Name』GameSpot"
+    url: https://www.gamespot.com/reviews/the-stanley-parable-ultra-deluxe-review-a-sequel-in-all-but-name/1900-6417868/
+    note: 2022-04-27公開、8/10。新しい結末と現代のゲーム業界への視線を評価しつつ、2013年版の題材が当時ほど新鮮ではないと論じる
+  - title: "Sam Machkovech『Review: The Stanley Parable: Ultra Deluxe is a mandatory game for comedy fans』Ars Technica"
+    url: https://arstechnica.com/gaming/2022/04/review-stanley-parable-ultra-deluxe-is-a-mandatory-game-for-comedy-fans/
+    note: 2022-04-27公開。語りと驚きのあるコメディを評価。レビューで紹介された再訪と追加内容も確認（2026-11-15確認）
+  - title: "Steam Community『The Stanley Parable: Ultra Deluxe』ユーザーレビュー"
+    url: https://store.steampowered.com/app/1703340/The_Stanley_Parable_Ultra_Deluxe/?l=english
+    note: 2026-11-15確認。レビュー一覧の「Most Helpful」表示から肯定1件・否定1件を選定。肯定例は内省的な語り、否定例は別の台詞を見るための反復を指摘。2件は便宜抽出で全体を代表しない
+  - title: "Chris Kerr『Behind the scenes with The Stanley Parable』Game Developer"
+    url: https://www.gamedeveloper.com/business/behind-the-scenes-with-i-the-stanley-parable-i-
+    note: 2013-10-17公開。これは2013年オリジナル版についての開発者インタビュー。テスト参加者が分岐に気づかなかったため、選択肢を視覚的に目立たせたという説明（Ultra Deluxe固有の発言ではない）
+sources_note: 販売指標はSteam版発売初日の開発元発表で、全機種の累計販売ではありません。Steamレビューは英語投稿の比率、個人レビューは選んだ2件の例です。事実・開発者発言・批評・少数のユーザー意見・独自分析を区別し、継続率や離脱率は非公表として扱います。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：選択は、気づかれて初めて選択になる</h2>
+  <p>選択の手掛かりとは、プレイヤーが「ここで別の行動もできる」と見つけるための表示や配置です。扉の色、語り手の指示、操作できる物の輪郭などが手掛かりになります。</p>
+  <p>手掛かりが弱いと、設計者が用意した分岐に気づかれず、選んだ結果も届きません。設計では「選択肢が見つかるか」「選ぶ前に違いを予測できるか」「選んだ後に反応が返るか」を別々に確かめます。</p>
+  <ol class="flow mt-m">
+    <li><b>気づく</b><span>別の行動があると分かる</span></li>
+    <li><b>選ぶ</b><span>指示に従う／逆らうを決める</span></li>
+    <li><b>受け取る</b><span>行動に応じた反応が返る</span></li>
+  </ol>
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">1</span><div><p class="list__title">選択を見つけられるか</p><p class="list__text">テスト中、遊び手が候補を自分で見つけるかを観察する。2013年版の開発者は、テスト参加者が分岐に気づかない場面を受けて選択肢を視覚的に強調したと話している。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">2</span><div><p class="list__title">選ぶ前の違いが読めるか</p><p class="list__text">扉の形や説明の違いから、選択肢ごとの見込みを想像できるか。情報を隠すなら、隠すこと自体を面白くする理由も必要。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">3</span><div><p class="list__title">選んだ後の返事が具体的か</p><p class="list__text">台詞、音、状況の変化が、直前の行動に結びついているかを見る。どの選択をしても同じ返事なら、行動と結果のつながりは伝わりにくい。</p></div></div>
+  </div>
+  <p class="note mt-s">この3点を使い、選択の手掛かりと語り手の反応が作品の笑い・再訪をどう作るか見ていきます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：The Stanley Parable: Ultra Deluxe</h2>
+  <dl class="facts">
+    <div><dt>発売・機種</dt><dd>2022-04-27。PC、Switch、PS4/PS5、Xbox One／Series X|S</dd></div>
+    <div><dt>開発・販売</dt><dd>Crows Crows Crows。Davey Wreden作の2013年作品を拡張した再構成版</dd></div>
+    <div><dt>ジャンル</dt><dd>一人称の物語探索・コメディ。主な操作は歩く、調べる、進路を選ぶ</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から反応まで</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルール・語り手の反応</th><th>判断・次の行動</th></tr></thead>
+      <tbody>
+        <tr><th>語り手の説明どおりに歩く</th><td>声が予告した筋道を読み上げ、物語が滑らかに進む</td><td>指示に従うと何が起きるかを知り、次も指示を試す</td></tr>
+        <tr><th>二つの扉から別の方を選ぶ</th><td>語り手が選択を言い直したり、驚きや苛立ちを返したりする</td><td>自分の進路が語り手の台詞を変えたと気づき、さらに試す</td></tr>
+        <tr><th>結末を見て、オフィスへ戻る</th><td>多くの道は新しい開始としてつながり、別の進路を再び選べる</td><td>別の反応や結末を確かめたい人は戻り、同じ導入に疲れた人は離れる</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜この作品ならではの面白さ</p>
+    <p class="panel__title">語り手の予告が「選択の手掛かり」であり、逆らった時の返事が「選んだ証拠」にもなる。</p>
+    <p class="mt-s">一般的な分岐物語は、選択の先で物語が別方向へ進むことを主に見せます。この作品は、指示どおりに進む／外れる行為そのものを語り手が話題にするため、物語の変化と「誰が遊びを決めているか」という冗談が一緒に立ち上がります。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">一人称の空っぽの職場、親しげなナレーション、二つの扉が、最初の行動をすぐ示す。加えて、2013年版の評価を知る人には続編的な期待が入口になる。新規の遊び手も「指示に従うか」という短い問いから参加できる。</span></div>
+    <div class="list__row"><span class="list__key">続ける</span><span class="list__body">指示と違う方へ進むと、語り手が予定の筋書きを修正する。その返答で「このゲームは自分の逸脱も見ている」と分かり、次の指示でも試したくなる。結末後は別経路や追加内容が再訪先になるが、これは物語内の周回動機で、日をまたぐ継続率の測定ではない。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">分岐を探すには同じオフィスや導入を歩き直す場面がある。繰り返しを発見の一部として楽しむ人もいる一方、短い変化を見るために何度も歩くのを手間と感じる人には摩擦となり、別の遊びへ移る理由になる。</span></div>
+  </div>
+  <p class="note mt-s">ゲーム内では複数の結末を探索できますが、販売本数や利用者の周回・離脱割合は公開資料で確認できません。ここでの継続・離脱は作品構造と出典付きの意見からの分析です。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：再訪の面白さは、人によって反復にもなる</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s">
+        <li><span>GameSpotは8/10。追加の結末と、ゲーム業界を題材にした新しい語りを評価しつつ、2013年版の論点が2022年には新鮮さを失った面も指摘。</span></li>
+        <li><span>Ars Technicaは語り手のコメディと驚きを評価。評価は批評家の解釈であり、購入者全体の感想ではない。</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの評価</p>
+      <ul class="bullets bullets--muted mt-s">
+        <li><span>Steam英語レビューは2026-11-15確認時、24,596件中94%が好評。投稿者の評価割合で、売上や全プレイヤーの満足度ではない。</span></li>
+        <li><span>「Most Helpful」欄から2件だけ読むと、語り手の内省的な文章を好む声と、別の台詞のために同じ区間を歩き直す反復への不満がある。便宜的な2件で、全体傾向ではない。</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">反応の細かさは再挑戦を誘う一方、同じ導入を通るコストを上げる。選択への返事と、次の選択へ戻る速さを一緒に設計する。</p>
+  </div>
+  <h3 class="h-sub">なぜ選ばれ、広がった？</h3>
+  <dl class="facts">
+    <div><dt>価格・対象</dt><dd>発売時の米国価格は24.99米ドル。短い一人用物語を楽しむ人や2013年版のファンが候補と考えられるが、対象別売上は非公表</dd></div>
+    <div><dt>機種・時期</dt><dd>PCと主要家庭用機で同日発売。複数機種への展開は購入経路を増やす可能性があるが、販売への寄与は特定できない</dd></div>
+    <div><dt>確認できる成果</dt><dd>開発元の発表として、Steam版は発売後24時間で10万本超。初日のSteam版のみで、全機種累計や成功原因を示さない</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>ブランド・宣伝</strong>　2013年版からの知名度が続編的な入口になった可能性がある。公式開発ブログは2018年発表トレーラーのオンライン視聴者が2,620万人超と記載するが、視聴数から購入数は分からない。</span></li>
+    <li><span><strong>口コミ・配信</strong>　語り手の予想を外す場面は動画で見せやすい一方、結末の驚きを先に知ると初見の価値が変わる可能性がある。これは作品形式からの仮説で、効果の測定値ではない。</span></li>
+    <li><span><strong>競合と時代</strong>　2013年版が扱った「ゲームの選択」への自己言及は、2022年には他作品にも広がっていた。GameSpotの指摘どおり、新しい購入者には発見でも、旧作ファンには既視感になり得る。</span></li>
+  </ul>
+  <p class="note mt-s">24.99米ドルは発売時の米国表示価格、10万本超はSteam版の初日販売、94%はSteam英語レビューです。異なる指標を足し合わせず、面白さだけで売れたとは結論しません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：放送の指示を守る？外れる？</h2>
+  <p>退館までの3つの場面で、社内放送の指示に従うか別の行動を選びます。指示の手掛かりと語り手の反応を変え、選択の見つけやすさと、行動が物語へ返る感覚を比べましょう。</p>
+  <div class="chips mt-s">
+    <span class="chip">指示の目印</span>
+    <span class="chip">語り手の記憶</span>
+    <span class="chip">別ルートの条件</span>
+  </div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">指示の目印がある時とない時で選び方は変わる？語り手が反応を覚えると、逆らった選択にどんな意味が加わる？</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="panel__label">入門</p>
+      <p class="panel__title">別ルートに必要な逸脱回数を変える</p>
+      <p class="mt-s">必要回数を1回と3回で遊ぶ。どちらが「選び直したくなる」か、結果表示と自分の判断を記録し、勝ちやすさと面白さを同一視しない。</p>
+    </div>
+    <div class="panel">
+      <p class="panel__label">応用</p>
+      <p class="panel__title">語り手に、直前の選択を覚えさせる</p>
+      <p class="mt-s">「同じ種類の逸脱を続けたら別の返答をする」などルールを追加する。返答の変化が次の選択を変えるか、3手の記録を比較する。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">別作品・自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">選択肢の手掛かりを薄くすると、探索の発見と迷いはどう変わる？反対に明確にすると、初めての人と慣れた人に何が起きる？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">選択への反応をすぐ返す場合と、後でまとめて返す場合の長所・短所は？自作ゲームの1場面で、行動・反応・次の判断を書き出して試そう。</span></div>
+  </div>
+  <p class="note mt-m">『The Stanley Parable』の仕掛けをそのまま真似る必要はありません。遊び手が気づく手掛かり、選択後に受け取る反応、その反応が次の行動へ渡す情報を、自分のジャンルに合わせて組み直せます。</p>
+</section>

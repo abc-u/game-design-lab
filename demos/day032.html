@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>退館ルート｜Game Design Lab DAY32</title>
+<style>
+:root{--ink:#16161a;--paper:#f4f3ee;--white:#fff;--purple:#5b3df5;--muted:#56545d;--green:#26734d;--red:#9d3030;--pixel:ui-monospace,monospace;--shadow:4px 4px 0 var(--ink)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;-webkit-text-size-adjust:100%}.wrap{width:min(100%,720px);margin:0 auto;padding:14px 16px 26px}.eyebrow{font:13px var(--pixel);letter-spacing:.1em;color:var(--purple);margin:0 0 8px}h1,h2,p{margin-top:0}h1{font-size:clamp(23px,6vw,34px);line-height:1.28;margin-bottom:8px}.lead{color:var(--muted);margin-bottom:14px}.box{background:var(--white);border:2px solid var(--ink);padding:15px;margin:12px 0;box-shadow:var(--shadow)}h2{font-size:19px;line-height:1.35;margin-bottom:8px}.control{margin:12px 0}.control label{font-weight:750;display:flex;justify-content:space-between;gap:10px}.control select{display:block;width:100%;min-height:48px;margin-top:5px;padding:8px 10px;border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);font:inherit}.btn{width:100%;min-height:50px;border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);font:inherit;font-weight:750;padding:10px 12px;cursor:pointer;touch-action:manipulation}.btn:focus-visible{outline:3px solid var(--purple);outline-offset:2px}.btn:active{transform:translate(1px,1px)}.btn.primary{background:var(--purple);color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}.choice{display:grid;gap:9px;margin-top:12px}.choice .btn{text-align:left}.choice .btn small{display:block;color:var(--muted);font-size:13px;font-weight:500}.choice .btn.primary small{color:#eee9ff}.stats{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.stat{border:1px solid #777;padding:5px 9px;background:#fff;font-size:14px}.message{min-height:60px;border-left:5px solid var(--purple);padding:9px 11px;background:#f0edff;margin:12px 0}.scene{font-weight:750}.tag{font:12px var(--pixel);color:var(--muted)}.result{border-top:2px solid var(--ink);padding-top:13px;margin-top:14px}.success{color:var(--green)}.failure{color:var(--red)}.log{padding-left:1.25em;margin:8px 0}.log li+li{margin-top:6px}.actions{display:grid;gap:9px;margin-top:14px}.small{font-size:13px;color:var(--muted)}.utility{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:14px}.utility a,.utility button{font:13px var(--pixel);color:var(--ink);background:none;border:0;padding:6px 0;text-decoration:underline;cursor:pointer}.footer{font-size:13px;color:var(--muted);border-top:1px solid #bbb;padding-top:12px;margin-top:16px}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:380px){.wrap{padding:10px}.box{padding:12px}.choice{gap:7px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="eyebrow">GAME DESIGN LAB · DAY 032</p>
+    <h1>退館ルート</h1>
+    <p class="lead">社内放送の指示に従うか、別の行動をするか。3つの判断で、あなたの退館ルートを作ろう。</p>
+  </header>
+  <section class="box" id="setup" aria-labelledby="setupTitle">
+    <h2 id="setupTitle">実験条件</h2>
+    <div class="control"><label for="cue">放送の指示を目立たせる <span>手掛かり</span></label><select id="cue"><option value="marked">目印をつける</option><option value="plain">文章だけで示す</option></select><p class="small">目印は、放送が勧める行動をボタン上で知らせます。</p></div>
+    <div class="control"><label for="memory">放送の記憶 <span>反応</span></label><select id="memory"><option value="reactive">直前の選択に返事する</option><option value="flat">同じ調子で返事する</option></select><p class="small">どちらを選んでも進めます。反応の差を比べてください。</p></div>
+    <div class="control"><label for="target">別ルートに必要な寄り道 <span id="targetValue">2回</span></label><select id="target"><option value="1">1回</option><option value="2" selected>2回</option><option value="3">3回</option></select><p class="small">結果条件だけを変えます。1回・3回でもう一度遊ぶと比較できます。</p></div>
+    <button class="btn primary" id="start">退館を始める</button>
+  </section>
+  <section class="box" id="play" hidden aria-live="polite" aria-labelledby="sceneTitle">
+    <div class="tag" id="step">場面 1 / 3</div>
+    <h2 class="scene" id="sceneTitle"></h2>
+    <p id="instruction"></p>
+    <div class="stats" aria-label="プレイ状況"><span class="stat" id="diversionStat">寄り道 0回</span><span class="stat" id="responseStat">放送の返事 0回</span></div>
+    <p class="message" id="message" role="status"></p>
+    <div class="choice" id="choices"></div>
+  </section>
+  <section class="box" id="end" hidden aria-live="polite" aria-labelledby="endTitle">
+    <p class="eyebrow">退館記録</p>
+    <h2 id="endTitle"></h2>
+    <p id="endText"></p>
+    <ul class="log" id="log"></ul>
+    <div class="actions"><button class="btn primary" id="replay">条件を変えて再プレイ</button><button class="btn" id="again">同じ条件で再プレイ</button></div>
+  </section>
+  <div class="utility"><a href="../lessons/day032/">教材に戻る</a><button id="download">デモHTMLを保存</button></div>
+  <p class="footer">このデモは教材用のオリジナル作品です。外部通信・利用者追跡は行いません。表示される「クリア」は、このデモ内で設定した条件の達成を示します。</p>
+</main>
+<script>
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const scenes=[
+    {title:'1｜廊下の二つの扉',instruction:'放送「正面の青い扉から退館してください」',follow:'青い扉へ進む',deviate:'赤い扉を調べる',followText:'青い扉の向こうに、見慣れた受付があった。',deviateText:'赤い扉を押すと、放送が短く沈黙した。'},
+    {title:'2｜止まったエレベーター',instruction:'放送「階段を使って一階へ降りてください」',follow:'階段を降りる',deviate:'非常ボタンを押す',followText:'階段の先に、放送が予告した出口が見えた。',deviateText:'非常ボタンが鳴り、放送は今の音について話し始めた。'},
+    {title:'3｜閉館後のロビー',instruction:'放送「自動ドアを通って外へ出てください」',follow:'自動ドアを通る',deviate:'受付のメモを読む',followText:'自動ドアが開いた。外には誰もいない。',deviateText:'メモには「放送の指示を聞いた？」と書かれていた。'}
+  ];
+  let index=0,detours=0,responses=0,history=[],locked=false;
+  function updateTarget(){ $('targetValue').textContent=$('target').value+'回'; }
+  $('target').addEventListener('change',updateTarget);
+  function start(){index=0;detours=0;responses=0;history=[];locked=false;$('setup').hidden=true;$('end').hidden=true;$('play').hidden=false;showScene();}
+  function showScene(){
+    const s=scenes[index];$('step').textContent='場面 '+(index+1)+' / '+scenes.length;$('sceneTitle').textContent=s.title;$('instruction').textContent=s.instruction;$('diversionStat').textContent='寄り道 '+detours+'回';$('responseStat').textContent='放送の返事 '+responses+'回';$('message').textContent='行動を選ぶと、放送が返事をします。';
+    const list=$('choices');list.textContent='';
+    [{kind:'follow',label:s.follow},{kind:'deviate',label:s.deviate}].forEach(option=>{
+      const b=document.createElement('button');b.type='button';b.className='btn'+(option.kind==='follow'?' primary':'');b.setAttribute('data-kind',option.kind);
+      const label=document.createElement('span');label.textContent=option.label;b.appendChild(label);
+      if($('cue').value==='marked'&&option.kind==='follow'){const mark=document.createElement('small');mark.textContent='放送の指示';b.appendChild(mark);}
+      b.addEventListener('click',()=>choose(option.kind));list.appendChild(b);
+    });
+  }
+  function choose(kind){
+    if(locked)return;locked=true;const s=scenes[index],deviated=kind==='deviate';if(deviated)detours++;responses++;
+    const reactive=$('memory').value==='reactive';const reaction=reactive?(deviated?s.deviateText:s.followText):'放送「記録しました。次の案内を続けます」';
+    $('message').textContent=reaction;$('diversionStat').textContent='寄り道 '+detours+'回';$('responseStat').textContent='放送の返事 '+responses+'回';
+    history.push((index+1)+'場面目：'+(deviated?s.deviate:s.follow)+' → '+reaction);
+    Array.from($('choices').querySelectorAll('button')).forEach(b=>b.disabled=true);
+    const next=document.createElement('button');next.type='button';next.className='btn primary';next.style.marginTop='12px';next.textContent=index===scenes.length-1?'結果を見る':'次の場面へ';next.addEventListener('click',()=>{index++;locked=false;if(index>=scenes.length)finish();else showScene();});$('choices').appendChild(next);
+  }
+  function finish(){
+    $('play').hidden=true;$('end').hidden=false;const goal=Number($('target').value),won=detours>=goal,reactive=$('memory').value==='reactive';
+    $('endTitle').textContent=won?'クリア｜自分で選んだ出口へ': '未達成｜放送の筋書きで退館';$('endTitle').className=won?'success':'failure';
+    let text='寄り道 '+detours+'回 / 条件 '+goal+'回。';text+=won?'あなたの選択が別ルートを開きました。':'放送の筋書きに戻りました。条件を変えるか、別の場面で寄り道してみましょう。';text+=' 放送の返事は'+(reactive?'選択に応じて変化しました。':'毎回同じでした。');$('endText').textContent=text;
+    const log=$('log');log.textContent='';history.forEach(line=>{const li=document.createElement('li');li.textContent=line;log.appendChild(li);});$('replay').focus();
+  }
+  function toSetup(){$('end').hidden=true;$('setup').hidden=false;$('start').focus();}
+  $('start').addEventListener('click',start);$('again').addEventListener('click',start);$('replay').addEventListener('click',toSetup);
+  $('download').addEventListener('click',()=>{const html='<!doctype html>\n'+document.documentElement.outerHTML;const blob=new Blob([html],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='GameDesignLab_Day032_2026-11-15.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+  updateTarget();
+})();
+</script>
+</body>
+</html>
