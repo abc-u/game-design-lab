@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee">
+<title>ころがり実験室｜Game Design Lab DAY33</title>
+<style>
+:root{--ink:#16161a;--paper:#f4f3ee;--white:#fff;--purple:#5b3df5;--muted:#56545d;--green:#26734d;--red:#9d3030;--shadow:4px 4px 0 var(--ink)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;-webkit-text-size-adjust:100%}.wrap{width:min(100%,720px);margin:0 auto;padding:14px 16px 26px}.eyebrow{font:13px ui-monospace,monospace;letter-spacing:.1em;color:var(--purple);margin:0 0 8px}h1,h2,p{margin-top:0}h1{font-size:clamp(23px,6vw,34px);line-height:1.28;margin-bottom:8px}.lead{color:var(--muted);margin-bottom:14px}.box{background:var(--white);border:2px solid var(--ink);padding:15px;margin:12px 0;box-shadow:var(--shadow)}h2{font-size:19px;line-height:1.35;margin-bottom:8px}.small{font-size:13px;color:var(--muted)}.control{margin:12px 0}.control label{font-weight:750;display:flex;justify-content:space-between;gap:10px}.control input{display:block;width:100%;min-height:40px;accent-color:var(--purple)}.btn{min-height:48px;border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);font:inherit;font-weight:750;padding:9px 12px;cursor:pointer;touch-action:manipulation}.btn:focus-visible{outline:3px solid var(--purple);outline-offset:2px}.btn:active{transform:translate(1px,1px)}.btn.primary{background:var(--purple);color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}.stats{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.stat{border:1px solid #777;padding:4px 9px;background:#fff;font-size:14px}.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;max-width:480px;margin:14px auto}.tile{aspect-ratio:1;min-width:0;display:grid;place-items:center;border:1px solid #b5b1c0;background:#f7f6f2;font-size:clamp(16px,5vw,27px);position:relative}.tile .label{position:absolute;left:2px;bottom:1px;font:9px/1.1 ui-monospace,monospace;color:#46434c}.tile.start{background:#e9e4ff;border:2px solid var(--purple)}.tile.goal{background:#fff1a8;border:2px solid #8f7400}.tile.block{background:#25232a;color:#fff;border-color:#25232a}.tile.item{background:#e9f4f1}.tile.player{outline:3px solid var(--purple);outline-offset:-3px;background:#d8ccff}.tile.bump{animation:shake .18s linear 2}.status{min-height:52px;border-left:5px solid var(--purple);padding:9px 11px;background:#f0edff;margin:10px 0}.pad{display:grid;grid-template-columns:repeat(3,58px);justify-content:center;gap:6px;margin:12px 0}.pad button{width:58px;min-height:52px;font-size:20px;padding:4px}.pad .empty{visibility:hidden}.result{border-top:2px solid var(--ink);padding-top:12px;margin-top:12px}.success{color:var(--green)}.failure{color:var(--red)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.utility{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px}.utility a,.utility button{font:13px ui-monospace,monospace;color:var(--ink);background:none;border:0;padding:6px 0;text-decoration:underline;cursor:pointer}.footer{font-size:13px;color:var(--muted);border-top:1px solid #bbb;padding-top:12px;margin-top:16px}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}@media(max-width:380px){.wrap{padding:10px}.box{padding:12px}.board{gap:3px}.tile .label{font-size:8px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header><p class="eyebrow">GAME DESIGN LAB · DAY 033</p><h1>ころがり実験室</h1><p class="lead">小物を拾ってサイズを上げ、星のゲートを目指そう。成長すると、今まで通れなかった道が変わる。</p></header>
+  <section class="box" id="setup" aria-labelledby="setupTitle">
+    <h2 id="setupTitle">実験条件</h2>
+    <div class="control"><label for="target">ゲートに必要なサイズ <output id="targetValue">5</output></label><input id="target" type="range" min="3" max="5" value="5"><p class="small">目標を上げると、より大きな物まで集める必要があります。</p></div>
+    <div class="control"><label for="turnLimit">使える手数 <output id="turnValue">10</output></label><input id="turnLimit" type="range" min="6" max="14" value="10"><p class="small">壁にぶつかった移動も1手です。</p></div>
+    <button class="btn primary" id="start">ころがり開始</button>
+  </section>
+  <section class="box" id="play" hidden aria-live="polite" aria-labelledby="playTitle">
+    <h2 id="playTitle">星のゲートまで進もう</h2>
+    <p class="small">紫の塊を動かします。数字は拾うために必要なサイズです。物を拾うとサイズが1上がります。</p>
+    <div class="stats"><span class="stat" id="sizeStat">サイズ 1</span><span class="stat" id="turnStat">手数 0 / 10</span><span class="stat" id="targetStat">目標 5</span></div>
+    <div class="board" id="board" role="grid" aria-label="ころがりマップ"></div>
+    <p class="status" id="status" role="status">小物を拾ってサイズを上げよう。</p>
+    <div class="pad" role="group" aria-label="移動操作"><span class="empty"></span><button class="btn" data-dir="0" aria-label="上へ">↑</button><span class="empty"></span><button class="btn" data-dir="3" aria-label="左へ">←</button><button class="btn" data-dir="2" aria-label="下へ">↓</button><button class="btn" data-dir="1" aria-label="右へ">→</button></div>
+    <p class="small">キーボードの矢印キーまたはW・A・S・Dでも操作できます。</p>
+    <div id="end" class="result" hidden><h2 id="endTitle"></h2><p id="endText"></p><p id="endLog" class="small"></p><div class="actions"><button class="btn primary" id="again">同じ条件でもう一度</button><button class="btn" id="edit">条件を変える</button></div></div>
+  </section>
+  <div class="utility"><a id="lessonLink" href="../lessons/day033/">教材に戻る</a><button id="download">このデモを保存</button></div>
+  <footer class="footer">このページは教材用のオリジナルゲームです。『Katamari Damacy REROLL』の素材やコードは使っていません。</footer>
+</main>
+<script>
+(function(){
+  const W=6,H=5, startPos={x:0,y:2}, goal={x:5,y:1};
+  const initialItems=[{x:1,y:2,need:1,name:"クリップ"},{x:1,y:1,need:1,name:"消しゴム"},{x:2,y:1,need:2,name:"積み木"},{x:3,y:1,need:3,name:"大きな箱"}];
+  const walls=new Set(["2,2","3,2","4,2","2,3"]);
+  const dirs=[{x:0,y:-1},{x:1,y:0},{x:0,y:1},{x:-1,y:0}];
+  const $=id=>document.getElementById(id); let game=null;
+  function updateLabels(){ $("targetValue").textContent=$("target").value; $("turnValue").textContent=$("turnLimit").value; }
+  function start(){
+    game={x:startPos.x,y:startPos.y,size:1,turns:0,limit:Number($("turnLimit").value),target:Number($("target").value),items:initialItems.map(v=>({...v,got:false})),log:[],done:false};
+    $("setup").hidden=true; $("play").hidden=false; $("end").hidden=true; $("status").textContent="まずは近くの小物へ。拾うとサイズが上がります。"; render();
+  }
+  function render(){
+    if(!game)return;
+    $("sizeStat").textContent="サイズ "+game.size; $("turnStat").textContent="手数 "+game.turns+" / "+game.limit; $("targetStat").textContent="目標 "+game.target;
+    const board=$("board"); board.replaceChildren();
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+      const d=document.createElement("div"); d.className="tile"; d.setAttribute("role","gridcell");
+      if(walls.has(x+","+y)){d.classList.add("block");d.textContent="■";d.setAttribute("aria-label","壁");}
+      else if(x===game.x&&y===game.y){d.classList.add("player");d.textContent="●";d.setAttribute("aria-label","塊、サイズ"+game.size);}
+      else if(x===goal.x&&y===goal.y){d.classList.add("goal");d.textContent="★";d.setAttribute("aria-label","星のゲート、必要サイズ"+game.target);const s=document.createElement("span");s.className="label";s.textContent="≥"+game.target;d.append(s);}
+      else {const it=game.items.find(v=>!v.got&&v.x===x&&v.y===y); if(it){d.classList.add("item");d.textContent=it.need===1?"·":it.need===2?"◆":"▣";const s=document.createElement("span");s.className="label";s.textContent=it.name+" · "+it.need;d.append(s);d.setAttribute("aria-label",it.name+"、必要サイズ"+it.need);}else d.textContent="";}
+      board.append(d);
+    }
+    document.querySelectorAll(".pad button").forEach(b=>b.disabled=game.done);
+  }
+  function finish(win,reason){
+    game.done=true; render(); $("end").hidden=false; $("endTitle").textContent=win?"ゲート到達！":"今回は届かなかった"; $("endTitle").className=win?"success":"failure";
+    $("endText").textContent=reason+" 最終サイズは"+game.size+"、使った手数は"+game.turns+"です。";
+    $("endLog").textContent=game.log.length?"拾った物："+game.log.join("、"):"拾った物：なし";
+  }
+  function move(i){
+    if(!game||game.done)return;
+    game.turns++; const nx=game.x+dirs[i].x, ny=game.y+dirs[i].y;
+    if(nx<0||nx>=W||ny<0||ny>=H||walls.has(nx+","+ny)){$("status").textContent="壁にぶつかった。1手使ったので、別の道を探そう。";const p=$("board").children[game.y*W+game.x];p.classList.add("bump");}
+    else if(nx===goal.x&&ny===goal.y){game.x=nx;game.y=ny;if(game.size>=game.target){game.turns=Math.min(game.turns,game.limit);render();finish(true,"必要サイズを満たして星のゲートへ到達。");return;}else $("status").textContent="ゲートはサイズ"+game.target+"以上で開く。小物を拾いに戻ろう。";}
+    else {
+      const it=game.items.find(v=>!v.got&&v.x===nx&&v.y===ny);
+      if(it&&game.size<it.need){$("status").textContent=it.name+"はサイズ"+it.need+"から拾える。今は通れない。";const p=$("board").children[ny*W+nx];p.classList.add("bump");}
+      else {game.x=nx;game.y=ny;if(it){it.got=true;game.size++;game.log.push(it.name);$("status").textContent=it.name+"を巻き込んだ！サイズ"+game.size+"になり、拾える物が広がった。";}else $("status").textContent="進んだ。次に拾える物を探そう。";}
+    }
+    render(); if(game.turns>=game.limit)finish(false,"手数を使い切った。");
+  }
+  $("target").addEventListener("input",updateLabels);$("turnLimit").addEventListener("input",updateLabels);
+  $("start").addEventListener("click",start);$("again").addEventListener("click",start);$("edit").addEventListener("click",()=>{$("play").hidden=true;$("setup").hidden=false;game=null;updateLabels();});
+  document.querySelectorAll(".pad button").forEach(b=>b.addEventListener("click",()=>move(Number(b.dataset.dir))));
+  document.addEventListener("keydown",e=>{const map={ArrowUp:0,w:0,W:0,ArrowRight:1,d:1,D:1,ArrowDown:2,s:2,S:2,ArrowLeft:3,a:3,A:3};if(map[e.key]!==undefined&&!$("play").hidden){e.preventDefault();move(map[e.key]);}});
+  $("download").addEventListener("click",()=>{const html="<!doctype html>\n"+document.documentElement.outerHTML;const blob=new Blob([html],{type:"text/html;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="GameDesignLab_Day033_2026-11-16.html";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);});
+  updateLabels();
+})();
+</script>
+</body>
+</html>

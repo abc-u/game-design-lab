@@ -1,0 +1,153 @@
+---
+day: 33
+date: 2026-11-16
+title: "大きくなると、世界の見え方が変わる｜『塊魂アンコール』"
+theme: 成長段階で変わる行動可能性と空間の再解釈
+game: "Katamari Damacy REROLL（塊魂アンコール）"
+level: 初級
+minutes: 10
+summary: 拾える物の大きさが変わると、同じ空間が新しい遊び場に変わる仕組みを分析する。
+question: 成長を数値だけでなく、プレイヤーができる行動の変化として伝えるには？
+goals:
+  - サイズの条件が、行動・空間の見え方・次の目標を変える因果を説明できる
+  - 自作ゲームで、成長後に可能になる行動と失われる選択肢を一つずつ設計できる
+video:
+  id: E2zB4zucavo
+  title: "Katamari Damacy REROLL 公式トレーラー"
+  caption: 出版社の発売告知に埋め込まれた公式映像。小さな物から大きな物へ、巻き込む対象がどう広がるかに注目。
+demo:
+  src: /demos/day033.html
+  title: "ころがり実験室｜サイズで変わる道"
+  height: 920
+sources:
+  - title: "BANDAI NAMCO Entertainment America『Katamari Damacy REROLL Now Available』"
+    url: https://www.bandainamcoent.com/pt_br/news/katamari-damacy-reroll-now-available
+    note: 2018-12-08掲載。米州でのSwitch・Steam版発売、発売時価格29.99米ドル、基本ルールと販促文言（2026-11-16確認）
+  - title: "BANDAI NAMCO Entertainment Europe『KATAMARI DAMACY REROLL』"
+    url: https://en.bandainamcoent.eu/katamari/katamari-damacy-reroll
+    note: 2018-12-07発売、2020-11-20にPS4・Xbox One版を追加。操作・作品紹介（2026-11-16確認）
+  - title: "Steam公式ストア『Katamari Damacy REROLL』"
+    url: https://store.steampowered.com/app/848350/Katamari_Damacy_REROLL/
+    note: Steam英語レビュー3,935件中93%が好評、直近30日26件中100%が好評、米国ストア価格29.99米ドルを2026-11-16確認。投稿・地域・価格は変動し、レビューは販売本数ではない
+  - title: "Philippa Warr『Katamari Damacy Reroll review』PC Gamer"
+    url: https://www.pcgamer.com/katamari-damacy-reroll-review/
+    note: 2018-12-05公開、85点。小物から大きな物へ対象が広がる喜びを評価。二人対戦、PC操作、性別表現への批判も記述
+  - title: "Kieron Verbrugge『Katamari Damacy REROLL Review』WellPlayed"
+    url: https://www.well-played.com.au/katamari-damacy-reroll-review/
+    note: 2018-12-11公開。Switchのモーション操作は入力と画面の動きがかみ合わず、ミスや苛立ちにつながると批評
+  - title: "Steam Community『Katamari Damacy REROLL』ユーザーレビュー"
+    url: https://store.steampowered.com/app/848350/Katamari_Damacy_REROLL/?l=english
+    note: 2026-11-16確認。表示されたレビュー例から肯定・批判各1件を選定。操作に慣れるまでの負担を挙げる声と、初見には勧めるが原作所有者には新要素が少ないという声。便宜抽出の2件で代表性なし
+sources_note: Steamのレビュー比率・件数は確認時点の英語投稿で、全プレイヤーや販売本数を示しません。作品単体の販売本数は確認できる一次資料で公表を確認できず、推定していません。公式の販促説明、批評家の解釈、Steam集計、少数の個人意見、独自分析を区別しています。継続率・離脱率は非公表です。
+---
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：成長を「新しい行動」に変える</h2>
+  <p>成長段階とは、能力値の上昇に応じて、できる行動や通れる場所が変わる区切りです。数字だけが増えても遊び方が変わらない場合、プレイヤーは成長を画面上の表示として受け取ります。</p>
+  <p>成長後に何が可能になるかを空間や敵の条件へ結びつけると、プレイヤーは以前の場所を違う目で見直します。一方で大きさや強さが制約を増やすなら、強化は単純な上位互換ではなく選択になります。</p>
+  <ol class="flow mt-m">
+    <li><b>制限</b><span>今は小さな物だけ拾える</span></li>
+    <li><b>成長</b><span>拾った物がサイズを押し上げる</span></li>
+    <li><b>再解釈</b><span>前に通れなかった場所へ戻る</span></li>
+  </ol>
+  <h3 class="h-sub">設計で確かめる3つ</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">1</span><div><p class="list__title">変化の条件が読めるか</p><p class="list__text">対象物の大きさと必要サイズを見比べられるようにする。成長の前後で「拾える／拾えない」が変わる例を近くに置く。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">2</span><div><p class="list__title">新しい行動がすぐ試せるか</p><p class="list__text">成長した直後に、以前は取れなかった物や通れなかった道へ誘導する。変化を説明文だけで伝えず、操作の結果で確かめさせる。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">3</span><div><p class="list__title">成長に代償もあるか</p><p class="list__text">大きくなると狭い道を通れない、重くなるなどの制約を置くと、成長後の進路選びも残る。選択の余地がなければ、代償は単なる罰になる。</p></div></div>
+  </div>
+  <p class="note mt-s">この見方を使い、『塊魂アンコール』の成長は、能力値の上昇以上に「同じ部屋の何が獲物になるか」を変えているか確かめます。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：Katamari Damacy REROLL</h2>
+  <dl class="facts">
+    <div><dt>発売・機種</dt><dd>2018-12-07、Switch・PC。2020-11-20にPS4・Xbox One版</dd></div>
+    <div><dt>開発・販売</dt><dd>MONKEYCRAFT、BANDAI NAMCO Entertainment</dd></div>
+    <div><dt>ジャンル</dt><dd>三人称アクション／物理パズル。物を巻き込み、塊を成長させる</dd></div>
+  </dl>
+  {% include video.html %}
+  <h3 class="h-sub">行動から感情まで</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールが返すもの</th><th>生まれる判断・感情</th></tr></thead>
+      <tbody>
+        <tr><th>文房具や小物へ塊を転がす</th><td>対象が付着し、塊の直径が増える</td><td>自分の行動がそのまま成長になり、次に狙う物を探す</td></tr>
+        <tr><th>以前は大きすぎた物へ近づく</th><td>必要サイズを超えると巻き込める対象が増える</td><td>見慣れた部屋が新しい獲物の配置図に見える</td></tr>
+        <tr><th>制限時間内に指定サイズを目指す</th><td>残り時間と塊の直径、物の配置が結果を左右する</td><td>近い小物を集めるか、サイズ条件を見込んで大物を狙うか選ぶ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">独自分析｜作品ならではの面白さ</p>
+    <p class="panel__title">集めるたびに、次に集められる物の世界が広がる。</p>
+    <p class="mt-s">一般的な収集ゲームでは拾った物は所持品や得点になりますが、本作では物が塊に付着し、物理的なサイズそのものが変わります。小さなクリップを拾う行動が、やがて動物や家具を巻き込む力へ直結するため、成長は数値表示でなく「世界の物差しが変わる」体験になります。</p>
+    <p class="mt-s">同じ部屋でも、序盤は机の上、中盤は床の小物、後半は人や大きな家具が目標になります。拾える対象の切り替わりが次の行動を自然に提示し、プレイヤーは通った場所を見直したくなります。</p>
+  </div>
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="list__key">始める</span><span class="list__body">公式紹介は「小さなクリップから大陸まで巻き込む」誇張と、色鮮やかな映像・J-popを入口にする。塊を転がして物を付けるとすぐサイズが増えるため、作品の核へ早く触れられる。Switchの携帯性と、当時の米州価格29.99ドルも購入判断の接点になった。</span></div>
+    <div class="list__row"><span class="list__key">プレイ中</span><span class="list__body">小物を拾ってサイズが条件を超えると、以前は弾かれた物を拾える。新しい獲物を探す行動が次の成長を呼び、制限時間内に指定サイズを目指す目標がルート選択を支える。</span></div>
+    <div class="list__row"><span class="list__key">試合後・後日</span><span class="list__body">各ステージの記録や星座ミッション、取り逃した物の収集が再挑戦の目標になる。Steamストアには実績・ローカル対戦も掲載されるが、これらが継続率をどれだけ上げるかは公開データから分からない。</span></div>
+    <div class="list__row"><span class="list__key">離れる</span><span class="list__body">二本のスティックを使う独特の操作は、向きを直感的に動かしたい人には習熟の負担になる。PC GamerはPC操作や二人対戦、性別表現を批判し、WellPlayedはSwitchのモーション操作の誤入力を指摘した。成長の反復が単調に感じる人や、旧作を持つ人には新要素の少なさも購入理由を弱めうる。</span></div>
+  </div>
+  <p class="note mt-s">最後の「弱めうる」は仕組みと個別批評からの仮説です。全体の離脱率や、どの理由で遊ぶのをやめたかを示す公開データは確認できません。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：評価の高さは販売本数ではない</h2>
+  <div class="grid">
+    <div class="panel">
+      <p class="pixel">批評家の評価</p>
+      <ul class="bullets mt-s"><li><span>PC Gamerは85点。対象サイズの条件が成長の喜びを作ると評価し、ステージの反復、PC操作、二人対戦、性別表現には不満を挙げた（2018-12-05）。</span></li><li><span>WellPlayedはSwitchのモーション操作が画面上の動きとかみ合わず、ミスを招くと批評（2018-12-11）。</span></li></ul>
+    </div>
+    <div class="panel">
+      <p class="pixel">プレイヤーの評価</p>
+      <ul class="bullets bullets--muted mt-s"><li><span>Steam英語レビューは3,935件中93%が好評。直近30日分は26件中100%が好評（2026-11-16確認）。</span></li><li><span>表示レビュー例2件では、操作の習熟負担と、初見には勧めるが原作所有者には新規性が薄いという異なる不満を確認。</span></li></ul>
+    </div>
+  </div>
+  <div class="panel panel--dark mt-s">
+    <p class="panel__label">読み解き</p>
+    <p class="panel__title">大きくなる爽快さは支持されても、操作の学習や旧作との差は別の評価軸になる。</p>
+  </div>
+  <h3 class="h-sub">市場で見える接点</h3>
+  <dl class="facts">
+    <div><dt>販売指標</dt><dd>作品単体の販売本数は、今回確認した一次資料では公表を確認できず</dd></div>
+    <div><dt>価格・展開</dt><dd>米州の発売時は29.99米ドル。Switch・Steamで始まり、後にPS4・Xbox Oneへ展開</dd></div>
+    <div><dt>想定層・発見</dt><dd>「全年齢向け」は発売時の出版社販促文言。Steamのユーザー付与タグには「サウンドトラック」「カジュアル」「カラフル」「シュール」などが並ぶが、購入者全体の属性を示す数字ではない</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>事実</strong>　出版社はSwitchの携帯プレイと、HD化・再制作したカットシーンを訴求。Steamは単人用、ローカル対戦、実績などの機能を掲載する。</span></li>
+    <li><span><strong>市場仮説</strong>　奇抜な物理表現と音楽は短い映像でも特徴が伝わり、口コミや配信で目を引きやすい。ユーザー付与タグとレビューはその発見・評価の接点になるが、流入経路や配信からの購入数は確認できない。</span></li>
+    <li><span><strong>競合・選択肢</strong>　特定の同型ゲームだけでなく、同価格帯のカジュアル作品や旧作を遊び直す時間も競合になる。旧作所有者のレビューは「新しい内容の少なさ」を指摘し、リマスターの価値が購入判断を分ける例になる。</span></li>
+  </ul>
+  <p class="note mt-s">Steamレビューは英語投稿の集計で、全機種・全地域の満足度ではありません。販売数や継続率と置き換えず、面白さだけを商業成果の理由とも断定しません。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：サイズで変わる道</h2>
+  <p>矢印キーまたは画面の方向ボタンで塊を転がし、星のゲートまで進みます。小物を拾うたびサイズが上がり、サイズ条件を超えると大きな物も巻き込めます。</p>
+  <div class="chips mt-s"><span class="chip">目標サイズ</span><span class="chip">手数</span><span class="chip">拾える物の条件</span></div>
+  {% include demo.html %}
+  <div class="panel panel--shadow mt-m">
+    <p class="panel__label">観察ポイント</p>
+    <p class="panel__title">成長で、同じ道の何が変わった？</p>
+    <p class="mt-s">まず初期設定で遊び、拾える物とサイズ表示を見ます。次に目標サイズを変えて、必要な寄り道・拾う物・ゲートへ着く手数がどう変わるか比べましょう。</p>
+  </div>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造ラボ：成長に別の意味を足す</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">目標サイズを一段変える</p><p class="mt-s">目標を4から5へ変え、必要な拾い物と手数を予想してからプレイします。予想と結果が違ったら、ルートとサイズ条件のどちらを読み違えたか記録してください。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">大きさに通路制限を加える</p><p class="mt-s">サイズ4以上では狭い通路を通れない、とルールを足すなら、成長後に何を諦め、どの道へ向かうか設計します。代わりの経路がなければ、成長は選択でなく行き止まりになります。</p></div>
+  </div>
+  <h3 class="h-sub">結果と再プレイ</h3>
+  <p>ゲーム終了後は、目標を達成したか、何手でゲートに届いたか、サイズが上がった後に何を拾えたかを確認します。目標サイズを一つだけ変えて再プレイし、変化を一つずつ比べます。</p>
+  <p class="note mt-s">自作企画へ移すときは「レベルが上がった」ではなく、「レベルが上がって初めてできた行動」を一つ具体化してください。別作品では、道具の強化で通行可能な地形が変わる探索ゲームなどにも同じ問いを使えます。</p>
+</section>
