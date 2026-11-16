@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f3ee">
+<meta name="description" content="順位で変わる追い上げ補給を比べる、Game Design Lab DAY34のオリジナルレースデモ。">
+<title>追い上げラボ｜Game Design Lab DAY34</title>
+<style>
+:root{--paper:#fff;--bg:#f4f3ee;--ink:#16161a;--muted:#5d5d65;--line:#d9d7cf;--purple:#5b3df5;--green:#e2f0d9;--red:#ffe4de;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;color:var(--ink)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);padding:16px;line-height:1.55}
+.game{max-width:760px;margin:0 auto}
+header,.box,.controls,.result{background:var(--paper);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:16px;margin-bottom:14px}
+.eyebrow{font-size:.75rem;font-weight:900;letter-spacing:.1em;color:var(--purple);margin:0 0 4px}
+h1{font-size:clamp(1.3rem,5vw,2rem);line-height:1.2;margin:0}
+p{margin:.45rem 0}
+.small{font-size:.9rem;color:var(--muted)}
+.setting{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+label{font-weight:800}
+select,button{font:inherit;color:var(--ink);border:2px solid var(--ink);border-radius:0;background:#fff;padding:11px 13px}
+select{min-height:46px}
+.track{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:16px 0}
+.lane{border:1px solid var(--line);padding:8px 4px;text-align:center;min-height:60px;font-size:.83rem;background:#fff}
+.lane b{display:block;font-size:1.1rem}
+.lane.you{background:#eeeaff;border:2px solid var(--purple);font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{border:1px solid var(--line);padding:8px}
+.stat strong{display:block}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button{font-weight:900;cursor:pointer;min-height:54px;touch-action:manipulation}
+button:hover{background:#eeeaff}
+button:focus-visible,select:focus-visible{outline:3px solid #ffbf47;outline-offset:2px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.status{font-weight:800;min-height:2.5em}
+.result{border-left:8px solid var(--purple)}
+.result[hidden]{display:none}
+.log{padding-left:1.4rem;margin:.4rem 0}
+footer{font-size:.78rem;color:var(--muted);text-align:center;padding:4px}
+@media(max-width:520px){body{padding:10px}.box,.controls,.result,header{padding:13px}.actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.track{gap:3px}.lane{font-size:.72rem;padding:6px 1px}}
+</style>
+</head>
+<body>
+<main class="game">
+<header><p class="eyebrow">GAME DESIGN LAB / DAY 34</p><h1>追い上げラボ</h1><p>走りで差を作る？アイテムで賭ける？順位による補給を試そう。</p></header>
+<section class="controls" aria-label="ゲーム設定">
+<div class="setting"><label for="boost">最下位への追い上げ補給</label><select id="boost"><option value="0">なし</option><option value="2" selected>中</option><option value="4">強い</option></select></div>
+<p class="small">設定変更は、最下位で箱を取った時の加点に反映されます。この作品の確率を再現するものではない簡略モデルです。</p>
+</section>
+<section class="box">
+<div class="stats"><div class="stat"><strong>ターン</strong><span id="turn">スタート前</span></div><div class="stat"><strong>あなたの距離</strong><span id="distance">0</span></div><div class="stat"><strong>現在順位</strong><span id="rank">—</span></div></div>
+<div class="track" id="track" aria-label="順位表示"></div>
+<p class="status" id="status" aria-live="polite">「レース開始」を押してください。</p>
+<div class="actions"><button id="start" type="button">レース開始</button><button id="line" type="button" disabled>直線を走る +4</button><button id="drift" type="button" disabled>ドリフト +7 / スピン注意</button><button id="item" type="button" disabled>アイテム箱を取る</button></div>
+</section>
+<section class="result" id="result" hidden aria-live="polite"><h2 id="finish"></h2><p id="summary"></p><ol class="log" id="log"></ol><button id="replay" type="button">同じ設定で再プレイ</button></section>
+<footer>オリジナルの簡略デモ。実在作品の画像・音・コードは使用していません。</footer>
+</main>
+<script>
+(function(){
+const boost=document.getElementById('boost'), turnEl=document.getElementById('turn'), distanceEl=document.getElementById('distance'), rankEl=document.getElementById('rank'), track=document.getElementById('track'), status=document.getElementById('status'), result=document.getElementById('result'), finish=document.getElementById('finish'), summary=document.getElementById('summary'), log=document.getElementById('log');
+const start=document.getElementById('start'), line=document.getElementById('line'), drift=document.getElementById('drift'), item=document.getElementById('item'), replay=document.getElementById('replay');
+const paces=[5,4,3,2], labels=['赤','青','黄','緑'];
+let distance=0,turn=0,running=false,history=[];
+function rivalDistances(n){return paces.map(p=>p*n)}
+function rankNow(){return 1+rivalDistances(turn).filter(d=>d>distance).length}
+function render(){
+ turnEl.textContent=running?turn+' / 5':'スタート前'; distanceEl.textContent=distance+'m';
+ const rank=running?rankNow():null; rankEl.textContent=rank?rank+'位':'—';
+ const positions=[{name:'あなた',d:distance,player:true},...rivalDistances(turn).map((d,i)=>({name:labels[i],d,player:false}))].sort((a,b)=>b.d-a.d);
+ track.innerHTML='';positions.forEach((x,i)=>{const cell=document.createElement('div');cell.className='lane'+(x.player?' you':'');cell.innerHTML='<b>'+(i+1)+'位</b>'+x.name;track.appendChild(cell)});
+ [line,drift,item].forEach(b=>b.disabled=!running);start.disabled=running;
+}
+function begin(){distance=0;turn=0;history=[];running=true;result.hidden=true;status.textContent='順位を確認し、走り方を選ぼう。';render()}
+function act(kind){
+ if(!running)return;
+ const rank=rankNow();let gain=0,why='';
+ if(kind==='line'){gain=4;why='直線で安定して進んだ';}
+ if(kind==='drift'){if(Math.random()<0.28){gain=1;why='スピン！少しだけ進んだ';}else{gain=7;why='ドリフト成功！大きく進んだ';}}
+ if(kind==='item'){
+   const raw=1+Math.floor(Math.random()*4);
+   const catchup=(rank>=4)?Number(boost.value):(rank===3?Math.ceil(Number(boost.value)/2):0);
+   gain=raw+catchup;why='箱から補給 +'+gain+(catchup?'（順位補助 +'+catchup+'）':'');
+ }
+ distance+=gain;history.push('ターン'+(turn+1)+'：'+why+'。距離 +'+gain+'m');turn++;
+ if(turn>=5){finishRace();}else{status.textContent=why+'。次の順位は '+rankNow()+'位。';render()}
+}
+function finishRace(){
+ running=false;
+ const standings=[{name:'あなた',d:distance},...rivalDistances(5).map((d,i)=>({name:labels[i],d}))].sort((a,b)=>b.d-a.d);
+ const placement=standings.findIndex(x=>x.name==='あなた')+1;
+ finish.textContent=placement===1?'1位！あなたの勝ち':placement+'位でゴール';
+ summary.textContent='最終距離 '+distance+'m。走行と補給の選択を見直してみよう。';
+ log.innerHTML='';history.forEach(x=>{const li=document.createElement('li');li.textContent=x;log.appendChild(li)});
+ result.hidden=false;status.textContent='ゴール！';render()
+}
+start.addEventListener('click',begin);replay.addEventListener('click',begin);
+line.addEventListener('click',()=>act('line'));drift.addEventListener('click',()=>act('drift'));item.addEventListener('click',()=>act('item'));
+render();
+})();
+</script>
+</body>
+</html>
