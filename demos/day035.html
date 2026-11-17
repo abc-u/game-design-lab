@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f3ee">
+<title>霧港の帰り道｜Game Design Lab DAY35</title>
+<style>
+:root{--paper:#f4f3ee;--ink:#16161a;--purple:#5b3df5;--line:#27262d;--mist:#e5e2d8;--sea:#17313a;--danger:#c94a37;--muted:#686771}
+*{box-sizing:border-box}
+body{margin:0;background:#dddcd7;color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.55}
+button,select{font:inherit}
+.demo{width:min(100%,820px);margin:0 auto;padding:22px 18px 30px;background:var(--paper);min-height:100vh}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:2px solid var(--ink);padding:4px 0 14px;font-size:12px;font-weight:800;letter-spacing:.08em}
+.brand{color:var(--purple)}
+h1{font-size:clamp(28px,7vw,44px);line-height:1.12;letter-spacing:-.04em;margin:25px 0 8px}
+.sub{margin:0 0 18px;color:#4e4c55}
+.notice{padding:12px 14px;border:2px solid var(--ink);background:#fffdf7;font-size:14px}
+.panel{border:2px solid var(--ink);padding:18px;margin-top:16px;background:#fffdf7;box-shadow:4px 4px 0 var(--ink)}
+.panel h2{font-size:18px;margin:0 0 12px}
+.settings{display:grid;gap:14px}
+.control label{font-weight:800;display:flex;justify-content:space-between;gap:12px}
+.control input{width:100%;accent-color:var(--purple);margin-top:8px}
+.hint{font-size:12px;color:var(--muted);margin:4px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{min-height:48px;padding:10px 15px;border:2px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);font-weight:800;cursor:pointer;touch-action:manipulation}
+button:hover{transform:translateY(-1px);box-shadow:2px 2px 0 var(--ink)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--purple);outline-offset:3px}
+button.primary{background:var(--purple);color:#fff}
+button.warn{border-color:var(--danger);color:#812617}
+.screen[hidden]{display:none}
+.hud{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0}
+.stat{border:1px solid var(--ink);padding:9px 10px;background:#fffdf7}
+.stat small{display:block;color:var(--muted);font-size:11px}
+.stat b{font-size:17px}
+.bar{height:8px;background:#ddd;margin-top:7px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--purple);width:0;transition:width .2s}
+.gamegrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;max-width:410px;margin:14px auto 8px}
+.cell{aspect-ratio:1;border:1px solid #5a6870;background:#d7e1df;display:flex;align-items:center;justify-content:center;font-size:clamp(16px,5vw,26px);position:relative}
+.cell.inactive{background:#aaa9a4;border-color:#888;opacity:.52}
+.cell.damage{background:#512f32;color:#fff;border-color:#17171a}
+.cell .mini{position:absolute;bottom:1px;right:3px;font-size:9px;font-weight:800}
+.grid-label{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px}
+.offers{display:grid;gap:10px;margin-top:16px}
+.offer{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;width:100%;padding:13px}
+.offer span{display:block}
+.offer small{font-weight:500;color:var(--muted);display:block;margin-top:3px}
+.offer strong{white-space:nowrap;font-size:17px}
+.offer:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.ticker{min-height:26px;color:#44424c;font-size:13px;margin:10px 0 0}
+.night{color:#a72d24;font-weight:800}
+.log{margin:8px 0 0;padding-left:20px;color:#54515a;font-size:13px}
+.result{text-align:center}
+.result-score{font-size:42px;font-weight:900;color:var(--purple);line-height:1.1}
+.result h2{font-size:25px;margin:8px 0}
+.result p{margin:8px 0}
+.tag{display:inline-block;border:1px solid var(--ink);padding:4px 8px;margin:2px;font-size:12px}
+.download{font-size:13px;background:transparent;border-style:dashed;min-height:42px}
+.fine{font-size:12px;color:var(--muted);margin-top:16px}
+@media(max-width:520px){.demo{padding:16px 13px 24px}.panel{padding:14px}.hud{gap:5px}.stat{padding:8px 6px}.stat b{font-size:15px}.offer{align-items:flex-start}.actions button{flex:1 1 140px}}
+</style>
+</head>
+<body>
+<main class="demo">
+  <div class="topline"><span class="brand">GAME DESIGN LAB / DAY 35</span><a href="../lessons/day035/">教材へ戻る ↗</a></div>
+  <h1>霧港の帰り道</h1>
+  <p class="sub">船倉の空きと、夜へ進む危険。何を積んで港へ戻る？</p>
+
+  <section id="start" class="screen">
+    <p class="notice">小さな漁船で6回まで漁ができます。魚は形のまま船倉を使い、夜の航海では損傷が空きマスや売値を奪います。早めに帰港してもかまいません。</p>
+    <div class="panel">
+      <h2>出航前の改造</h2>
+      <div class="settings">
+        <div class="control"><label for="capacity">船倉容量 <span><b id="capacityValue">12</b>マス</span></label><input id="capacity" type="range" min="8" max="16" step="1" value="12"><p class="hint">マスを増やすと積みやすくなります。</p></div>
+        <div class="control"><label for="danger">夜の危険度 <span><b id="dangerValue">1</b></span></label><input id="danger" type="range" min="0" max="2" step="1" value="1"><p class="hint">0=損傷なし、1=軽い損傷、2=大きな損傷。</p></div>
+      </div>
+      <div class="actions"><button class="primary" id="startButton">出航する</button><button class="download" id="downloadButton">デモHTMLをダウンロード</button></div>
+    </div>
+    <p class="fine">このデモはDREDGEの素材を使わず、「形ある積み荷」と「暗くなる前に帰る判断」を観察するために作った独自の短編ゲームです。</p>
+  </section>
+
+  <section id="play" class="screen" hidden>
+    <div class="hud">
+      <div class="stat"><small>釣りの回数</small><b><span id="round">0</span> / 6</b><div class="bar"><i id="roundBar"></i></div></div>
+      <div class="stat"><small>船内の時刻</small><b id="clock">朝</b><div class="bar"><i id="timeBar"></i></div></div>
+      <div class="stat"><small>予想売値</small><b><span id="score">0</span> G</b><small>目標 20 G</small></div>
+    </div>
+    <div class="panel">
+      <div class="grid-label"><span>船倉</span><span><b id="used">0</b> / <span id="capacityRead">12</span>マス</span></div>
+      <div class="gamegrid" id="grid" aria-label="船倉の配置"></div>
+      <p class="ticker" id="message" aria-live="polite">海へ出た。近場で魚影を探そう。</p>
+    </div>
+    <div class="panel">
+      <h2>この場所で釣る魚を選ぶ</h2>
+      <div class="offers" id="offers"></div>
+      <div class="actions"><button class="warn" id="returnButton">港へ帰って売る</button></div>
+      <ol class="log" id="log"></ol>
+    </div>
+  </section>
+
+  <section id="result" class="screen" hidden>
+    <div class="panel result">
+      <span class="tag" id="resultTag">帰港</span>
+      <h2 id="resultTitle">航海終了</h2>
+      <div class="result-score"><span id="finalScore">0</span> G</div>
+      <p id="resultText"></p>
+      <p id="resultStats"></p>
+      <div class="actions" style="justify-content:center"><button class="primary" id="replayButton">設定を変えて再出航</button><button class="download" id="downloadResult">デモHTMLをダウンロード</button></div>
+    </div>
+  </section>
+</main>
+<script>
+(()=> {
+  const rounds=[
+    [{name:"銀イワシ",emoji:"🐟",shape:[[0,0]],value:3,time:1},{name:"月エビ",emoji:"🦐",shape:[[0,0],[1,0],[2,0]],value:8,time:2}],
+    [{name:"青ダラ",emoji:"🐠",shape:[[0,0],[1,0]],value:5,time:1},{name:"影ウナギ",emoji:"〰️",shape:[[0,0],[1,0],[2,0]],value:9,time:2}],
+    [{name:"小ガニ",emoji:"🦀",shape:[[0,0],[1,0]],value:5,time:1},{name:"裂けヒラメ",emoji:"🐡",shape:[[0,0],[1,0],[0,1]],value:10,time:2}],
+    [{name:"貝",emoji:"🐚",shape:[[0,0]],value:3,time:1},{name:"深海の目",emoji:"👁️",shape:[[0,0],[1,0],[0,1],[1,1]],value:13,time:3}],
+    [{name:"小アジ",emoji:"🐟",shape:[[0,0],[1,0]],value:5,time:1},{name:"夜光イカ",emoji:"🦑",shape:[[0,0],[1,0],[2,0]],value:11,time:2}],
+    [{name:"白エビ",emoji:"🦐",shape:[[0,0]],value:4,time:1},{name:"星サメ",emoji:"🦈",shape:[[0,0],[1,0],[2,0],[3,0]],value:15,time:3}]
+  ];
+  const $=id=>document.getElementById(id);
+  const start=$("start"),play=$("play"),result=$("result");
+  const state={capacity:12,danger:1,round:0,time:0,score:0,used:0,blocked:[],items:[],damage:0,finished:false,history:[]};
+  function screen(which){start.hidden=which!=="start";play.hidden=which!=="play";result.hidden=which!=="result";}
+  function settings(){state.capacity=+$("capacity").value;state.danger=+$("danger").value;$("capacityValue").textContent=state.capacity;$("dangerValue").textContent=state.danger;}
+  function begin(){settings();state.round=0;state.time=0;state.score=0;state.used=0;state.blocked=[];state.items=[];state.damage=0;state.finished=false;state.history=[];screen("play");draw();}
+  function rotated(shape,turn){let pts=shape.map(([x,y])=>[x,y]);for(let k=0;k<turn;k++)pts=pts.map(([x,y])=>[-y,x]);const minX=Math.min(...pts.map(p=>p[0])),minY=Math.min(...pts.map(p=>p[1]));return pts.map(([x,y])=>[x-minX,y-minY]);}
+  function findSpace(shape){
+    for(let turn=0;turn<4;turn++){const pts=rotated(shape,turn);for(let y=0;y<4;y++)for(let x=0;x<4;x++){const cells=pts.map(([dx,dy])=>[x+dx,y+dy]);if(cells.some(([cx,cy])=>cx<0||cx>3||cy<0||cy>3))continue;const ids=cells.map(([cx,cy])=>cy*4+cx);if(ids.some(i=>i>=state.capacity||state.blocked.includes(i)))continue;if(state.items.some(item=>item.cells.some(i=>ids.includes(i))))continue;return ids;}}
+    return null;
+  }
+  function drawGrid(){
+    const g=$("grid");g.innerHTML="";
+    for(let i=0;i<16;i++){const c=document.createElement("div");c.className="cell";if(i>=state.capacity)c.classList.add("inactive");if(state.blocked.includes(i)){c.className="cell damage";c.textContent="×";}else{const it=state.items.find(item=>item.cells.includes(i));if(it){c.textContent=it.emoji;const first=Math.min(...it.cells);if(i===first){const m=document.createElement("span");m.className="mini";m.textContent=it.name.slice(0,4);c.append(m);}}}g.append(c);}
+    $("used").textContent=state.used;$("capacityRead").textContent=state.capacity;$("score").textContent=Math.max(0,state.score-state.damage);
+  }
+  function drawOffers(){
+    const box=$("offers");box.innerHTML="";
+    if(state.round>=6){finish("six回の漁を終えた");return;}
+    rounds[state.round].forEach((fish,index)=>{const space=findSpace(fish.shape);const b=document.createElement("button");b.className="offer";b.disabled=!space;b.setAttribute("aria-label",fish.name+"、"+fish.value+"ゴールド、"+fish.shape.length+"マス");b.innerHTML='<span><b>'+fish.emoji+" "+fish.name+'</b><small>'+fish.shape.length+"マス・"+fish.time+"刻進む"+(state.time+fish.time>=4?"・夜に近づく":"")+'</small></span><strong>+'+fish.value+' G</strong>';b.addEventListener("click",()=>catchFish(fish,space));box.append(b);});
+  }
+  function draw(){
+    drawGrid();
+    $("round").textContent=state.round;$("roundBar").style.width=(state.round/6*100)+"%";
+    const night=state.time>=4;$("clock").textContent=night?"夜 "+state.time+"刻":(["朝","昼","夕","夕暮れ"][Math.min(state.time,3)]);$("clock").className=night?"night":"";
+    $("timeBar").style.width=Math.min(100,state.time/7*100)+"%";$("timeBar").style.background=night?"var(--danger)":"var(--purple)";
+    $("log").innerHTML=state.history.slice(-4).map(x=>"<li>"+x+"</li>").join("");
+    drawOffers();
+  }
+  function catchFish(fish,space){
+    if(!space||state.finished)return;
+    state.items.push({name:fish.name,emoji:fish.emoji,cells:space,value:fish.value});state.used+=space.length;state.score+=fish.value;state.time+=fish.time;state.round++;
+    let msg=fish.name+"を積んだ。+"+fish.value+"G。";
+    if(state.time>=4&&state.danger>0){const free=[];for(let i=0;i<state.capacity;i++)if(!state.blocked.includes(i)&&!state.items.some(it=>it.cells.includes(i)))free.push(i);const hit=Math.min(state.danger,free.length);for(let i=0;i<hit;i++)state.blocked.push(free[i]);state.damage+=state.danger*2;if(hit)msg+=" 夜の波で船体が"+hit+"マス傷んだ。売値も"+(state.danger*2)+"G減る。";else msg+=" 船体損傷。売値が"+(state.danger*2)+"G減った。";}
+    state.history.push(msg);$("message").textContent=msg;
+    if(state.time>=4)$("clock").className="night";
+    draw();
+  }
+  function finish(reason){
+    if(state.finished)return;state.finished=true;
+    const final=Math.max(0,state.score-state.damage),won=final>=20;
+    $("resultTag").textContent=won?"目標達成":"目標未達";
+    $("resultTitle").textContent=won?"いい漁だった！":(final===0?"船倉は空のまま":"目標まであと"+(20-final)+"G");
+    $("finalScore").textContent=final;
+    $("resultText").textContent=reason+"。"+(won?"必要な売上を確保できました。":"魚の価値・帰る時刻・船倉の余裕を次の航海で調整しよう。");
+    $("resultStats").textContent="積んだ魚 "+state.items.length+" 匹相当 ／ 船体損傷 "+state.damage+" G ／ 経過 "+state.time+"刻";
+    screen("result");
+  }
+  function download(){
+    const source="<!doctype html>\n"+document.documentElement.outerHTML;
+    const blob=new Blob([source],{type:"text/html;charset=utf-8"});const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);a.download="GameDesignLab_Day035_2026-11-18.html";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  }
+  $("capacity").addEventListener("input",settings);$("danger").addEventListener("input",settings);
+  $("startButton").addEventListener("click",begin);$("replayButton").addEventListener("click",()=>screen("start"));
+  $("returnButton").addEventListener("click",()=>finish("自分で帰港を選んだ"));
+  $("downloadButton").addEventListener("click",download);$("downloadResult").addEventListener("click",download);
+  settings();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+---
+day: 35
+date: 2026-11-18
+title: 船倉の空きが、夜への一歩を決める
+theme: 空間インベントリと時間のリスク
+game: DREDGE
+level: 中級
+minutes: 10
+summary: 限られた船倉と夜の危険が、釣るか帰るかの判断をどう生むか分解する。
+question: プレイヤーは、どんな理由で船倉を埋め、夜の海へ進み、港へ戻るのか？
+goals:
+  - 空間インベントリが選択を生む仕組みを説明できる
+  - DREDGEの出航・継続・離脱の要因を、確認できる根拠と仮説に分けて話せる
+  - 自作ゲームの資源制約を一つ変え、結果を比べられる
+video:
+  id: kfniX3fH1l0
+  title: DREDGE 公式アナウンストレーラー
+  caption: Team17公式映像。穏やかな釣りの見せ方と、不穏な海の対比に注目。
+demo:
+  src: /demos/day035.html
+  title: 霧港の帰り道
+  height: 1150
+sources:
+  - title: Black Salt Games 開発者による船倉設計解説（Game Developer）
+    url: https://www.gamedeveloper.com/design/deep-dive-the-surprising-depth-of-spatial-inventories-in-dredge
+    note: Joel Mason、2022-03-02公開。空間インベントリを中核にした設計意図と操作上の課題。
+  - title: Team17公式 発売告知
+    url: https://www.team17.com/news/dredge-launching-30th-march
+    note: 2023-02-03公開。発売日、対応機種、Switch体験版の告知。
+  - title: Team17 Group Annual Report 2023
+    url: https://www.team17groupplc.com/wp-content/uploads/2024/05/TEAM17-AR23-spreads.pdf
+    note: 2024-05-16発行。DREDGEは報告時点で累計100万本超（2023年度報告）。
+  - title: Steam公式ストア DREDGE
+    url: https://store.steampowered.com/app/1562430/DREDGE/
+    note: 2026-11-18確認。米国ストア表示価格$24.99、発売日、英語レビュー33,054件中96%好評。地域・セールで価格は変動。
+  - title: Push Square レビュー
+    url: https://www.pushsquare.com/reviews/ps5/dredge
+    note: 2023-03-23公開。魅力的な進行と雰囲気を評価しつつ、反復・窮屈な船倉操作・テンポを指摘。
+  - title: Steam Community プレイヤー意見（DREDGE）
+    url: https://store.steampowered.com/app/1562430/DREDGE/?curator_clanid=45857814&l=english
+    note: 2026-11-18確認。表示された英語レビュー1件を例に、雰囲気を評価しつつ後半の反復を惜しむ声を参照。個別例であり代表標本ではない。
+sources_note: 発売日・価格・累計販売本数は確認可能な公開情報です。レビュー数と比率はSteamの英語レビュー欄を2026-11-18に確認した時点の表示です。批評・プレイヤー意見は個別の見方で、継続率や離脱率は公表情報から確認できません。因果の解釈は独自分析として記しています。
+---
+{%- comment -%}
+DAY 35：空間インベントリと時間のリスク
+{%- endcomment -%}
+
+<section class="lesson-section" id="basics">
+  <p class="eyebrow">STEP 1</p>
+  <h2 class="h-section">基礎：空間インベントリは「何を持つか」を選ばせる</h2>
+  <p>空間インベントリとは、品物ごとに形や大きさがあり、決められたマスへ配置する持ち物管理です。容量を数字だけで制限する方式と違い、空きの形も判断材料になります。</p>
+  <p>枠が足りないとき、プレイヤーは品物の価値だけでなく、置ける形・装備を外す損失・戻る時間を比べます。行動が「拾う→配置を試す→埋まる／置けない→積む物を選び直す」へ進むため、管理画面にも小さな決断が生まれます。</p>
+  <ol class="flow mt-m">
+    <li><b>制約</b><span>形のある品物と限られたマスを用意する</span></li>
+    <li><b>選択</b><span>価値・大きさ・次に必要な装備を比べる</span></li>
+    <li><b>結果</b><span>積載量や移動時間が次の危険と報酬を変える</span></li>
+  </ol>
+  <h3 class="h-sub">自作企画で使う見方</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box num-box--fill">A</span><div><p class="list__title">価値密度</p><p class="list__text">「価値 ÷ 占有マス」を比べ、効率だけが正解にならない形や用途を作れているか。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">B</span><div><p class="list__title">制約の意味</p><p class="list__text">装備を外せば何が失われるか、空きマスを残すと何に備えられるかを見える形にする。</p></div></div>
+    <div class="list__row"><span class="num-box num-box--fill">C</span><div><p class="list__title">操作の負担</p><p class="list__text">並べ替えに時間を使う場面を作るなら、置き換え・回転・取り消しを迷わず行えるか試す。</p></div></div>
+  </div>
+  <p class="note mt-m">次はこの見方で、船倉の配置を夜の時間制限へつなぐDREDGEを分解します。</p>
+</section>
+
+<section class="lesson-section" id="analysis">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">分析：DREDGE</h2>
+  <dl class="facts">
+    <div><dt>発売</dt><dd>2023年3月30日（PC、Switch、PS4/PS5、Xbox One / Series X|S）</dd></div>
+    <div><dt>開発</dt><dd>Black Salt Games（ニュージーランド）</dd></div>
+    <div><dt>発売元</dt><dd>Team17</dd></div>
+    <div><dt>ジャンル</dt><dd>一人用の釣りアドベンチャー／不穏なホラー表現</dd></div>
+  </dl>
+
+  {% include video.html %}
+
+  <h3 class="h-sub">特徴的な面白さ：積み荷が、航海の作戦になる</h3>
+  <p>開発者Joel Masonによると、初期案は魚影でボタンを押して「魚を1匹追加」するだけで、手応えが乏しかったため、品物がマスを占める船倉を中核へ育てました。魚を回転・配置して隙間を使うほど次の漁が可能になる一方、釣り竿やエンジンも同じ限られた空間を競います。</p>
+  <p>一般的な釣りゲームのように釣果を数や図鑑だけで管理するのではなく、次の釣り道具を積むか、売る魚を増やすかが船倉上でぶつかる点が特徴です。装備を減らせば積める量は増えるが、釣れる種類や移動力を失うため、配置は航路の計画になります。</p>
+  <h3 class="h-sub">行動から感情までの流れ</h3>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>プレイヤーの行動</th><th>ルールの反応・見える変化</th><th>生まれうる感情・次の行動</th></tr></thead>
+      <tbody>
+        <tr><th>魚影へ向かい、釣りのタイミングを合わせる</th><td>魚が形付きで船倉へ入り、空きマスが減る</td><td>釣れた手応えから、もう一匹を探したくなる</td></tr>
+        <tr><th>形を回して隙間へ置き、価値の高い魚を残す</th><td>船倉の効率が上がる。装備を外すと釣り場の選択肢が狭まる</td><td>配置が決まる満足と、失った装備への迷いが生まれる</td></tr>
+        <tr><th>夜限定の魚や資材を求めて港から遠ざかる</th><td>時間が進み、暗闇で恐怖や事故の危険が増す</td><td>高価な獲物への期待と、帰港を急ぐ緊張が並ぶ</td></tr>
+        <tr><th>魚を売り、船を修理・強化して再出航する</th><td>資金や装備が増え、行ける場所・積める量が変わる</td><td>進捗が次の目標を作る。逆に反復が続くと作業感が出る</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel--shadow mt-m"><p class="panel__label">独自分析</p><p class="panel__title">船倉が「利益」と「安全装備」を同じ空間で競わせ、昼の釣りを夜の誘惑へつなぐ。配置の達成感に、帰港の判断を重ねることが、この作品の特徴的な緊張を生むと考えられる。</p></div>
+
+  <h3 class="h-sub">始める・続ける・離れる</h3>
+  <div class="list">
+    <div class="list__row"><span class="num-box">入口</span><div><p class="list__title">穏やかな釣りと不穏な海の対比</p><p class="list__text">公式告知は「釣りの冒険」と不穏な気配を同時に見せ、Switch体験版も発売前に告知。釣りや探索を期待した人が、初航海で釣り・売却・時間管理の一周に触れ、ホラー要素が次の探索理由になる構成です。</p></div></div>
+    <div class="list__row"><span class="num-box">継続</span><div><p class="list__title">目の前の目標と後日の目標を分ける</p><p class="list__text">航海中は「あと一匹」「港まで戻れるか」が次の行動を作る。帰港後の売却・船の強化・依頼の選択は長期目標を作り、未知の魚や地域の発見が後日の再出航を促す、と分析できます。実際の継続率は公表資料から確認できません。</p></div></div>
+    <div class="list__row"><span class="num-box">離脱</span><div><p class="list__title">並べ替えの摩擦と反復</p><p class="list__text">Push Squareは船倉操作の扱いづらさ、金策・素材探しの反復を指摘。空き枠を工夫するのが好きな人にはパズルでも、装備が合わず港へ戻る回数や同じ漁が増えると感じる人には負担となりえます。</p></div></div>
+  </div>
+  <p class="note mt-s">開発者自身も、コントローラーで遠くの品物を並べ替える操作を煩雑にしうる課題として挙げています。これは設計意図・課題の説明であり、全プレイヤーが同じ不満を持つという意味ではありません。</p>
+</section>
+
+<section class="lesson-section" id="evaluation">
+  <p class="eyebrow">STEP 2</p>
+  <h2 class="h-section">評価と市場：遊びの強さと売れた理由を分ける</h2>
+  <div class="grid">
+    <div class="panel"><p class="pixel">評価された点</p><ul class="bullets mt-s"><li><span>Push Squareは雰囲気、進行、釣りの手応えを評価（PS5版、2023-03-23、7/10）。</span></li><li><span>Steam英語レビューは33,054件中96%が好評（2026-11-18確認時点）。</span></li></ul></div>
+    <div class="panel"><p class="pixel">批判・プレイヤーの声</p><ul class="bullets bullets--muted mt-s"><li><span>同レビューは反復・窮屈な船倉操作・遅いテンポも指摘。</span></li><li><span>Steam掲載の個別レビュー1件は雰囲気を称賛しながら、後半の地域で活動が似通うと述べる（2026-11-18確認）。この例は選んだ1件で、全体傾向ではない。</span></li></ul></div>
+  </div>
+  <div class="panel panel--dark mt-s"><p class="panel__label">読み解き</p><p class="panel__title">短い航海の緊張と収集の進捗は幅広く評価される一方、反復や操作の手間は、空間パズルを楽しめるか・何を期待したかで評価が分かれると考えられます。</p></div>
+  <h3 class="h-sub">確認できる市場情報</h3>
+  <dl class="facts">
+    <div><dt>販売</dt><dd>Team17年次報告は2023年度報告時点で累計100万本超と記載（2024-05-16発行）。</dd></div>
+    <div><dt>価格</dt><dd>米国Steam表示は$24.99（2026-11-18確認。地域・割引で変動）。</dd></div>
+    <div><dt>対象・機種</dt><dd>一人用。PC、Switch、PS4/PS5、Xbox One / Series X|S。発売元はTeam17。</dd></div>
+    <div><dt>口コミ指標</dt><dd>Steam英語レビュー33,054件・96%好評（2026-11-18時点）。Steam利用者のレビューであり、全購入者の満足度とは同一でない。</dd></div>
+  </dl>
+  <ul class="bullets mt-m">
+    <li><span><strong>観察できる要因</strong>　発売前の公式告知は複数機種とSwitch体験版を掲げ、発売後のTeam17告知は批評家の引用とレビュー指標を宣伝に使用しました。</span></li>
+    <li><span><strong>独自仮説</strong>　釣り・探索・ホラーの交差、見分けやすい低ポリゴンの世界、PC/家庭用機で同時に選べる流通が、紹介・口コミの入口を広げた可能性があります。</span></li>
+    <li><span><strong>分からないこと</strong>　100万本超という累計は確認できますが、価格・宣伝・口コミ・ゲーム内容それぞれの販売寄与や、継続率・離脱率は公開情報から分かりません。</span></li>
+  </ul>
+  <p class="note mt-s">売上を面白さだけの結果とせず、価格、対応機種、体験版、Team17の販売網と宣伝、レビューの露出、競合作品や発売時期も含む市場状況として読みます。</p>
+</section>
+
+<section class="lesson-section" id="lab">
+  <p class="eyebrow">STEP 3</p>
+  <h2 class="h-section">遊ぶ：霧港の帰り道</h2>
+  <p>魚を選ぶたび、価値・形・時間が船倉に反映されます。容量と夜の危険を変えて出航し、何を積んでいつ帰るか、結果がどう変わるか比べてください。</p>
+  <div class="chips mt-s"><span class="chip">船倉の容量</span><span class="chip">夜の危険度</span><span class="chip">帰港タイミング</span></div>
+
+  {% include demo.html %}
+
+  <div class="panel panel--shadow mt-m"><p class="panel__label">観察ポイント</p><p class="panel__title">希少魚の価値が上がっても、時間と空きマスに見合わなければ安全な魚を選ぶか。危険度や容量を変えたとき、帰港判断が変わるか。</p></div>
+  <h3 class="h-sub">結果を比べて再出航</h3>
+  <p>まず標準設定で全ての魚を積まずに帰る判断も試します。次に容量だけ、危険度だけを変え、手取り・損傷・航海できた回数を記録してください。</p>
+</section>
+
+<section class="lesson-section" id="challenge">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">改造課題</h2>
+  <div class="grid">
+    <div class="panel"><p class="panel__label">入門</p><p class="panel__title">容量だけを変える</p><p class="mt-s">容量を12マスから8マスへ変更。積み残す魚、帰港時刻、得点がどう変わるか、変更前の予想と一緒に記録する。</p></div>
+    <div class="panel"><p class="panel__label">応用</p><p class="panel__title">損傷を船倉へ反映する</p><p class="mt-s">夜に進むと損傷マスが増え、魚を置けなくなるルールを追加。危険な魚を選ぶ判断がいつ変化するか試す。</p></div>
+  </div>
+</section>
+
+<section class="lesson-section" id="apply">
+  <p class="eyebrow">STEP 4</p>
+  <h2 class="h-section">自分の企画へ</h2>
+  <div class="list">
+    <div class="list__row"><span class="list__key">Q1</span><span class="list__body">自作ゲームで「快感がない」と言われた場面を一つ選び、行動→ルールの反応→見える変化→感情・次の行動で書き直すと、どの段階が欠けていますか？</span></div>
+    <div class="list__row"><span class="list__key">Q2</span><span class="list__body">別の探索ゲームへ空間インベントリを移すなら、何を配置させ、どんな摩擦を増やしますか？配置パズルの楽しさと、操作負担をどう両立させますか？</span></div>
+  </div>
+</section>
